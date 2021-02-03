@@ -1,0 +1,46 @@
+@import "../../assets/scss/mixin";
+@import "../../assets/scss/variables";
+
+.card-movies-upcoming {
+  min-width: 223px;
+  background: #ffffff;
+  border: 0.5px solid #dedede;
+  box-sizing: border-box;
+  border-radius: 8px;
+  margin-right: 24px;
+  text-align: center;
+  padding-top: 32px;
+  padding-bottom: 32px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  img {
+    width: 159px;
+    height: 244px;
+    border-radius: 6px;
+    margin-bottom: 32px;
+  }
+
+  h1 {
+    @include link-medium;
+    letter-spacing: 1px;
+    color: $titleColor;
+  }
+
+  p {
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    color: $placeHolderColor;
+    margin-bottom: 40px;
+  }
+
+  .btn-details {
+    @include text-small;
+    border: 1px solid $primaryColor;
+    color: $primaryColor;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding: 8px 56px 7px 58px;
+    text-decoration: none;
+  }
+}

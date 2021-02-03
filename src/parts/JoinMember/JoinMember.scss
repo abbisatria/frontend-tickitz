@@ -1,0 +1,60 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixin";
+
+.join-member {
+  margin-top: 70px;
+  margin-bottom: 70px;
+  box-shadow: 0px 10px 32px rgba(0, 0, 0, 0.17);
+  border-radius: 15px;
+
+  .form-join {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    @media screen and (max-width: 992px) {
+      flex-direction: column;
+    }
+    .form-join-outline {
+      margin-right: 16px;
+      @media screen and (max-width: 992px) {
+        margin-right: 32px;
+        margin-left: 32px;
+      }
+      .form-control {
+        margin-top: -25px;
+        padding: 27px 24px 27px 24px;
+        width: 306px;
+
+        @media screen and (max-width: 992px) {
+          width: 100%;
+        }
+      }
+
+      .btn-primary {
+        transition: 0.4s;
+        width: 100%;
+        padding: 15px 24px 15px 24px;
+
+        &:hover {
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+      }
+    }
+  }
+
+  h3 {
+    @include text-large;
+    color: $bodyColor;
+  }
+
+  h1 {
+    @include display-large-bold;
+    color: $primaryColor;
+  }
+
+  p {
+    @include text-xsmall;
+    color: $placeHolderColor;
+    letter-spacing: 0.75px;
+  }
+}

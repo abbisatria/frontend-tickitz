@@ -1,0 +1,158 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixin";
+
+.payment {
+  background-color: #f5f6f8;
+  padding-top: 56px;
+  padding-bottom: 72px;
+  @media screen and (max-width: 992px) {
+    padding-top: 0;
+  }
+
+  .payment-info {
+    h2 {
+      @include display-small-bold;
+      color: $titleColor;
+    }
+
+    .card-payment-info {
+      padding: 48px 40px;
+      margin-top: 24px;
+      background: white;
+      border-radius: 6px;
+      @media screen and (max-width: 992px) {
+        padding: 10px;
+      }
+
+      p {
+        font-size: 20px;
+        color: #6b6b6b;
+        letter-spacing: 0.25px;
+        @media screen and (max-width: 992px) {
+          font-size: 16px;
+        }
+      }
+
+      h6 {
+        font-size: 20px;
+        letter-spacing: 0.25px;
+        text-align: end;
+      }
+
+      h5 {
+        @include link-large;
+        letter-spacing: 0.25px;
+        text-align: end;
+        @media screen and (max-width: 992px) {
+          font-size: 20px;
+        }
+      }
+
+      hr {
+        margin-top: 2px;
+      }
+    }
+  }
+
+  .payment-method {
+    margin-top: 48px;
+
+    h2 {
+      @include display-small-bold;
+      color: $titleColor;
+    }
+
+    .card-payment-method {
+      padding: 16px 40px 48px 40px;
+      margin-top: 24px;
+      background: white;
+      border-radius: 6px;
+
+      label {
+        margin-top: 32px;
+        input[type="radio"] {
+          display: none;
+          &:checked + .icon-payment {
+            background: #dedede;
+            border: 2px solid #dedede;
+          }
+        }
+        .icon-payment {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 56px;
+          width: 146px;
+          border: 2px solid #dedede;
+          border-radius: 8px;
+
+          @media screen and (max-width: 992px) {
+            width: 100%;
+            padding: 10px;
+          }
+
+          img {
+            @media screen and (max-width: 992px) {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+
+    h6 {
+      text-align: center;
+      border-bottom: 1px solid #dedede;
+      line-height: 0.1em;
+      margin: 10px 0 20px;
+      margin-top: 32px;
+
+      span {
+        @include text-small;
+        background: #fff;
+        padding: 0 40px;
+        color: $placeHolderColor;
+      }
+    }
+
+    .pay-cash {
+      color: #6e7191;
+      text-align: center;
+
+      a {
+        color: $primaryColor;
+        font-weight: bold;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .personal-info {
+    h2 {
+      @include display-small-bold;
+      color: $titleColor;
+      @media screen and (max-width: 992px) {
+        margin-top: 48px;
+      }
+    }
+
+    .card-personal-info {
+      padding: 48px 40px;
+      margin-top: 24px;
+      background: white;
+      border-radius: 6px;
+
+      i {
+        color: #f4b740;
+        margin-right: 20px;
+      }
+    }
+  }
+
+  .btn-previous {
+    border-radius: 4px;
+    border: 2px solid $primaryColor;
+    color: $primaryColor;
+    font-weight: bold;
+  }
+}

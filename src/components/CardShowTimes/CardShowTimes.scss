@@ -1,0 +1,72 @@
+@import "../../assets/scss/mixin";
+@import "../../assets/scss/variables";
+
+.card-showtimes {
+  background: $offWhiteColor;
+  box-shadow: 0px 8px 16px rgba(186, 186, 186, 0.24);
+  border-radius: 24px;
+  padding: 24px;
+  margin-top: 32px;
+  img {
+    width: 112px;
+  }
+  h3 {
+    @include link-large;
+    letter-spacing: 0.75px;
+    @media screen and (max-width: 992px) {
+      text-align: center;
+    }
+  }
+  p {
+    font-size: 12px;
+    letter-spacing: 0.75px;
+    font-weight: 300;
+    color: $labelColor;
+    @media screen and (max-width: 992px) {
+      text-align: center;
+    }
+  }
+  .form-price {
+    .showtimes {
+      text-align: justify;
+      input[type="radio"] {
+        display: none;
+        &:checked + span {
+          color: $primaryColor;
+        }
+        &:disabled + span {
+          color: #a0a3bd;
+        }
+      }
+      span {
+        display: inline-block;
+        color: #4e4b66;
+        font-size: 12px;
+        letter-spacing: 0.75px;
+        cursor: pointer;
+      }
+    }
+
+    h6 {
+      @include text-small;
+      letter-spacing: 0.75px;
+      color: #6b6b6b;
+    }
+
+    h3 {
+      @include text-small;
+      letter-spacing: 0.75px;
+    }
+
+    .book-now {
+      color: $offWhiteColor;
+    }
+
+    .btn-add-cart {
+      background: $offWhiteColor;
+      color: $primaryColor;
+      font-weight: bold;
+      border-radius: 8px;
+    }
+  }
+}

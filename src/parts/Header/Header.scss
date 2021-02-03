@@ -1,0 +1,97 @@
+@import "../../assets/scss/variables";
+
+.form-search {
+  border: 1px solid #dedede;
+  border-radius: 4px;
+
+  button {
+    border: none;
+    background: none;
+    i {
+      color: #6e7191;
+    }
+  }
+
+  input {
+    border: none;
+    outline: none;
+  }
+}
+
+hr {
+  height: 2px;
+  width: 100%;
+}
+
+.search-box {
+  background: $offWhiteColor;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  height: 40px;
+  border-radius: 40px;
+  padding: 10px;
+  display: flex;
+
+  &:hover {
+    .search-txt {
+      width: 150px;
+      padding: 0 6px;
+    }
+    .search-btn {
+      background: none;
+    }
+  }
+
+  .search-btn {
+    color: #000000;
+    float: right;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -10px;
+    border: none;
+  }
+
+  .search-txt {
+    border: none;
+    background: none;
+    outline: none;
+    float: left;
+    padding: 0;
+    color: #000000;
+    font-size: 16px;
+    transition: 0.4s;
+    line-height: 40px;
+    width: 0px;
+  }
+}
+
+.sign-up-button {
+  color: $offWhiteColor;
+  background-color: $primaryColor;
+  border-radius: 4px;
+  margin-left: 15px;
+  transition: 0.4s;
+
+  &:hover {
+    color: $offWhiteColor;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+  }
+}
+
+.nav-link {
+  .dropdown-toggle::after {
+    content: none;
+  }
+
+  .photo-profile {
+    object-fit: cover;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+  }
+}

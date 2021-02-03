@@ -1,0 +1,13 @@
+@import "../../assets/scss/mixin";
+@import "../../assets/scss/variables";
+
+.hero-title {
+  p {
+    @include text-large;
+    color: $placeHolderColor;
+  }
+  h1 {
+    @include display-large-bold;
+    color: $primaryColor;
+  }
+}

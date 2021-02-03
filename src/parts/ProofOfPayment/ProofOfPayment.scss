@@ -1,0 +1,167 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixin";
+
+.proof-of-payment {
+  background: #e5e5e5;
+  padding-top: 72px;
+  padding-bottom: 96px;
+
+  .card-proof-of-payment {
+    padding: 56px 70px;
+    background: white;
+    border-radius: 8px;
+    @media screen and (max-width: 992px) {
+      padding: 0;
+    }
+
+    h2 {
+      @include display-small-bold;
+      letter-spacing: 0.25px;
+      color: $titleColor;
+      text-align: center;
+    }
+
+    .card-ticket {
+      border: 1px solid $lineColor;
+      border-radius: 16px;
+      margin-top: 48px;
+      @media screen and (max-width: 992px) {
+        border: none;
+      }
+
+      .header-card {
+        border-radius: 16px 16px 0 0;
+        background: $primaryColor;
+
+        img {
+          width: 116px;
+        }
+
+        .admit-one {
+          border-right: 1px dashed $lineColor;
+          padding: 14px 56px;
+          position: relative;
+
+          &:before {
+            content: "";
+            z-index: 99;
+            position: absolute;
+            top: -22px;
+            right: -22px;
+            display: block;
+            width: 43px;
+            height: 43px;
+            border-radius: 50%;
+            border-bottom: 1px solid $lineColor;
+            background-color: white;
+          }
+
+          h4 {
+            @include text-medium;
+            letter-spacing: 0.75px;
+            color: #ffffff;
+            text-align: end;
+          }
+        }
+      }
+
+      .detail-ticket {
+        border-right: 1px dashed $lineColor;
+        padding: 32px 56px;
+        position: relative;
+        @media screen and (max-width: 992px) {
+          border-right: none;
+          border-top: 1px dashed $lineColor;
+        }
+
+        &:before {
+          content: "";
+          z-index: 99;
+          position: absolute;
+          bottom: -22px;
+          right: -22px;
+          display: block;
+          width: 43px;
+          height: 43px;
+          border-radius: 50%;
+          border-top: 1px solid $lineColor;
+          background-color: white;
+          @media screen and (max-width: 992px) {
+            z-index: 99;
+            position: absolute;
+            top: -22px;
+            right: -15px;
+            display: block;
+            width: 43px;
+            height: 43px;
+            border-radius: 50%;
+            border-top: 1px solid $lineColor;
+            background-color: #e5e5e5;
+          }
+        }
+
+        &::after {
+          @media screen and (max-width: 992px) {
+            content: "";
+            z-index: 99;
+            position: absolute;
+            top: -22px;
+            left: -15px;
+            display: block;
+            width: 43px;
+            height: 43px;
+            border-radius: 50%;
+            border-top: 1px solid $lineColor;
+            background-color: #e5e5e5;
+          }
+        }
+
+        p {
+          font-size: 12px;
+          color: #aaaaaa;
+          letter-spacing: 0.75px;
+        }
+
+        h6 {
+          @include text-small;
+          letter-spacing: 0.75px;
+          color: $titleColor;
+        }
+
+        h5 {
+          @include link-small;
+          color: $titleColor;
+        }
+
+        .card-total {
+          border: 1px solid $lineColor;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 10px;
+          margin-top: 40px;
+        }
+      }
+    }
+  }
+
+  .download-or-print {
+    display: flex;
+    justify-content: center;
+    .link-download-print {
+      padding: 10px 40px;
+      border: 1px solid $bodyColor;
+      border-radius: 4px;
+      margin-right: 16px;
+      color: $bodyColor;
+      text-decoration: none;
+      i {
+        margin-right: 16px;
+        color: $bodyColor;
+      }
+    }
+    @media screen and (max-width: 992px) {
+      display: none;
+    }
+  }
+}

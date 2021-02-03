@@ -1,0 +1,201 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixin";
+
+.profile {
+  background: #e5e5e5;
+  padding: 56px;
+  @media screen and (max-width: 992px) {
+    padding: 20px;
+  }
+
+  .card-info {
+    background: white;
+    padding: 40px 40px;
+    border-radius: 6px;
+
+    .info {
+      h6 {
+        font-size: 16px;
+        letter-spacing: 0.75px;
+        color: #4e4b66;
+      }
+      i {
+        color: $primaryColor;
+      }
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-top: 32px;
+      img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        filter: drop-shadow(0px 8px 16px rgba(73, 83, 99, 0.24));
+      }
+      h3 {
+        font-size: 18px;
+        letter-spacing: 0.75px;
+        color: #14142b;
+        margin-top: 32px;
+      }
+      p {
+        font-size: 14px;
+        letter-spacing: 0.75px;
+        color: #4e4b66;
+      }
+    }
+
+    .loyalty-points {
+      h6 {
+        font-size: 16px;
+        letter-spacing: 0.75px;
+        color: #4e4b66;
+      }
+
+      .card-loyalty-points {
+        background: linear-gradient(
+          75deg,
+          $primaryColor 31.28%,
+          #7647f9 62.16%
+        );
+        border-radius: 8px;
+        padding: 16px;
+        margin-top: 24px;
+        position: relative;
+
+        &:before {
+          content: "";
+          z-index: 1;
+          position: absolute;
+          top: -22px;
+          right: -22px;
+          display: block;
+          width: 122px;
+          height: 122px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.3);
+        }
+
+        &:after {
+          content: "";
+          z-index: 1;
+          position: absolute;
+          top: -41px;
+          right: -2px;
+          display: block;
+          width: 122px;
+          height: 122px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.3);
+        }
+
+        h5 {
+          font-size: 18px;
+          color: white;
+        }
+
+        h4 {
+          font-size: 24px;
+          color: white;
+          margin-top: 21px;
+          text-align: start;
+
+          span {
+            font-size: 10px;
+          }
+        }
+      }
+      .progress {
+        background: #f5f6f8;
+        box-shadow: inset 0px 2px 4px rgba(17, 17, 17, 0.16);
+        border-radius: 8px;
+
+        .progress-bar {
+          background: $primaryColor;
+          border-radius: 8px;
+        }
+      }
+
+      h4 {
+        font-size: 16px;
+        text-align: center;
+        color: #4e4b66;
+        margin-top: 32px;
+      }
+    }
+  }
+
+  .tab-bar {
+    padding: 26px 32px;
+    background: white;
+    border-radius: 8px;
+    @media screen and (max-width: 992px) {
+      margin-top: 48px;
+    }
+
+    .tab-content {
+      margin-top: 56px;
+      h3 {
+        @include text-small;
+        letter-spacing: 0.75px;
+        color: $titleColor;
+      }
+
+      .order-history {
+        border: 0.5px solid #dedede;
+        border-radius: 8px;
+        padding: 40px 32px;
+        margin-bottom: 48px;
+
+        p {
+          @include text-xsmall;
+          letter-spacing: 0.75px;
+          color: #aaaaaa;
+        }
+
+        h6 {
+          @include link-large;
+          letter-spacing: 0.75px;
+        }
+
+        img {
+          @media screen and (max-width: 992px) {
+            width: 98px;
+            margin-bottom: 18px;
+          }
+        }
+
+        .ticket-order {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 32px;
+
+          .ticket {
+            width: 196px;
+            background: $labelColor;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #f7f7fc;
+            @include text-xsmall;
+            letter-spacing: 0.75px;
+            text-align: center;
+
+            @media screen and (max-width: 992px) {
+              width: 100%;
+            }
+          }
+
+          .active {
+            background: #00ba88;
+          }
+        }
+      }
+    }
+  }
+}

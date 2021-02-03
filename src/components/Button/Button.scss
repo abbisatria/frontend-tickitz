@@ -1,0 +1,19 @@
+@import "../../assets/scss/variables";
+
+.btn-primary {
+  background-color: $primaryColor;
+  color: $offWhiteColor;
+  border-radius: 5px;
+  border: none;
+
+  &:hover {
+    background-color: #2a00a2;
+  }
+}
+
+.outline-primary {
+  border: 1px solid $primaryColor;
+  background-color: $offWhiteColor;
+  color: $primaryColor;
+  border-radius: 5px;
+}

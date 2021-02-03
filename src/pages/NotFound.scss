@@ -1,0 +1,22 @@
+@import '../assets//scss/fonts';
+@import '../assets//scss/variables';
+
+.page-not-found {
+  min-height: 100vh;
+  background-color: $backgroundColor;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .status {
+    font-size: 150px;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: $primaryColor;
+  }
+
+  .description {
+    color: $primaryColor;
+  }
+}

@@ -1,0 +1,8 @@
+@import "../../../assets/scss/variables";
+@import "../../../assets/scss/mixin";
+
+.form-control {
+  padding: 22px 24px;
+  @include text-small;
+  border: 1px solid $lineColor;
+}

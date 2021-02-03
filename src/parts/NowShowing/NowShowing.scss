@@ -1,0 +1,46 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixin";
+
+.now-showing {
+  padding-top: 72px;
+  height: 578px;
+  background: $backgroundColor;
+
+  h2 {
+    @include display-small-bold;
+    letter-spacing: 1px;
+    color: $primaryColor;
+    display: inline-block;
+    position: relative;
+
+    &::after {
+      content: "";
+      height: 4px;
+      width: 60%;
+      border-radius: 10px;
+      background: $primaryColor;
+      position: absolute;
+      left: calc(50% - 30%);
+      bottom: -16px;
+      @media screen and (max-width: 992px) {
+        display: none;
+      }
+    }
+  }
+
+  .view-all {
+    @include link-small;
+    color: $primaryColor;
+    text-decoration: none;
+  }
+
+  .movies {
+    margin-top: 60px;
+    display: flex;
+    overflow-x: auto;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+}

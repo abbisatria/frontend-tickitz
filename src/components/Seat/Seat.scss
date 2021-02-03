@@ -1,0 +1,73 @@
+@import "../../assets/scss/mixin";
+@import "../../assets/scss/variables";
+
+.seatGap {
+  width: 120px;
+}
+
+.seats {
+  width: 20px;
+  @media screen and (max-width: 992px) {
+    display: none;
+  }
+}
+
+.seats-number {
+  @media screen and (max-width: 992px) {
+    display: none;
+  }
+}
+
+.check {
+  input[type="checkbox"] {
+    width: 0px;
+    margin-right: 27px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    @media screen and (max-width: 992px) {
+      margin-right: 20px;
+      margin-bottom: 5px;
+    }
+
+    &::before {
+      content: "";
+      width: 26px;
+      height: 26px;
+      display: inline-block;
+      text-align: justify;
+      background-color: #d6d8e7;
+      border-radius: 4px;
+      @media screen and (max-width: 992px) {
+        width: 14px;
+        height: 14px;
+        border-radius: 2px;
+      }
+    }
+
+    &:checked::before {
+      background-color: $primaryColor;
+    }
+
+    &:disabled::before {
+      background-color: $labelColor;
+    }
+  }
+}
+
+.seats-love {
+  &::before {
+    width: 55px !important;
+    background-color: #f589d7 !important;
+    @media screen and (max-width: 992px) {
+      width: 36px !important;
+    }
+  }
+
+  &:checked::before {
+    background-color: $primaryColor !important;
+  }
+
+  &:disabled::before {
+    background-color: $labelColor !important;
+  }
+}

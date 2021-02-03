@@ -1,0 +1,63 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixin";
+
+.movie-details {
+  .card-movies {
+    min-height: 100%;
+    background: $offWhiteColor;
+    border: 2px solid $lineColor;
+    box-sizing: border-box;
+    border-radius: 24px;
+    padding: 48px;
+    @media screen and (max-width: 992px) {
+      width: 70%;
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    img {
+      object-fit: cover;
+      width: 200px;
+      height: 300px;
+      border-radius: 16px;
+    }
+  }
+
+  .title-movies {
+    h1 {
+      @include display-medium-bold;
+      color: $titleColor;
+    }
+    p {
+      @include text-medium;
+      color: $bodyColor;
+    }
+    @media screen and (max-width: 992px) {
+      text-align: center;
+    }
+  }
+
+  .description-movies {
+    margin-top: 32px;
+    h6 {
+      @include text-xsmall;
+      color: #8692a6;
+      letter-spacing: 0.75px;
+    }
+    h3 {
+      @include text-small;
+      letter-spacing: 0.75px;
+      color: #121212;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+    p {
+      @include text-small;
+      letter-spacing: 0.75px;
+      color: $bodyColor;
+    }
+  }
+}

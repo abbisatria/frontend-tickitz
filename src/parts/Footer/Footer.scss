@@ -1,0 +1,59 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixin";
+
+.footer {
+  margin-top: 96px;
+  padding-top: 108px;
+
+  p {
+    margin-top: 30px;
+    @include text-small;
+    color: $labelColor;
+    letter-spacing: 0.75px;
+  }
+
+  h5 {
+    @include link-small;
+    margin-bottom: 31px;
+  }
+
+  ul {
+    li {
+      margin-bottom: 14.7px;
+      .link {
+        @include text-xsmall;
+        color: $bodyColor;
+        span {
+          @include text-xsmall;
+          color: $bodyColor;
+        }
+        img {
+          margin-right: 16px;
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 992px) {
+    ul {
+      display: flex;
+      li {
+        margin-right: 20px;
+        .link {
+          .sponsor {
+            width: 81px;
+          }
+          span {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  .copyright {
+    font-size: 14px;
+    color: #4e4b66;
+    margin-bottom: 50px;
+    text-align: center;
+  }
+}

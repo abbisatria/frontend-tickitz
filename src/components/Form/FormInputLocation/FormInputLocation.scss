@@ -1,0 +1,21 @@
+.form-outline-location {
+  padding: 11px;
+  margin-right: 24px;
+  display: flex;
+  align-items: center;
+  background: #eff0f6;
+  border-radius: 16px;
+  width: 284px;
+  @media screen and (max-width: 992px) {
+    margin-right: 0;
+    margin-top: 16px;
+    width: 100%;
+  }
+  .form-select {
+    border: none;
+    outline: none;
+    background-color: #eff0f6;
+    background: url("../../../assets/icon/ic_forward.png") right no-repeat;
+    margin-right: 4px;
+  }
+}

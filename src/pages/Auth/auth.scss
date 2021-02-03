@@ -1,0 +1,144 @@
+@import "../../assets/scss/fonts";
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixin";
+
+body {
+  font-family: "Mulish", sans-serif;
+}
+
+.authentication-image {
+  background-image: linear-gradient(
+      0deg,
+      rgba(43, 21, 107, 0.8),
+      rgba(43, 21, 107, 0.8)
+    ),
+    url("../../assets/images/image-bg.jpg");
+  background-size: cover;
+  min-height: 100vh;
+  padding: 50px 50px;
+
+  h1 {
+    @include display-large-bold();
+    color: $offWhiteColor;
+  }
+
+  h2 {
+    @include display-large();
+    color: $offWhiteColor;
+    opacity: 0.8;
+  }
+
+  p {
+    @include display-small();
+    color: $offWhiteColor;
+    opacity: 0.7;
+  }
+
+  .custom-progress {
+    margin-left: 20px;
+    ul {
+      list-style: none;
+      position: relative;
+      padding: 0;
+
+      &:before {
+        content: "";
+        position: absolute;
+        width: 2px;
+        height: calc(100% - 50px);
+        top: 30px;
+        left: 0;
+        background: $offWhiteColor;
+      }
+
+      li {
+        padding: 14px 20px;
+
+        span {
+          color: $offWhiteColor;
+          position: absolute;
+          left: -20px;
+          font-size: 24px;
+          width: 40px;
+          height: 40px;
+          text-align: center;
+          border-radius: 50%;
+          border: 1px solid $offWhiteColor;
+          background-color: #2b156b;
+        }
+        .active {
+          color: rgba(41, 3, 65, 0.5);
+          position: absolute;
+          left: -20px;
+          font-size: 24px;
+          width: 40px;
+          height: 40px;
+          text-align: center;
+          border-radius: 50%;
+          background-color: $offWhiteColor;
+        }
+
+        .progres {
+          padding: 0 10px;
+          font-size: 24px;
+          color: $offWhiteColor;
+        }
+      }
+    }
+  }
+}
+
+.authentication-form {
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  flex-direction: column;
+  padding-left: 83px;
+  padding-right: 83px;
+
+  .authentication-form-title {
+    margin-bottom: 40px;
+    h1 {
+      @include display-medium();
+    }
+  }
+
+  .or-line {
+    position: relative;
+    &::before {
+      content: "";
+      height: 2px;
+      width: 100%;
+      background: $lineColor;
+      position: absolute;
+      left: 1px;
+      bottom: 10px;
+      z-index: -1;
+    }
+    span {
+      background: #fff;
+      padding: 0 10px;
+      font-size: 12px;
+      color: #aaaaaa;
+    }
+  }
+
+  .link-external {
+    background-color: $offWhiteColor;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+    width: 40%;
+    a {
+      text-decoration: none;
+      display: flex;
+      justify-content: center;
+      span {
+        margin-left: 10px;
+        color: $placeHolderColor;
+        @media screen and (max-width: 992px) {
+          display: none;
+        }
+      }
+    }
+  }
+}
