@@ -16,6 +16,8 @@ import Profile from '../pages/Profile/Profile'
 import Admin from '../pages/Admin/Admin'
 import ScrollToTop from '../ScrollToTop'
 import PrivateRoute from './PrivateRoute'
+import PrivateRouteProfile from './PrivateRouteProfile'
+import PrivateRouteAdmin from './PrivateRouteAdmin'
 import Not_Found from '../pages/Not_Found'
 
 class Router extends Component {
@@ -32,9 +34,9 @@ class Router extends Component {
             <Route path="/sign-in" component={SignIn} />
             <Route path="/forgot-password/:token" component={ForgotPassword} />
             <Route path="/forgot-password" exact component={ForgotPassword} />
-            <Route path="/admin" component={Admin} />
             <Route path="/details/:id" component={Details} />
-            <Route path="/profile" component={Profile} />
+            <PrivateRouteAdmin path="/admin" privateComponent={Admin} />
+            <PrivateRouteProfile path="/profile" privateComponent={Profile} />
             <PrivateRoute path='/order/:movie_id' privateComponent={Order} />
             <PrivateRoute path='/payment/:movie_id' privateComponent={Payment} />
             <PrivateRoute path='/ticket' privateComponent={Ticket} />

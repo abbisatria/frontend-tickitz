@@ -29,7 +29,7 @@ class Header extends Component {
     return (
       <Container>
         <div className="d-none d-md-block">
-          <Navbar bg="transparent" expand="lg">
+          <Navbar bg="white" expand="md">
             <Navbar.Brand>
               <Link to="/">
                 <img src={logo} alt="Logo Tickitz" />

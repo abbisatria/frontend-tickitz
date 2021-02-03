@@ -2,25 +2,22 @@ import React, { Component } from "react";
 import Header from "../../parts/Header/Header";
 import Footer from "../../parts/Footer/Footer";
 import MovieDescription from "../../parts/MovieDescription/MovieDescription";
+import {connect} from 'react-redux'
 
-export default class Admin extends Component {
-  state = {
-    user: "",
-  };
-  componentDidMount() {
-    let data = localStorage.getItem("myData");
-    data = JSON.parse(data);
-    if (data) {
-      this.setState({ user: data.email });
-    }
-  }
+class Admin extends Component {
   render() {
     return (
       <>
-        <Header user={this.state.user} />
+        <Header user={this.props.auth.user} />
         <MovieDescription />
         <Footer />
       </>
     );
   }
 }
+
+const mapStateToProps = state =>({
+  auth: state.auth
+})
+
+export default connect(mapStateToProps)(Admin)
