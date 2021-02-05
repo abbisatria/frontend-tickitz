@@ -5,7 +5,9 @@ import { Link, withRouter } from "react-router-dom";
 import FormInputText from "../../components/Form/FormInputText/FormInputText";
 import Button from "../../components/Button/Button";
 import FormInputNumber from "../../components/Form/FormInputNumber/FormInputNumber";
-import http from '../../helpers/http'
+// import http from '../../helpers/http'
+import {connect} from 'react-redux'
+import {checkOut} from '../../redux/actions/order'
 
 import "./PaymentInfo.scss";
 
@@ -20,19 +22,21 @@ import ovo from "../../assets/icon/ic_ovo.png";
 
 class PaymentInfo extends Component {
   payOrder = async (movieId, cinemaId, showtimesId, seat, token) => {
-    const data = new URLSearchParams()
-    data.append('idMovie', movieId)
-    data.append('idCinema', cinemaId)
-    data.append('idShowtime', showtimesId)
-    seat.map(item => data.append('seat', item))
-    try {
-      const response = await http(token).post('transaction', data)
-      this.props.history.push('/ticket', {
-        data: response.data.results
-      })
-    } catch(err) {
-      console.log(err.response.data.message)
-    }
+    await this.props.checkOut(movieId, cinemaId, showtimesId, seat, token)
+    this.props.history.push('/ticket')
+    // const data = new URLSearchParams()
+    // data.append('idMovie', movieId)
+    // data.append('idCinema', cinemaId)
+    // data.append('idShowtime', showtimesId)
+    // seat.map(item => data.append('seat', item))
+    // try {
+    //   const response = await http(token).post('transaction', data)
+    //   this.props.history.push('/ticket', {
+    //     data: response.data.results
+    //   })
+    // } catch(err) {
+    //   console.log(err.response.data.message)
+    // }
   };
   render() {
     return (
@@ -244,4 +248,9 @@ class PaymentInfo extends Component {
   }
 }
 
-export default withRouter(PaymentInfo);
+const mapStateToProps = state =>({
+  order: state.order
+})
+const mapDispatchToProps = {checkOut}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PaymentInfo));

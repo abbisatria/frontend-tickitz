@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import Moment from 'react-moment'
+import moment from "moment"
 import { Container, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import ReactToPrint from 'react-to-print'
 
 import logo from '../../assets/images/logo-tickitz.png'
 import qrCode from '../../assets/images/qr_code.png'
@@ -15,7 +17,7 @@ class ProofOfPayment extends Component {
         <Container>
           <div className="card-proof-of-payment">
             <h2 className="d-none d-md-block">Proof of Payment</h2>
-            <div className="card-ticket">
+            <div className="card-ticket" ref={el => (this.componentRef = el)}>
               <div className="header-card d-none d-md-block">
                 <Row>
                   <Col md={8}>
@@ -54,7 +56,7 @@ class ProofOfPayment extends Component {
                       </Col>
                       <Col md={4} xs={5} className="mt-3 order-4 order-lg-3">
                         <p>Time</p>
-                        <h6>{this.props.ticket.showtime}</h6>
+                        <h6>{moment(this.props.ticket.showtime, "HH:mm:ss").format("hh:mm A")}</h6>
                       </Col>
                       <Col md={4} xs={5} className="mt-lg-3 order-2 order-lg-4">
                         <p>Category</p>
@@ -95,9 +97,14 @@ class ProofOfPayment extends Component {
               </Row>
             </div>
             <div className="download-or-print mt-5">
-              <Link to="/" className="link-download-print">
-                <i className="fa fa-download"></i>Download
-              </Link>
+            <ReactToPrint
+              trigger={() => {
+                return  <button className="link-download-print">
+                          <i className="fa fa-download"></i>Download
+                        </button>;
+              }}
+              content={() => this.componentRef}
+            />
               <Link to="/" className="link-download-print">
                 <i className="fa fa-print"></i>Print
               </Link>

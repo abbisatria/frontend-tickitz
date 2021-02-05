@@ -8,7 +8,6 @@ import load from '../../assets/icon/loading.svg'
 
 import "./ShowtimesTickets.scss";
 
-// import cinemaList from "../../dummy/cinemaList";
 import http from '../../helpers/http'
 
 class ShowtimesTickets extends Component {

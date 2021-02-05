@@ -6,15 +6,12 @@ import ProofOfPayment from "../../parts/ProofOfPayment/ProofOfPayment";
 import {connect} from 'react-redux'
 
 class Ticket extends Component {
-  state = {
-    ticket: this.props.location.state.data[0]
-  };
   render() {
     return (
       <>
         <Header user={this.props.auth.user} />
         <ProofOfPayment
-          ticket={this.state.ticket}
+          ticket={this.props.order.resultsCheckOut[0]}
         />
         <Footer />
       </>
@@ -23,7 +20,8 @@ class Ticket extends Component {
 }
 
 const mapStateToProps = state =>({
-  auth: state.auth
+  auth: state.auth,
+  order: state.order
 })
 
 export default connect(mapStateToProps)(Ticket);

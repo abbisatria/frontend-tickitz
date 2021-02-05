@@ -165,3 +165,93 @@
     }
   }
 }
+
+@media print {
+  .card-print {
+    border: 1px solid $lineColor;
+    border-radius: 16px;
+    margin-top: 48px;
+
+    .header-card {
+      border-radius: 16px 16px 0 0;
+      background: $primaryColor;
+
+      img {
+        width: 116px;
+      }
+
+      .admit-one {
+        border-right: 1px dashed $lineColor;
+        padding: 14px 56px;
+        position: relative;
+
+        &:before {
+          content: "";
+          z-index: 99;
+          position: absolute;
+          top: -22px;
+          right: -22px;
+          display: block;
+          width: 43px;
+          height: 43px;
+          border-radius: 50%;
+          border-bottom: 1px solid $lineColor;
+          background-color: white;
+        }
+
+        h4 {
+          @include text-medium;
+          letter-spacing: 0.75px;
+          color: #ffffff;
+          text-align: end;
+        }
+      }
+    }
+
+    .detail-ticket {
+      border-right: 1px dashed $lineColor;
+      padding: 32px 56px;
+      position: relative;
+
+      &:before {
+        content: "";
+        z-index: 99;
+        position: absolute;
+        bottom: -22px;
+        right: -22px;
+        display: block;
+        width: 43px;
+        height: 43px;
+        border-radius: 50%;
+        border-top: 1px solid $lineColor;
+        background-color: white;
+      }
+
+      p {
+        font-size: 12px;
+        color: #aaaaaa;
+        letter-spacing: 0.75px;
+      }
+
+      h6 {
+        @include text-small;
+        letter-spacing: 0.75px;
+        color: $titleColor;
+      }
+
+      h5 {
+        @include link-small;
+        color: $titleColor;
+      }
+
+      .card-total {
+        border: 1px solid $lineColor;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        margin-top: 40px;
+      }
+    }
+  }
+}

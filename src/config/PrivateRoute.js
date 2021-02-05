@@ -8,7 +8,7 @@ class PrivateRoute extends Component {
     return (
       <Route {...this.props} render={(props) => {
           if (this.props.auth.token) {
-            if(this.props.location.state === undefined) {
+            if(this.props.order.results === null) {
               return <Redirect to='/' />
             } 
             return <Component {...props} />

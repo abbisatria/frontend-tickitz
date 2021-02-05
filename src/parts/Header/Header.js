@@ -9,15 +9,18 @@ import {
 } from "react-bootstrap";
 import { Link, NavLink, withRouter } from "react-router-dom";
 import {logout} from '../../redux/actions/auth'
+import {clearOrder} from '../../redux/actions/order'
 import {connect} from 'react-redux'
 
 import "./Header.scss";
 
 import logo from "../../assets/images/tickitz-logo.png";
+import avatar from '../../assets/icon/default-avatar.png'
 
 class Header extends Component {
   signOut = (logout) => {
     logout()
+    this.props.clearOrder()
     this.props.history.push(`/sign-in`);
   };
 
@@ -70,7 +73,7 @@ class Header extends Component {
                   <NavDropdown
                     id="basic-nav-dropdown"
                     className="nav-link ml-4"
-                    title={<img src={`http://localhost:5000/uploads/users/${this.props.user.image}`} alt="profile" className="photo-profile" />}
+                    title={<img src={this.props.user.image ? `http://localhost:5000/uploads/users/${this.props.user.image}` : avatar} alt="profile" className="photo-profile" />}
                   >
                     <NavDropdown.Item>
                       <Button
@@ -157,9 +160,10 @@ class Header extends Component {
 }
 
 const mapStateToProps = state =>({
-  auth: state.auth
+  auth: state.auth,
+  order: state.order
 })
 
-const mapDispatchToProps = {logout}
+const mapDispatchToProps = {logout, clearOrder}
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));

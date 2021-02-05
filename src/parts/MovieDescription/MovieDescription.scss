@@ -12,14 +12,10 @@
     @include display-small-bold;
   }
 
-  .card-movie-description {
-    background-color: white;
-    padding: 40px 30px;
+  .card-panel {
+    background: white;
     border-radius: 8px;
-    margin-top: 24px;
-    @media screen and (max-width: 992px) {
-      margin-bottom: 40px;
-    }
+    padding: 40px 30px;
 
     .card-movies {
       background: white;
@@ -33,24 +29,31 @@
         margin-left: auto;
       }
 
-      img {
-        object-fit: cover;
-        width: 150px;
-        height: 250px;
-        border-radius: 4px;
+      .upload-file {
+        cursor: pointer;
+        input[type="file"] {
+          display: none;
+          &:checked + .image-file {
+            background: #fcfdfe;
+            box-shadow: 0px 8px 16px rgba(17, 17, 17, 0.08);
+          }
+        }
+        .image-file {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 8px;
+          img {
+            object-fit: cover;
+            width: 150px;
+            height: 250px;
+            border-radius: 4px;
+          }
+        }
       }
     }
-  }
-
-  .card-premiere-location {
-    background-color: white;
-    padding: 22px 32px;
-    border-radius: 8px;
-    margin-top: 24px;
-    margin-bottom: 40px;
 
     label {
-      margin-top: 30px;
       input[type="radio"] {
         display: none;
         &:checked + .cinema {
@@ -68,16 +71,6 @@
           width: 60px;
         }
       }
-    }
-  }
-
-  .card-showtimes {
-    background-color: white;
-    padding: 32px 40px 9px 32px;
-    border-radius: 8px;
-
-    p {
-      font-size: 14px;
     }
   }
 

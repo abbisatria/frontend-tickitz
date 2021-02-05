@@ -10,6 +10,7 @@ import {connect} from 'react-redux'
 import {updateProfile} from '../../redux/actions/auth'
 
 import star from '../../assets/icon/eva_star-fill.png'
+import avatar from '../../assets/icon/default-avatar.png'
 
 import './ProfileInfo.scss'
 
@@ -22,7 +23,8 @@ class ProfileInfo extends Component {
     password: '',
     confirmPassword: '',
     message: '',
-    file: null
+    file: null,
+    imgPreview: null
   }
   changeText = (event) => {
     this.setState({ [event.target.name]: event.target.value });
@@ -61,7 +63,7 @@ class ProfileInfo extends Component {
         // })
         const response = await http(this.props.token).patch(`users/updateProfile/${this.props.user.id}`, data)
         this.setState({ message: response.data.message }, () => {
-          console.log(response.data.results)
+          // console.log(response.data.results)
           this.props.updateProfile(response.data.results)
         })
       } catch(err) {
@@ -83,7 +85,12 @@ class ProfileInfo extends Component {
                 </div>
                 {Object.keys(this.props.user).length > 0 && (
                   <div className="profile-info">
-                    <img src={`http://localhost:5000/uploads/users/${this.props.user.image}`} alt="profile" />
+                     <label className="upload-profile">
+                        <input onChange={(e)=>this.setState({file: e.target.files[0], imgPreview: URL.createObjectURL(e.target.files[0])})} type="file" />
+                        <div className="image-profile">
+                          <img src={this.state.imgPreview !== null ? this.state.imgPreview : this.props.user.image ? `http://localhost:5000/uploads/users/${this.props.user.image}` : avatar} alt="profile" />
+                        </div>
+                      </label>
                     <h3>{this.props.user.firstname} {this.props.user.lastname}</h3>
                     <p>Moviegoers</p>
                   </div>
@@ -123,7 +130,6 @@ class ProfileInfo extends Component {
                       <h3>Detail Information</h3>
                       <hr />
                       <Form onSubmit={this.submitData}>
-                      <Form.Control onChange={(e)=>this.setState({file: e.target.files[0]})} type="file" />
                         <Row className="my-4">
                           <Col md={6} xs={12}>
                             <FormInputText

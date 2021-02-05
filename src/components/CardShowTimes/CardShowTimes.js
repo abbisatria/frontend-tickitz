@@ -16,13 +16,9 @@ class CardShowTimes extends Component {
   changeTime = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
-  bookNow = (movieId, showtimesId) => {
-    this.props.order(showtimesId)
-    this.props.history.push(`/order/${movieId}`, {
-      data: {
-        showtimesId: showtimesId
-      },
-    });
+  bookNow = async (showtimesId) => {
+    await this.props.order(showtimesId)
+    this.props.history.push(`/order`);
   };
   render() {
     return (
@@ -67,7 +63,6 @@ class CardShowTimes extends Component {
               <Button
                 onClick={() =>
                   this.bookNow(
-                    this.props.movieId,
                     this.state.time
                   )
                 }

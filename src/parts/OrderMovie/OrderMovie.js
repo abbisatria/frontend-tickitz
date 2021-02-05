@@ -5,6 +5,8 @@ import { Link, withRouter } from "react-router-dom";
 import Button from "../../components/Button/Button";
 
 import Seat from "../../components/Seat/Seat";
+import {connect} from 'react-redux'
+import {seatChecked} from '../../redux/actions/order'
 
 import "./OrderMovie.scss";
 
@@ -25,12 +27,9 @@ class OrderMovie extends Component {
       seat: newArray,
     });
   };
-  checkOut = (movieId) => {
-    this.props.history.push(`/payment/${movieId}`, {
-      data: {
-        seat: this.state.seat,
-      },
-    });
+  checkOut = () => {
+    this.props.seatChecked(this.state.seat)
+    this.props.history.push('/payment');
   };
   render() {
     return (
@@ -111,9 +110,7 @@ class OrderMovie extends Component {
                     <Button
                       className="btn-primary py-3 w-100"
                       onClick={() =>
-                        this.checkOut(
-                          this.props.movieId
-                        )
+                        this.checkOut()
                       }
                     >
                       Checkout now
@@ -173,4 +170,9 @@ class OrderMovie extends Component {
   }
 }
 
-export default withRouter(OrderMovie);
+const mapStateToProps = state =>({
+  order: state.order
+})
+const mapDispatchToProps = {seatChecked}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(OrderMovie));

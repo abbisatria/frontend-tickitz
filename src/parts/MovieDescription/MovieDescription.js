@@ -1,22 +1,22 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Form } from 'react-bootstrap'
+import { Container, Row, Col, Nav } from 'react-bootstrap'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  NavLink
+  NavLink,
+  Link
 } from 'react-router-dom'
-import upComing1 from '../../assets/images/up-coming1.png'
-import FormInputText from '../../components/Form/FormInputText/FormInputText'
-import FormInputLocation from '../../components/Form/FormInputLocation/FormInputLocation'
-import FormInputTime from '../../components/Form/FormInputTime/FormInputTime'
-import Button from '../../components/Button/Button'
+import ManageMovie from '../../components/ManageMovie/ManageMovie'
+import ManageCinema from '../../components/ManageCinema/ManageCinema'
+import ManageGenre from '../../components/ManageGenre/ManageGenre'
+import ManageShowtime from '../../components/ManageShowtime/ManageShowtime'
+import CreateMovie from '../../components/ManageMovie/CreateMovie/CreateMovie'
+import CreateCinema from '../../components/ManageCinema/CreateCinema/CreateCinema'
+import CreateGenre from '../../components/ManageGenre/CreateGenre/CreateGenre'
+import CreateShowtime from '../../components/ManageShowtime/CreateShowtime/CreateShowtime'
 import BasedLocation from '../BasedLocation/BasedLocation'
 import BasedMovie from '../BasedMovie/BasedMovie'
-
-import ebvId from '../../assets/images/ebv_id.png'
-import cineOne21 from '../../assets/images/CineOne21.png'
-import hiflix from '../../assets/images/hiflix.png'
 
 import './MovieDescription.scss'
 
@@ -25,199 +25,58 @@ export default class MovieDescription extends Component {
     return (
       <div className="admin">
         <Container>
-          <Row>
-            <Col md={8}>
-              <h1>Movie Description</h1>
-              <div className="card-movie-description">
-                <Row>
-                  <Col md={4}>
-                    <div className="card-movies d-flex align-items-center justify-content-center">
-                      <img src={upComing1} alt="movie" />
-                    </div>
-                  </Col>
-                  <Col md={8}>
-                    <Row>
-                      <Col md={12}>
-                        <FormInputText
-                          type="text"
-                          defaultValue="Spider-Man: Homecoming"
-                          placeholder="Write your title"
-                        >
-                          Movie Name
-                        </FormInputText>
-                      </Col>
-                      <Col md={12} className="my-3">
-                        <FormInputText
-                          type="text"
-                          defaultValue="Action, Adventure, Sci-Fi"
-                          placeholder="Write your category"
-                        >
-                          Category
-                        </FormInputText>
-                      </Col>
-                      <Col md={6}>
-                        <FormInputText type="date">Release date</FormInputText>
-                      </Col>
-                      <Col md={6}>
-                        <Form.Label>Duration (hour / minute)</Form.Label>
-                        <Form.Row>
-                          <Form.Group as={Col}>
-                            <Form.Control type="number" placeholder="0" />
-                          </Form.Group>
-
-                          <Form.Group as={Col}>
-                            <Form.Control type="number" placeholder="0" />
-                          </Form.Group>
-                        </Form.Row>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-                <Row className="mt-4">
-                  <Col md={4}>
-                    <FormInputText
-                      type="text"
-                      defaultValue="Jon Watts"
-                      placeholder="Write your Director"
-                    >
-                      Director
-                    </FormInputText>
-                  </Col>
-                  <Col md={8}>
-                    <FormInputText
-                      type="text"
-                      defaultValue="Tom Holland, Michael Keaton, Robert Dow.."
-                      placeholder="Write your Casts"
-                    >
-                      Casts
-                    </FormInputText>
-                  </Col>
-                  <Col md={12}>
-                    <Form.Group controlId="exampleForm.ControlTextarea1">
-                      <Form.Label>Sypnosis</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        rows={2}
-                        defaultValue="Thrilled by his experience with the Avengers, Peter returns home, where he
-lives with his Aunt May, | "
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </div>
-            </Col>
-            <Col md={4}>
-              <h1>Premiere Location</h1>
-              <div className="card-premiere-location">
-                <Row>
-                  <Col md={12}>
-                    <FormInputLocation />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={4} xs={4}>
-                    <label>
-                      <input type="radio" name="cinema" />
-                      <div className="cinema">
-                        <img src={ebvId} alt="ebv id" />
-                      </div>
-                    </label>
-                  </Col>
-                  <Col md={4} xs={4}>
-                    <label>
-                      <input type="radio" name="cinema" />
-                      <div className="cinema">
-                        <img src={cineOne21} alt="cineOne21" />
-                      </div>
-                    </label>
-                  </Col>
-                  <Col md={4} xs={4}>
-                    <label>
-                      <input type="radio" name="cinema" />
-                      <div className="cinema">
-                        <img src={hiflix} alt="hiflix" />
-                      </div>
-                    </label>
-                  </Col>
-                  <Col md={4} xs={4}>
-                    <label>
-                      <input type="radio" name="cinema" />
-                      <div className="cinema">
-                        <img src={ebvId} alt="ebv id" />
-                      </div>
-                    </label>
-                  </Col>
-                  <Col md={4} xs={4}>
-                    <label>
-                      <input type="radio" name="cinema" />
-                      <div className="cinema">
-                        <img src={cineOne21} alt="cineOne21" />
-                      </div>
-                    </label>
-                  </Col>
-                  <Col md={4} xs={4}>
-                    <label>
-                      <input type="radio" name="cinema" />
-                      <div className="cinema">
-                        <img src={hiflix} alt="hiflix" />
-                      </div>
-                    </label>
-                  </Col>
-                  <Col md={4} xs={4}>
-                    <label>
-                      <input type="radio" name="cinema" />
-                      <div className="cinema">
-                        <img src={ebvId} alt="ebv id" />
-                      </div>
-                    </label>
-                  </Col>
-                  <Col md={4} xs={4}>
-                    <label>
-                      <input type="radio" name="cinema" />
-                      <div className="cinema">
-                        <img src={cineOne21} alt="cineOne21" />
-                      </div>
-                    </label>
-                  </Col>
-                  <Col md={4} xs={4}>
-                    <label>
-                      <input type="radio" name="cinema" />
-                      <div className="cinema">
-                        <img src={hiflix} alt="hiflix" />
-                      </div>
-                    </label>
-                  </Col>
-                </Row>
-              </div>
-              <h1>Showtimes</h1>
-              <div className="card-showtimes">
-                <Row>
-                  <Col md={12}>
-                    <FormInputTime />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={3} xs={3}>
-                    <Button className="outline-primary px-4">
-                      <i className="fa fa-plus" aria-hidden="true"></i>
-                    </Button>
-                  </Col>
-                  <Col md={3} xs={3}>
-                    <p>08:30am</p>
-                  </Col>
-                  <Col md={3} xs={3}>
-                    <p>08:30am</p>
-                  </Col>
-                  <Col md={3} xs={3}>
-                    <p>08:30am</p>
-                  </Col>
-                  <Col md={3} xs={3}>
-                    <p>08:30am</p>
-                  </Col>
-                </Row>
-              </div>
-            </Col>
-          </Row>
+          <div className="card-panel">
+            <Row>
+              <Col md={3}>
+                <Nav className="flex-column">
+                  <Nav.Item className="d-flex flex-row align-items-center">
+                    <Link className="nav-link" to="/admin/manage_movie">Manage Movie</Link>
+                  </Nav.Item>
+                  <Nav.Item className="d-flex flex-row align-items-center">
+                    <Link className="nav-link" to="/admin/manage_genre">Manage Genre</Link>
+                  </Nav.Item>
+                  <Nav.Item className="d-flex flex-row align-items-center">
+                    <Link className="nav-link" to="/admin/manage_cinema">Manage Cinema</Link>
+                  </Nav.Item>
+                  <Nav.Item className="d-flex flex-row align-items-center">
+                    <Link className="nav-link" to="/admin/manage_showtime">Manage Showtime</Link>
+                  </Nav.Item>
+                </Nav>
+              </Col>
+              <Col md={9}>
+                <Switch>
+                  <Route exact path="/admin">
+                    <h1>Welcome to admin panel</h1>
+                    <p>Here you can manage data for your system!</p>
+                  </Route>
+                  <Route path="/admin/manage_movie" exact>
+                    <ManageMovie/>
+                  </Route>
+                  <Route path="/admin/manage_movie/create">
+                    <CreateMovie/>
+                  </Route>
+                  <Route path="/admin/manage_cinema" exact>
+                    <ManageCinema/>
+                  </Route>
+                  <Route path="/admin/manage_cinema/create">
+                    <CreateCinema/>
+                  </Route>
+                  <Route path="/admin/manage_genre" exact>
+                    <ManageGenre/>
+                  </Route>
+                  <Route path="/admin/manage_genre/create">
+                    <CreateGenre/>
+                  </Route>
+                  <Route path="/admin/manage_showtime" exact>
+                    <ManageShowtime/>
+                  </Route>
+                  <Route path="/admin/manage_showtime/create">
+                    <CreateShowtime/>
+                  </Route>
+                </Switch>
+              </Col>
+            </Row>
+          </div>
           <Row className="mt-5">
             <Router>
               <Col md={12}>
