@@ -30,16 +30,16 @@ export default class MovieDescription extends Component {
               <Col md={3}>
                 <Nav className="flex-column">
                   <Nav.Item className="d-flex flex-row align-items-center">
-                    <i class="fa fa-database" aria-hidden="true"/><Link className="nav-link" to="/admin/manage_movie">Manage Movie</Link>
+                    <i className="fa fa-database" aria-hidden="true"/><Link className="nav-link" to="/admin/manage_movie">Manage Movie</Link>
                   </Nav.Item>
                   <Nav.Item className="d-flex flex-row align-items-center">
-                    <i class="fa fa-database" aria-hidden="true"/><Link className="nav-link" to="/admin/manage_genre">Manage Genre</Link>
+                    <i className="fa fa-database" aria-hidden="true"/><Link className="nav-link" to="/admin/manage_genre">Manage Genre</Link>
                   </Nav.Item>
                   <Nav.Item className="d-flex flex-row align-items-center">
-                    <i class="fa fa-database" aria-hidden="true"/><Link className="nav-link" to="/admin/manage_cinema">Manage Cinema</Link>
+                    <i className="fa fa-database" aria-hidden="true"/><Link className="nav-link" to="/admin/manage_cinema">Manage Cinema</Link>
                   </Nav.Item>
                   <Nav.Item className="d-flex flex-row align-items-center">
-                    <i class="fa fa-database" aria-hidden="true"/><Link className="nav-link" to="/admin/manage_showtime">Manage Showtime</Link>
+                    <i className="fa fa-database" aria-hidden="true"/><Link className="nav-link" to="/admin/manage_showtime">Manage Showtime</Link>
                   </Nav.Item>
                 </Nav>
               </Col>

@@ -14,6 +14,12 @@ const movieReducer = (state = initialState, action) => {
         pageInfo: action.pageInfo
       }
     }
+    case 'LIST_ALL_MOVIE': {
+      return {
+        ...state,
+        results: action.payload
+      }
+    }
     case 'CREATE_MOVIE': {
       return {
         ...state,

@@ -4,11 +4,13 @@ import moment from "moment"
 import { Container, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ReactToPrint from 'react-to-print'
+import QRCode from 'react-qr-code'
 
 import logo from '../../assets/images/logo-tickitz.png'
-import qrCode from '../../assets/images/qr_code.png'
 
 import './ProofOfPayment.scss'
+
+const {REACT_APP_URL: URL} = process.env
 
 class ProofOfPayment extends Component {
   render () {
@@ -92,7 +94,9 @@ class ProofOfPayment extends Component {
                   md={4}
                   className="order-1 order-lg-2 d-flex justify-content-center align-items-center"
                 >
-                  <img src={qrCode} alt="qrCode" />
+                  <div className="my-4">
+                    <QRCode value={`${URL}ticket/${this.props.ticket.id}`} size={150} />
+                  </div>
                 </Col>
               </Row>
             </div>

@@ -19,6 +19,24 @@ export const listMovie = (page) => {
   }
 }
 
+export const listAllMovie = () => {
+  return async dispatch => {
+    try {
+      const response = await http().get('movies/listAllMovie')
+      dispatch({
+        type: 'LIST_ALL_MOVIE',
+        payload: response.data.results
+      })
+    } catch(err) {
+      const { message } = err.response.data
+      dispatch({
+        type: 'SET_MESSAGE_MOVIE',
+        payload: message
+      })
+    }
+  }
+}
+
 export const createMovie = (token, name, genre, file, releaseDate, category, duration, directed, casts, description) => {
   return async dispatch => {
     try {

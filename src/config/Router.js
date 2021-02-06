@@ -39,7 +39,7 @@ class Router extends Component {
             <PrivateRouteProfile path="/profile" privateComponent={Profile} />
             <PrivateRoute path='/order' privateComponent={Order} />
             <PrivateRoute path='/payment' privateComponent={Payment} />
-            <PrivateRoute path='/ticket' privateComponent={Ticket} />
+            <PrivateRoute path='/ticket/:id' privateComponent={Ticket} />
             <Route component={Not_Found} />
           </Switch>
         </BrowserRouter>

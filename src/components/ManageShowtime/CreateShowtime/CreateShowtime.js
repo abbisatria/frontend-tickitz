@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import { Row, Col, Form } from 'react-bootstrap'
+import { Row, Col, Form, Alert } from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {cinemaLocation} from '../../../redux/actions/showtime'
+import {createShowtime} from '../../../redux/actions/showtime'
+import {withRouter} from 'react-router-dom'
 
 import FormInputLocation from '../../Form/FormInputLocation/FormInputLocation'
 import FormInputTime from '../../Form/FormInputTime/FormInputTime'
@@ -16,21 +18,15 @@ class CreateShowtime extends Component {
     selectTime: [],
     selectCinema: [],
     cinema: [],
-    location: ''
+    location: '',
+    date: '',
+    movie: null,
+    message: ''
   }
 
-  options = [
-    {label: 'Avengers', value: 1 },
-    {label: 'Start Up', value: 2 },
-    {label: 'The Lion King', value: 3 },
-    {label: 'Alladin', value: 4 },
-    {label: 'Spiderman', value: 5 },
-    {label: 'aBC', value: 6 },
-    {label: 'Start', value: 7 },
-    {label: 'King', value: 8 },
-    {label: 'Adin', value: 9 },
-    {label: 'Spiman', value: 10 },
-  ]
+  options = this.props.movie.results.map(item => {
+    return {label: item.name, value: item.id}
+  })
 
   selectedTime = (id) => {
     const { selectTime } = this.state
@@ -54,30 +50,51 @@ class CreateShowtime extends Component {
     });
   };
 
+  onChangeInput = (value) => {
+    this.setState({
+      movie: value
+    })
+  }
+
   changeText = (event) => {
     this.setState({ [event.target.name]: event.target.value }, async () => {
       if(this.state.location !== '') {
         const { location } = this.state
         await this.props.cinemaLocation(location)
+        this.setState({message: 'Berhasil'})
       }
     });
+  };
+
+  submitData = async (event) => {
+    event.preventDefault();
+    const { movie, date, selectCinema, selectTime  } = this.state
+    await this.props.createShowtime(this.props.auth.token, movie.value, date, selectCinema, selectTime)
+    if(this.props.showtime.success === true) {
+      this.props.history.push('/admin/manage_showtime')
+    } else {
+      this.setState({ message: this.props.showtime.errorMsg })
+    }
   };
 
   render() {
     return (
       <>
-      <Form>
+      <Form onSubmit={this.submitData}>
       <h1>Create Showtime</h1>
+      {(this.state.message !== '' && this.state.message !== 'Berhasil') && <Alert variant="warning">{this.state.message}</Alert>}
         <Row>
           <Col md={6}>
             <Form.Group controlId="exampleForm.ControlTextarea1">
               <Form.Label>Movie</Form.Label>
-              {Object.keys(this.options).length > 0 && <Select options={this.options} placeholder="Select your movie" />}
+              {Object.keys(this.options).length > 0 && <Select name="movie" options={this.options} onChange={this.onChangeInput} placeholder="Select your movie" />}
             </Form.Group>
           </Col>
           <Col md={6}>
             <FormInputText
                 type="date"
+                name="date"
+                onChange={(event) => this.changeText(event)}
               >
                 Showtime Date
             </FormInputText>
@@ -89,7 +106,7 @@ class CreateShowtime extends Component {
             <Row>
               <Col md={12}>
                 <Row>
-                  {this.state.location !== '' && this.props.showtime.results.map((item, index) => {
+                  {(this.state.message !== '' && this.props.showtime.errorMsg === '') && this.props.showtime.results.map((item, index) => {
                     return (
                       <Col md={4} xs={4} key={String(index)}>
                         <label>
@@ -111,14 +128,14 @@ class CreateShowtime extends Component {
             <Col md={12}>
               <Row>
                 <Col md={3} xs={3}>
-                  <Button className="outline-primary px-4" onClick={() => this.selectedTime(this.state.time)}>
+                  <div className="outline-primary d-flex justify-content-center py-1" onClick={() => this.selectedTime(this.state.time)}>
                     <i className="fa fa-plus" aria-hidden="true"></i>
-                  </Button>
+                  </div>
                 </Col>
                 {this.state.selectTime && this.state.selectTime.map((item, index) => {
                   return(
                     <Col md={3} xs={3} key={String(index)}>
-                      <p>{moment(item, "HH:mm:ss").format("hh:mm A")}</p>
+                      <p>{moment(item, "HH:mm:ss").format("hh:mmA")}</p>
                     </Col>
                   )
                 })}
@@ -127,7 +144,7 @@ class CreateShowtime extends Component {
           </Row>
           </Col>
         </Row>
-        <Button className="btn btn-primary">Save</Button>
+        <Button className="btn btn-primary" type="submit">Save</Button>
       </Form>
       </>
     )
@@ -135,9 +152,11 @@ class CreateShowtime extends Component {
 }
 
 const mapStateToProps = state =>({
-  showtime: state.showtime
+  auth : state.auth,
+  showtime: state.showtime,
+  movie: state.movie
 })
 
-const mapDispatchToProps = {cinemaLocation}
+const mapDispatchToProps = {cinemaLocation, createShowtime}
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateShowtime)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CreateShowtime))

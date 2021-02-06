@@ -7,9 +7,10 @@ class PrivateRouteAdmin extends Component {
     const Component = this.props.privateComponent
     return (
       <Route {...this.props} render={(props) => {
-          if (this.props.auth.user.role === 1) {
-            return <Component {...props} />
-          } else if (this.props.auth.token) {
+          if (this.props.auth.token) {
+            if (this.props.auth.user.role === 1) {
+              return <Component {...props} />
+            }
             return <Redirect to='/' />
           } else {
             return <Redirect to={{ pathname: '/sign-in', state: { from: props.location } }} />

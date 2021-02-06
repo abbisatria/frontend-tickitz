@@ -101,7 +101,7 @@ class ManageMovie extends Component {
                 </td>
               </tr>
             )
-          }) : <p>Loading...</p>}
+          }) : <tr><td>Loading...</td></tr>}
           </tbody>
         </Table>
         <div className="d-flex justify-content-center">

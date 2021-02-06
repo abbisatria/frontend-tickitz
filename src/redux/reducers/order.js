@@ -20,6 +20,12 @@ const orderReducer = (state = initialState, action) => {
         resultsCheckOut: action.payload
       }
     }
+    case 'DETAIL_TICKET': {
+      return {
+        ...state,
+        resultsCheckOut: action.payload
+      }
+    }
     case 'SEAT_SOLD': {
       return {
         ...state,

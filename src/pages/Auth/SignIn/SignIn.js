@@ -32,17 +32,13 @@ class SignIn extends Component {
         if(this.props.location.state === undefined) {
           this.props.history.push('/admin')
         } else {
-          this.props.history.push((this.props.location.state.from && this.props.location.state.from.pathname), {
-              data: this.props.location.state.from.state.data 
-            })
+          this.props.history.push((this.props.location.state.from && this.props.location.state.from.pathname))
         }
       } else {
         if(this.props.location.state === undefined || this.props.location.state.from.state === undefined) {
           this.props.history.push('/')
         } else {
-          this.props.history.push((this.props.location.state.from && this.props.location.state.from.pathname), {
-              data: this.props.location.state.from.state.data 
-            })
+          this.props.history.push((this.props.location.state.from && this.props.location.state.from.pathname))
         }
       }
     }

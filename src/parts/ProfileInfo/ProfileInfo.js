@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Tabs, Tab, Dropdown, Form, Alert } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Container, Row, Col, Tabs, Tab, Form, Alert } from 'react-bootstrap'
+import { Link, withRouter } from 'react-router-dom'
 import FormInputText from '../../components/Form/FormInputText/FormInputText'
 import FormInputNumber from '../../components/Form/FormInputNumber/FormInputNumber'
 import FormInputPassword from '../../components/Form/FormInputPassword/FormInputPassword'
@@ -8,6 +8,7 @@ import Button from '../../components/Button/Button'
 import http from '../../helpers/http'
 import {connect} from 'react-redux'
 import {updateProfile} from '../../redux/actions/auth'
+import {detailTicket} from '../../redux/actions/order'
 
 import star from '../../assets/icon/eva_star-fill.png'
 import avatar from '../../assets/icon/default-avatar.png'
@@ -72,6 +73,10 @@ class ProfileInfo extends Component {
       }
     }
   };
+  ticketDetail = async (id) => {
+    await this.props.detailTicket(this.props.token, id)
+    this.props.history.push(`/ticket/${id}`)
+  }
   render () {
     return (
       <div className="profile">
@@ -203,7 +208,7 @@ class ProfileInfo extends Component {
                   <Tab eventKey="profile" title="Order History">
                     <div className="tab-content">
                       {Object.keys(this.props.order).length > 0 && this.props.order.map(item => {
-                        return <div className="order-history">
+                        return <div className="order-history" key={String(item.id)}>
                         <Row>
                           <Col md={8} xs={12} className="order-2 order-lg-1">
                             <p>{item.createdAt}</p>
@@ -218,20 +223,11 @@ class ProfileInfo extends Component {
                           <Link to="/" className="ticket active py-2">
                             Ticket in active
                           </Link>
-                          <Dropdown>
-                            <Dropdown.Toggle variant id="dropdown-basic">
-                              Show Details
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu>
-                              <Dropdown.Item href="#/action-1">
-                                Action
-                              </Dropdown.Item>
-                              <Dropdown.Item href="#/action-2">
-                                Another action
-                              </Dropdown.Item>
-                            </Dropdown.Menu>
-                          </Dropdown>
+                          <button onClick={() =>
+                              this.ticketDetail(item.id)
+                            }>
+                            Show Details
+                          </button>
                         </div>
                       </div>
                       })}
@@ -250,6 +246,6 @@ class ProfileInfo extends Component {
 const mapStateToProps = state =>({
   auth: state.auth
 })
-const mapDispatchToProps = {updateProfile}
+const mapDispatchToProps = {updateProfile, detailTicket}
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProfileInfo))

@@ -7,7 +7,7 @@ export const createShowtime = (token, idMovie, showtimeDate, idCinema, showtime)
       data.append('idMovie', idMovie)
       data.append('showtimeDate', showtimeDate)
       idCinema.map(item => data.append('idCinema', item))
-      showtime.map(item => data.append('showtime', showtime))
+      showtime.map(item => data.append('showtime', `${item}:00`))
       const response = await http(token).post('showtimes', data)
       dispatch({
         type: 'CREATE_SHOWTIME',

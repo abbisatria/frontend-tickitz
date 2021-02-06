@@ -23,7 +23,7 @@ import ovo from "../../assets/icon/ic_ovo.png";
 class PaymentInfo extends Component {
   payOrder = async (movieId, cinemaId, showtimesId, seat, token) => {
     await this.props.checkOut(movieId, cinemaId, showtimesId, seat, token)
-    this.props.history.push('/ticket')
+    this.props.history.push(`/ticket/${this.props.order.resultsCheckOut[0].id}`)
     // const data = new URLSearchParams()
     // data.append('idMovie', movieId)
     // data.append('idCinema', cinemaId)
