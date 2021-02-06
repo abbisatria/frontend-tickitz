@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import { Table } from 'react-bootstrap'
+import { Table, Alert } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Button from '../Button/Button'
 import {connect} from 'react-redux'
 import {listGenre} from '../../redux/actions/genre'
+import {deleteGenre} from '../../redux/actions/genre'
 
 class ManageGenre extends Component {
   state = {
-    page: 1
+    page: 1,
+    message: ''
   };
 
   async componentDidMount(){
@@ -40,6 +42,16 @@ class ManageGenre extends Component {
     }
   }
 
+  delete = async (token, id) => {
+    await this.props.deleteGenre(token, id)
+    if(this.props.genre.success === true) {
+      await this.props.listGenre()
+      this.setState({ message: 'Delete Success' })
+    } else {
+      this.setState({ message: this.props.genre.errorMsg })
+    }
+  }
+
   render() {
     return (
       <>
@@ -49,6 +61,7 @@ class ManageGenre extends Component {
             Create Genre
           </Link>
         </div>
+        {this.state.message !== '' && <Alert variant="warning">{this.state.message}</Alert>}
         <Table striped bordered hover responsive>
           <thead>
             <tr>
@@ -65,7 +78,12 @@ class ManageGenre extends Component {
                 <td>{value.name}</td>
                 <td>
                   <Link to="/admin/manage_cinema/edit" className="btn btn-sm btn-warning mx-2">Edit</Link>
-                  <Link to="/admin/manage_cinema/delete" className="btn btn-sm btn-danger">Delete</Link>
+                  <Button onClick={() =>
+                      this.delete(
+                        this.props.auth.token, 
+                        value.id
+                      )
+                    } className="btn btn-sm btn-danger">Delete</Button>
                 </td>
               </tr>
             )
@@ -82,9 +100,10 @@ class ManageGenre extends Component {
 }
 
 const mapStateToProps = state =>({
+  auth: state.auth,
   genre: state.genre
 })
 
-const mapDispatchToProps = {listGenre}
+const mapDispatchToProps = {listGenre, deleteGenre}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageGenre)

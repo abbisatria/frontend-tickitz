@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
-import { Table } from 'react-bootstrap'
+import { Table, Alert } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Button from '../Button/Button'
 import {connect} from 'react-redux'
 import {listMovie} from '../../redux/actions/movie'
+import {listGenre} from '../../redux/actions/genre'
+import {deleteMovie} from '../../redux/actions/movie'
 import Moment from 'react-moment'
+import {withRouter} from 'react-router-dom'
 
 class ManageMovie extends Component {
   state = {
-    page: 1
+    page: 1,
+    message: ''
   };
 
   async componentDidMount(){
@@ -28,6 +32,16 @@ class ManageMovie extends Component {
     }
   }
 
+  delete = async (token, id) => {
+    await this.props.deleteMovie(token, id)
+    if(this.props.movie.success === true) {
+      await this.props.listMovie()
+      this.setState({ message: 'Delete Success' })
+    } else {
+      this.setState({ message: this.props.movie.errorMsg })
+    }
+  }
+
   next = async () => {
     if(this.state.page !== this.props.movie.pageInfo.totalPage) {
       await this.props.listMovie(this.state.page + 1)
@@ -40,15 +54,22 @@ class ManageMovie extends Component {
       })
     }
   }
+
+  linkCreateMovie = async () => {
+    await this.props.listGenre()
+    this.props.history.push('/admin/manage_movie/create')
+  }
+
   render() {
     return (
       <>
         <div className="d-flex justify-content-between mb-3">
           <h1>Movie List</h1>
-          <Link to="/admin/manage_movie/create" className="btn btn-primary">
+          <Button onClick={this.linkCreateMovie} className="btn btn-primary">
             Create Movie
-          </Link>
+          </Button>
         </div>
+        {this.state.message !== '' && <Alert variant="warning">{this.state.message}</Alert>}
         <Table striped bordered hover responsive>
           <thead>
             <tr>
@@ -71,7 +92,12 @@ class ManageMovie extends Component {
                 </td>
                 <td>
                   <Link to="/admin/manage_movie/edit" className="btn btn-sm btn-warning mx-2">Edit</Link>
-                  <Link to="/admin/manage_movie/delete" className="btn btn-sm btn-danger">Delete</Link>
+                  <Button onClick={() =>
+                      this.delete(
+                        this.props.auth.token, 
+                        value.id
+                      )
+                    } className="btn btn-sm btn-danger">Delete</Button>
                 </td>
               </tr>
             )
@@ -88,9 +114,11 @@ class ManageMovie extends Component {
 }
 
 const mapStateToProps = state =>({
-  movie: state.movie
+  auth: state.auth,
+  movie: state.movie,
+  genre: state.genre
 })
 
-const mapDispatchToProps = {listMovie}
+const mapDispatchToProps = {listMovie, deleteMovie, listGenre}
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageMovie)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ManageMovie))

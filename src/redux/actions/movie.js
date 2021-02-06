@@ -42,7 +42,25 @@ export const createMovie = (token, name, genre, file, releaseDate, category, dur
     } catch(err) {
       const { message } = err.response.data
       dispatch({
-        type: 'SET_MESSAGE_CREATE_MOVIE',
+        type: 'SET_MESSAGE_MOVIE',
+        payload: message
+      })
+    }
+  }
+}
+
+export const deleteMovie = (token, id) => {
+  return async dispatch => {
+    try {
+      const response = await http(token).delete(`movies/${id}`)
+      dispatch({
+        type: 'DELETE_MOVIE',
+        payload: response.data.success,
+      })
+    } catch(err) {
+      const { message } = err.response.data
+      dispatch({
+        type: 'SET_MESSAGE_MOVIE',
         payload: message
       })
     }

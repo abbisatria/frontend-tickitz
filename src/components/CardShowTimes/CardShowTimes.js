@@ -67,6 +67,7 @@ class CardShowTimes extends Component {
                   )
                 }
                 className="btn-primary book-now px-4 py-2"
+                disabled={this.state.time === '' ? true : false}
               >
                 Book Now
               </Button>

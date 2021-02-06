@@ -54,11 +54,12 @@
     }
 
     label {
-      input[type="radio"] {
+      input[type="checkbox"] {
         display: none;
         &:checked + .cinema {
           background: #fcfdfe;
           box-shadow: 0px 8px 16px rgba(17, 17, 17, 0.08);
+          border: 1px solid $primaryColor;
         }
       }
       .cinema {
@@ -71,6 +72,11 @@
           width: 60px;
         }
       }
+    }
+
+    .css-yk16xz-control {
+      padding: 4px 4px;
+      border: 1px solid $lineColor;
     }
   }
 

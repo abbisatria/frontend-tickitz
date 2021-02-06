@@ -2,6 +2,7 @@ const initialState = {
   results: null,
   pageInfo: null,
   success: null,
+  location: null,
   errorMsg: ''
 }
 
@@ -14,21 +15,25 @@ const cinemaReducer = (state = initialState, action) => {
         pageInfo: action.pageInfo
       }
     }
+    case 'LIST_LOCATION': {
+      return {
+        ...state,
+        location: action.payload
+      }
+    }
     case 'CREATE_CINEMA': {
       return {
         ...state,
         success: action.payload
       }
     }
-    case 'SET_MESSAGE_CINEMA': {
+    case 'DELETE_CINEMA': {
       return {
         ...state,
-        errorMsg: action.payload,
-        results: null,
-        pageInfo: null
+        success: action.payload
       }
     }
-    case 'SET_MESSAGE_CREATE_CINEMA': {
+    case 'SET_MESSAGE_CINEMA': {
       return {
         ...state,
         errorMsg: action.payload

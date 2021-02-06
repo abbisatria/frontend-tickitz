@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import { Table } from 'react-bootstrap'
+import { Table, Alert } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Button from '../Button/Button'
 import {connect} from 'react-redux'
 import {listCinema} from '../../redux/actions/cinema'
+import {deleteCinema} from '../../redux/actions/cinema'
 
 class ManageCinema extends Component {
   state = {
-    page: 1
+    page: 1,
+    message: ''
   };
 
   async componentDidMount(){
@@ -40,6 +42,16 @@ class ManageCinema extends Component {
     }
   }
 
+  delete = async (token, id) => {
+    await this.props.deleteCinema(token, id)
+    if(this.props.cinema.success === true) {
+      await this.props.listCinema()
+      this.setState({ message: 'Delete Success' })
+    } else {
+      this.setState({ message: this.props.cinema.errorMsg })
+    }
+  }
+
   render() {
     return (
       <>
@@ -49,6 +61,7 @@ class ManageCinema extends Component {
             Create Cinema
           </Link>
         </div>
+        {this.state.message !== '' && <Alert variant="warning">{this.state.message}</Alert>}
         <Table striped bordered hover responsive>
           <thead>
             <tr>
@@ -67,7 +80,12 @@ class ManageCinema extends Component {
                 <td>{value.location}</td>
                 <td>
                   <Link to="/admin/manage_cinema/edit" className="btn btn-sm btn-warning mx-2">Edit</Link>
-                  <Link to="/admin/manage_cinema/delete" className="btn btn-sm btn-danger">Delete</Link>
+                  <Button onClick={() =>
+                      this.delete(
+                        this.props.auth.token, 
+                        value.id
+                      )
+                    } className="btn btn-sm btn-danger">Delete</Button>
                 </td>
               </tr>
             )
@@ -84,9 +102,10 @@ class ManageCinema extends Component {
 }
 
 const mapStateToProps = state =>({
+  auth: state.auth,
   cinema: state.cinema
 })
 
-const mapDispatchToProps = {listCinema}
+const mapDispatchToProps = {listCinema, deleteCinema}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCinema)

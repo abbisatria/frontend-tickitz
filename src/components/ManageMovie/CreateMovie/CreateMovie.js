@@ -6,7 +6,6 @@ import Button from '../../Button/Button'
 import Select from 'react-select'
 import {connect} from 'react-redux'
 import {createMovie} from '../../../redux/actions/movie'
-import {listGenre} from '../../../redux/actions/genre'
 
 import uploadHere from '../../../assets/images/upload_here.jpeg'
 
@@ -24,9 +23,6 @@ class CreateMovie extends Component {
     imgPreview: null
   }
 
-  async componentDidMount(){
-    await this.props.listGenre()
-  }
   options = this.props.genre.results.map(item => {
     return {label: item.name, value: item.id}
   })
@@ -153,6 +149,6 @@ const mapStateToProps = state =>({
   movie: state.movie
 })
 
-const mapDispatchToProps = {listGenre, createMovie}
+const mapDispatchToProps = {createMovie}
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CreateMovie))

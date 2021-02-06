@@ -5,28 +5,22 @@ const initialState = {
   errorMsg: ''
 }
 
-const movieReducer = (state = initialState, action) => {
+const showtimeReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'LIST_MOVIE': {
+    case 'CREATE_SHOWTIME': {
+      return {
+        ...state,
+        success: action.payload
+      }
+    }
+    case 'LIST_CINEMA_LOCATION': {
       return {
         ...state,
         results: action.payload,
-        pageInfo: action.pageInfo
+        errorMsg: ''
       }
     }
-    case 'CREATE_MOVIE': {
-      return {
-        ...state,
-        success: action.payload
-      }
-    }
-    case 'DELETE_MOVIE': {
-      return {
-        ...state,
-        success: action.payload
-      }
-    }
-    case 'SET_MESSAGE_MOVIE': {
+    case 'SET_MESSAGE_SHOWTIME': {
       return {
         ...state,
         errorMsg: action.payload
@@ -40,4 +34,4 @@ const movieReducer = (state = initialState, action) => {
   }
 }
 
-export default movieReducer
+export default showtimeReducer

@@ -20,18 +20,16 @@ const genreReducer = (state = initialState, action) => {
         success: action.payload
       }
     }
-    case 'SET_MESSAGE_CREATE_GENRE': {
+    case 'DELETE_GENRE': {
       return {
         ...state,
-        errorMsg: action.payload
+        success: action.payload
       }
     }
     case 'SET_MESSAGE_GENRE': {
       return {
         ...state,
-        errorMsg: action.payload,
-        results: null,
-        pageInfo: null
+        errorMsg: action.payload
       }
     }
     default: {
