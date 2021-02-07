@@ -12,8 +12,11 @@ import ManageCinema from '../../components/ManageCinema/ManageCinema'
 import ManageGenre from '../../components/ManageGenre/ManageGenre'
 import ManageShowtime from '../../components/ManageShowtime/ManageShowtime'
 import CreateMovie from '../../components/ManageMovie/CreateMovie/CreateMovie'
+import EditMovie from '../../components/ManageMovie/EditMovie/EditMovie'
 import CreateCinema from '../../components/ManageCinema/CreateCinema/CreateCinema'
+import EditCinema from '../../components/ManageCinema/EditCinema/EditCinema'
 import CreateGenre from '../../components/ManageGenre/CreateGenre/CreateGenre'
+import EditGenre from '../../components/ManageGenre/EditGenre/EditGenre'
 import CreateShowtime from '../../components/ManageShowtime/CreateShowtime/CreateShowtime'
 import BasedLocation from '../BasedLocation/BasedLocation'
 import BasedMovie from '../BasedMovie/BasedMovie'
@@ -55,17 +58,26 @@ export default class MovieDescription extends Component {
                   <Route path="/admin/manage_movie/create">
                     <CreateMovie/>
                   </Route>
+                  <Route path="/admin/manage_movie/edit">
+                    <EditMovie/>
+                  </Route>
                   <Route path="/admin/manage_cinema" exact>
                     <ManageCinema/>
                   </Route>
                   <Route path="/admin/manage_cinema/create">
                     <CreateCinema/>
                   </Route>
+                  <Route path="/admin/manage_cinema/edit">
+                    <EditCinema/>
+                  </Route>
                   <Route path="/admin/manage_genre" exact>
                     <ManageGenre/>
                   </Route>
                   <Route path="/admin/manage_genre/create">
                     <CreateGenre/>
+                  </Route>
+                  <Route path="/admin/manage_genre/edit">
+                    <EditGenre/>
                   </Route>
                   <Route path="/admin/manage_showtime" exact>
                     <ManageShowtime/>

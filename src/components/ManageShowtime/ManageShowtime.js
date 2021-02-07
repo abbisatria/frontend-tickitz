@@ -24,7 +24,6 @@ class ManageShowtime extends Component {
             <tr>
               <th>No</th>
               <th>Movie</th>
-              <th>Cinema</th>
               <th>Showtime</th>
               <th>Action</th>
             </tr>
@@ -33,7 +32,6 @@ class ManageShowtime extends Component {
             <tr>
               <td>1</td>
               <td>Mark</td>
-              <td>Otto</td>
               <td>Otto</td>
               <td>
                 <Link to="/admin/manage_showtime/edit" className="btn btn-sm btn-warning mx-2">Edit</Link>

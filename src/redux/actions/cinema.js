@@ -19,6 +19,24 @@ export const listCinema = (page) => {
   }
 }
 
+export const detailCinema = (id) => {
+  return async dispatch => {
+    try {
+      const response = await http().get(`cinemas/${id}`)
+      dispatch({
+        type: 'DETAIL_CINEMA',
+        payload: response.data.results
+      })
+    } catch(err) {
+      const { message } = err.response.data
+      dispatch({
+        type: 'SET_MESSAGE_GENRE',
+        payload: message
+      })
+    }
+  }
+}
+
 export const listLocation = () => {
   return async dispatch => {
     try {
@@ -49,6 +67,40 @@ export const createCinema = (token, name, location, file, price, address) => {
       const response = await http(token).post('cinemas', data)
       dispatch({
         type: 'CREATE_CINEMA',
+        payload: response.data.success
+      })
+    } catch(err) {
+      const { message } = err.response.data
+      dispatch({
+        type: 'SET_MESSAGE_CINEMA',
+        payload: message
+      })
+    }
+  }
+}
+
+export const editCinema = (token, id, name, location, file, price, address) => {
+  return async dispatch => {
+    try {
+      const data = new FormData()
+      if(name !== '') {
+        data.append('name', name)
+      }
+      if(location !== '') {
+        data.append('location', location)
+      }
+      if(price !== '') {
+        data.append('price', price)
+      }
+      if(address !== '') {
+        data.append('address', address)
+      }
+      if(file !== null) {
+        data.append('image', file)
+      }
+      const response = await http(token).patch(`cinemas/${id}`, data)
+      dispatch({
+        type: 'EDIT_CINEMA',
         payload: response.data.success
       })
     } catch(err) {

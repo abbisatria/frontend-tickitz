@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
-import { Table, Alert } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Table, Alert, Modal } from 'react-bootstrap'
+import { Link, withRouter } from 'react-router-dom'
 import Button from '../Button/Button'
 import {connect} from 'react-redux'
 import {listGenre} from '../../redux/actions/genre'
+import {detailGenre} from '../../redux/actions/genre'
 import {deleteGenre} from '../../redux/actions/genre'
 
 class ManageGenre extends Component {
   state = {
     page: 1,
-    message: ''
+    message: '',
+    show: false
   };
 
   async componentDidMount(){
@@ -46,11 +48,20 @@ class ManageGenre extends Component {
     await this.props.deleteGenre(token, id)
     if(this.props.genre.success === true) {
       await this.props.listGenre()
-      this.setState({ message: 'Delete Success' })
+      this.setState({ message: 'Delete Success', show: false })
     } else {
       this.setState({ message: this.props.genre.errorMsg })
     }
   }
+
+  linkEditGenre = async (id) => {
+    await this.props.detailGenre(id)
+    this.props.history.push('/admin/manage_genre/edit')
+  }
+
+  handleClose = () => this.setState({show: false})
+
+  handleShow = () => this.setState({show: true})
 
   render() {
     return (
@@ -77,13 +88,27 @@ class ManageGenre extends Component {
                 <td>{value.id}</td>
                 <td>{value.name}</td>
                 <td>
-                  <Link to="/admin/manage_cinema/edit" className="btn btn-sm btn-warning mx-2">Edit</Link>
-                  <Button onClick={() =>
-                      this.delete(
-                        this.props.auth.token, 
-                        value.id
-                      )
-                    } className="btn btn-sm btn-danger">Delete</Button>
+                  <Button onClick={() => this.linkEditGenre(value.id)} className="btn btn-sm btn-warning mx-2">Edit</Button>
+                  <Button className="btn btn-sm btn-danger" onClick={this.handleShow}>Delete</Button>
+                    <Modal show={this.state.show} onHide={this.handleClose}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Delete Genre</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>are you sure you want to delete it?</Modal.Body>
+                      <Modal.Footer>
+                        <Button className="btn btn-secondary" onClick={this.handleClose}>
+                          No
+                        </Button>
+                        <Button className="btn btn-primary" onClick={() =>
+                            this.delete(
+                              this.props.auth.token, 
+                              value.id
+                            )
+                          } >
+                          Yes
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
                 </td>
               </tr>
             )
@@ -104,6 +129,6 @@ const mapStateToProps = state =>({
   genre: state.genre
 })
 
-const mapDispatchToProps = {listGenre, deleteGenre}
+const mapDispatchToProps = {listGenre, detailGenre, deleteGenre}
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageGenre)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ManageGenre))

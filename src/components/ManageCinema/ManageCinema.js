@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
-import { Table, Alert } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Table, Alert, Modal } from 'react-bootstrap'
+import { Link, withRouter } from 'react-router-dom'
 import Button from '../Button/Button'
 import {connect} from 'react-redux'
 import {listCinema} from '../../redux/actions/cinema'
+import {detailCinema} from '../../redux/actions/cinema'
 import {deleteCinema} from '../../redux/actions/cinema'
 
 class ManageCinema extends Component {
   state = {
     page: 1,
-    message: ''
+    message: '',
+    show: false
   };
 
   async componentDidMount(){
@@ -46,11 +48,20 @@ class ManageCinema extends Component {
     await this.props.deleteCinema(token, id)
     if(this.props.cinema.success === true) {
       await this.props.listCinema()
-      this.setState({ message: 'Delete Success' })
+      this.setState({ message: 'Delete Success', show: false })
     } else {
       this.setState({ message: this.props.cinema.errorMsg })
     }
   }
+
+  linkEditCinema = async (id) => {
+    await this.props.detailCinema(id)
+    this.props.history.push('/admin/manage_cinema/edit')
+  }
+
+  handleClose = () => this.setState({show: false})
+
+  handleShow = () => this.setState({show: true})
 
   render() {
     return (
@@ -79,13 +90,27 @@ class ManageCinema extends Component {
                 <td>{value.name}</td>
                 <td>{value.location}</td>
                 <td>
-                  <Link to="/admin/manage_cinema/edit" className="btn btn-sm btn-warning mx-2">Edit</Link>
-                  <Button onClick={() =>
-                      this.delete(
-                        this.props.auth.token, 
-                        value.id
-                      )
-                    } className="btn btn-sm btn-danger">Delete</Button>
+                <Button onClick={() => this.linkEditCinema(value.id)} className="btn btn-sm btn-warning mx-2">Edit</Button>
+                <Button onClick={this.handleShow} className="btn btn-sm btn-danger">Delete</Button>
+                <Modal show={this.state.show} onHide={this.handleClose}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Delete Cinema</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>are you sure you want to delete it?</Modal.Body>
+                    <Modal.Footer>
+                      <Button className="btn btn-secondary" onClick={this.handleClose}>
+                        No
+                      </Button>
+                      <Button className="btn btn-primary" onClick={() =>
+                          this.delete(
+                            this.props.auth.token, 
+                            value.id
+                          )
+                        } >
+                        Yes
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
                 </td>
               </tr>
             )
@@ -106,6 +131,6 @@ const mapStateToProps = state =>({
   cinema: state.cinema
 })
 
-const mapDispatchToProps = {listCinema, deleteCinema}
+const mapDispatchToProps = {listCinema, detailCinema, deleteCinema}
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageCinema)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ManageCinema))

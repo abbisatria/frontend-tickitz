@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Table, Alert } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Table, Alert, Modal } from 'react-bootstrap'
 import Button from '../Button/Button'
 import {connect} from 'react-redux'
 import {listMovie} from '../../redux/actions/movie'
-import {listGenre} from '../../redux/actions/genre'
+import {detailMovie} from '../../redux/actions/movie'
+import {detailMovieGenre} from '../../redux/actions/movie'
+import {listAllGenre} from '../../redux/actions/genre'
 import {deleteMovie} from '../../redux/actions/movie'
 import Moment from 'react-moment'
 import {withRouter} from 'react-router-dom'
@@ -12,7 +13,8 @@ import {withRouter} from 'react-router-dom'
 class ManageMovie extends Component {
   state = {
     page: 1,
-    message: ''
+    message: '',
+    show: false
   };
 
   async componentDidMount(){
@@ -36,7 +38,7 @@ class ManageMovie extends Component {
     await this.props.deleteMovie(token, id)
     if(this.props.movie.success === true) {
       await this.props.listMovie()
-      this.setState({ message: 'Delete Success' })
+      this.setState({ message: 'Delete Success', show: false })
     } else {
       this.setState({ message: this.props.movie.errorMsg })
     }
@@ -56,9 +58,20 @@ class ManageMovie extends Component {
   }
 
   linkCreateMovie = async () => {
-    await this.props.listGenre()
+    await this.props.listAllGenre()
     this.props.history.push('/admin/manage_movie/create')
   }
+
+  linkEditMovie = async (id) => {
+    await this.props.listAllGenre()
+    await this.props.detailMovieGenre(id)
+    await this.props.detailMovie(id)
+    this.props.history.push('/admin/manage_movie/edit')
+  }
+
+  handleClose = () => this.setState({show: false})
+
+  handleShow = () => this.setState({show: true})
 
   render() {
     return (
@@ -91,13 +104,27 @@ class ManageMovie extends Component {
                   </Moment>
                 </td>
                 <td>
-                  <Link to="/admin/manage_movie/edit" className="btn btn-sm btn-warning mx-2">Edit</Link>
-                  <Button onClick={() =>
+                <Button onClick={() => this.linkEditMovie(value.id)} className="btn btn-sm btn-warning mx-2">Edit</Button>
+                <Button onClick={this.handleShow} className="btn btn-sm btn-danger">Delete</Button>
+                <Modal show={this.state.show} onHide={this.handleClose}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Delete Movie</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>are you sure you want to delete it?</Modal.Body>
+                  <Modal.Footer>
+                    <Button className="btn btn-secondary" onClick={this.handleClose}>
+                      No
+                    </Button>
+                    <Button className="btn btn-primary" onClick={() =>
                       this.delete(
                         this.props.auth.token, 
                         value.id
                       )
-                    } className="btn btn-sm btn-danger">Delete</Button>
+                    } >
+                      Yes
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
                 </td>
               </tr>
             )
@@ -119,6 +146,6 @@ const mapStateToProps = state =>({
   genre: state.genre
 })
 
-const mapDispatchToProps = {listMovie, deleteMovie, listGenre}
+const mapDispatchToProps = {listMovie, detailMovie, detailMovieGenre, deleteMovie, listAllGenre}
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ManageMovie))

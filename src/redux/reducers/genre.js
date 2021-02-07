@@ -1,5 +1,6 @@
 const initialState = {
   results: null,
+  details: {},
   pageInfo: null,
   success: null,
   errorMsg: ''
@@ -14,7 +15,25 @@ const genreReducer = (state = initialState, action) => {
         pageInfo: action.pageInfo
       }
     }
+    case 'LIST_ALL_GENRE': {
+      return {
+        ...state,
+        results: action.payload
+      }
+    }
+    case 'DETAIL_GENRE': {
+      return {
+        ...state,
+        details: action.payload
+      }
+    }
     case 'CREATE_GENRE': {
+      return {
+        ...state,
+        success: action.payload
+      }
+    }
+    case 'EDIT_GENRE': {
       return {
         ...state,
         success: action.payload

@@ -1,5 +1,7 @@
 const initialState = {
   results: null,
+  details: {},
+  detailsGenre: null,
   pageInfo: null,
   success: null,
   errorMsg: ''
@@ -20,7 +22,25 @@ const movieReducer = (state = initialState, action) => {
         results: action.payload
       }
     }
+    case 'DETAIL_MOVIE': {
+      return {
+        ...state,
+        details: action.payload
+      }
+    }
+    case 'DETAIL_MOVIE_GENRE': {
+      return {
+        ...state,
+        detailsGenre: action.payload
+      }
+    }
     case 'CREATE_MOVIE': {
+      return {
+        ...state,
+        success: action.payload
+      }
+    }
+    case 'EDIT_MOVIE': {
       return {
         ...state,
         success: action.payload

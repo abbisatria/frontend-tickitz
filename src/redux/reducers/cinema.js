@@ -1,5 +1,6 @@
 const initialState = {
   results: null,
+  details: {},
   pageInfo: null,
   success: null,
   location: null,
@@ -21,7 +22,19 @@ const cinemaReducer = (state = initialState, action) => {
         location: action.payload
       }
     }
+    case 'DETAIL_CINEMA': {
+      return {
+        ...state,
+        details: action.payload
+      }
+    }
     case 'CREATE_CINEMA': {
+      return {
+        ...state,
+        success: action.payload
+      }
+    }
+    case 'EDIT_CINEMA': {
       return {
         ...state,
         success: action.payload
