@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Form, Alert } from "react-bootstrap";
+import { Container, Row, Col, Form, Alert, Spinner } from "react-bootstrap";
 import Button from "../../../components/Button/Button";
 import { Link } from "react-router-dom";
 import FormInputText from "../../../components/Form/FormInputText/FormInputText";
@@ -16,7 +16,8 @@ class SignUp extends Component {
   state = {
     email: "",
     password: "",
-    message: ""
+    message: "",
+    isLoading: false
   };
 
   submitData = async (event) => {
@@ -25,11 +26,12 @@ class SignUp extends Component {
     const data = new URLSearchParams()
     data.append('email', email)
     data.append('password', password)
+    this.setState({isLoading: true})
     try {
       const response = await http().post('auth/register', data)
-      this.setState({ message: response.data.message })
+      this.setState({ message: response.data.message, isLoading: false })
     } catch(err) {
-      this.setState({ message: err.response.data.message })
+      this.setState({ message: err.response.data.message, isLoading: false })
     }
   };
 
@@ -99,9 +101,9 @@ class SignUp extends Component {
                   required
                 />
               </Form.Group>
-              <Button className="btn-primary w-100 py-3 mb-4" type="submit">
+              {this.state.isLoading === false ? <Button className="btn-primary w-100 py-3 mb-4" type="submit">
                 Join for free now
-              </Button>
+              </Button> : <div className="text-center"><Spinner animation="border" /></div>}
             </Form>
             <div className="text-center link mb-4">
               Do you already have an account?

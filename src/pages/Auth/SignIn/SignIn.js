@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Form, Alert } from "react-bootstrap";
+import { Container, Row, Col, Form, Alert, Spinner } from "react-bootstrap";
 import Button from "../../../components/Button/Button";
 import { Link } from "react-router-dom";
 import FormInputText from "../../../components/Form/FormInputText/FormInputText";
@@ -17,13 +17,16 @@ import "../auth.scss";
 class SignIn extends Component {
   state = {
     email: "",
-    password: ""
+    password: "",
+    isLoading: false
   };
 
-  submitData = (event) => {
+  submitData = async (event) => {
     event.preventDefault();
+    this.setState({isLoading: true})
     const {email, password} = this.state
-    this.props.login(email, password)
+    await this.props.login(email, password)
+    this.setState({isLoading: false})
   };
 
   componentDidUpdate() {
@@ -83,9 +86,9 @@ class SignIn extends Component {
                 Password
               </FormInputPassword>
 
-              <Button className="btn-primary w-100 py-3 mb-4" type="submit">
+              {this.state.isLoading === false ? <Button className="btn-primary w-100 py-3 mb-4" type="submit">
                 Sign In
-              </Button>
+              </Button> : <div className="text-center"><Spinner animation="border" /></div>}
             </Form>
             <div className="text-center link mb-4">
               Forgot your password?

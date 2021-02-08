@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Alert, Modal } from 'react-bootstrap'
+import { Table, Alert, Modal, Spinner } from 'react-bootstrap'
 import { Link, withRouter } from 'react-router-dom'
 import Button from '../Button/Button'
 import {connect} from 'react-redux'
@@ -11,17 +11,21 @@ class ManageCinema extends Component {
   state = {
     page: 1,
     message: '',
-    show: false
+    show: false,
+    isLoading: true
   };
 
   async componentDidMount(){
     await this.props.listCinema()
+    this.setState({isLoading: false})
   }
   
   prev = async () => {
-    if(this.state.page >= 1) {
+    if(this.state.page > 1) {
+      this.setState({isLoading: true})
       await this.props.listCinema(this.state.page - 1)
       this.setState({
+        isLoading: false,
         page: this.state.page - 1
       })
     } else {
@@ -33,8 +37,10 @@ class ManageCinema extends Component {
 
   next = async () => {
     if(this.state.page !== this.props.cinema.pageInfo.totalPage) {
+      this.setState({isLoading: true})
       await this.props.listCinema(this.state.page + 1)
       this.setState({
+        isLoading: false,
         page: this.state.page + 1
       })
     } else {
@@ -83,7 +89,7 @@ class ManageCinema extends Component {
             </tr>
           </thead>
           <tbody>
-          {this.props.cinema.results !== null ? this.props.cinema.results.map(value => {
+          {(this.props.cinema.results !== null && this.state.isLoading !== true) ? this.props.cinema.results.map(value => {
             return (
               <tr key={String(value.id)}>
                 <td>{value.id}</td>
@@ -114,7 +120,7 @@ class ManageCinema extends Component {
                 </td>
               </tr>
             )
-          }) : <tr><td>Loading...</td></tr>}
+          }) : <tr><td colSpan={4} className="text-center"><Spinner animation="border" /></td></tr>}
           </tbody>
         </Table>
         <div className="d-flex justify-content-center">

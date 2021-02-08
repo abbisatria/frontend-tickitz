@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Alert, Modal } from 'react-bootstrap'
+import { Table, Alert, Modal, Spinner } from 'react-bootstrap'
 import Button from '../Button/Button'
 import {connect} from 'react-redux'
 import {listMovie} from '../../redux/actions/movie'
@@ -14,17 +14,35 @@ class ManageMovie extends Component {
   state = {
     page: 1,
     message: '',
-    show: false
+    show: false,
+    isLoading: true,
+    icSort: 'up',
+    order: '',
+    sort: ''
   };
 
   async componentDidMount(){
     await this.props.listMovie()
+    this.setState({isLoading: false})
+  }
+
+  order = async (value) => {
+    this.setState({isLoading: true})
+    if(this.state.icSort === 'down') {
+      this.setState({icSort: 'up', isLoading: false, order: value, sort: 'DESC'})
+      await this.props.listMovie(this.state.page, value, 'DESC')
+    } else {
+      this.setState({icSort: 'down', isLoading: false, order: value, sort: 'ASC'})
+      await this.props.listMovie(this.state.page, value, 'ASC')
+    }
   }
   
   prev = async () => {
-    if(this.state.page >= 1) {
-      await this.props.listMovie(this.state.page - 1)
+    if(this.state.page > 1) {
+      this.setState({isLoading: true})
+      await this.props.listMovie(this.state.page - 1, this.state.order, this.state.sort)
       this.setState({
+        isLoading: false,
         page: this.state.page - 1
       })
     } else {
@@ -46,8 +64,10 @@ class ManageMovie extends Component {
 
   next = async () => {
     if(this.state.page !== this.props.movie.pageInfo.totalPage) {
-      await this.props.listMovie(this.state.page + 1)
+      this.setState({isLoading: true})
+      await this.props.listMovie(this.state.page + 1, this.state.order, this.state.sort)
       this.setState({
+        isLoading: false,
         page: this.state.page + 1
       })
     } else {
@@ -87,13 +107,13 @@ class ManageMovie extends Component {
           <thead>
             <tr>
               <th>No</th>
-              <th>Name</th>
-              <th>Release Date</th>
+              <th>Name <i className={`fa fa-sort-${this.state.icSort}`} onClick={() => {this.order('name')}} /></th>
+              <th>Release Date <i className={`fa fa-sort-${this.state.icSort}`} onClick={() => {this.order('releaseDate')}} /></th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-          {this.props.movie.results !== null ? this.props.movie.results.map(value => {
+          {(this.props.movie.results !== null && this.state.isLoading !== true) ? this.props.movie.results.map(value => {
             return (
               <tr key={String(value.id)}>
                 <td>{value.id}</td>
@@ -128,12 +148,15 @@ class ManageMovie extends Component {
                 </td>
               </tr>
             )
-          }) : <tr><td>Loading...</td></tr>}
+          }) : <tr><td colSpan={4} className="text-center"><Spinner animation="border" /></td></tr>}
           </tbody>
         </Table>
-        <div className="d-flex justify-content-center">
-          <Button className="btn outline-primary mr-3" onClick={this.prev}>Prev Link</Button>
-          <Button className="btn outline-primary" onClick={this.next}>Next Link</Button>
+        <div className="d-flex justify-content-between">
+          <p>showing 1 to 5 of 10 rows</p>
+          <div>
+            <Button className="btn outline-primary mr-3" onClick={this.prev}>Prev Link</Button>
+            <Button className="btn outline-primary" onClick={this.next}>Next Link</Button>
+          </div>
         </div>
       </>
     )
