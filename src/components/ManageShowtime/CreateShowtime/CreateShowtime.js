@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Row, Col, Form, Alert } from 'react-bootstrap'
-import {connect} from 'react-redux'
-import {cinemaLocation} from '../../../redux/actions/showtime'
-import {createShowtime} from '../../../redux/actions/showtime'
-import {withRouter} from 'react-router-dom'
+import { connect } from 'react-redux'
+import { cinemaLocation, createShowtime } from '../../../redux/actions/showtime'
+
+import { withRouter } from 'react-router-dom'
 
 import FormInputLocation from '../../Form/FormInputLocation/FormInputLocation'
 import FormInputTime from '../../Form/FormInputTime/FormInputTime'
@@ -25,29 +25,29 @@ class CreateShowtime extends Component {
   }
 
   options = this.props.movie.results.map(item => {
-    return {label: item.name, value: item.id}
+    return { label: item.name, value: item.id }
   })
 
   selectedTime = (id) => {
     const { selectTime } = this.state
-      selectTime.push(id)
-      this.setState({
-        selectTime: selectTime
-      })
+    selectTime.push(id)
+    this.setState({
+      selectTime: selectTime
+    })
   }
 
   selectedCinema = (id) => {
-    const { selectCinema } = this.state;
-    let newArray = [];
+    const { selectCinema } = this.state
+    let newArray = []
     if (selectCinema.indexOf(id) === -1) {
-      selectCinema.push(id);
-      newArray = selectCinema;
+      selectCinema.push(id)
+      newArray = selectCinema
     } else {
-      newArray = selectCinema.filter((item) => item !== id);
+      newArray = selectCinema.filter((item) => item !== id)
     }
     this.setState({
-      selectCinema: newArray,
-    });
+      selectCinema: newArray
+    })
   };
 
   onChangeInput = (value) => {
@@ -58,26 +58,26 @@ class CreateShowtime extends Component {
 
   changeText = (event) => {
     this.setState({ [event.target.name]: event.target.value }, async () => {
-      if(this.state.location !== '') {
+      if (this.state.location !== '') {
         const { location } = this.state
         await this.props.cinemaLocation(location)
-        this.setState({message: 'Berhasil'})
+        this.setState({ message: 'Berhasil' })
       }
-    });
+    })
   };
 
   submitData = async (event) => {
-    event.preventDefault();
-    const { movie, date, selectCinema, selectTime  } = this.state
+    event.preventDefault()
+    const { movie, date, selectCinema, selectTime } = this.state
     await this.props.createShowtime(this.props.auth.token, movie.value, date, selectCinema, selectTime)
-    if(this.props.showtime.success === true) {
+    if (this.props.showtime.success === true) {
       this.props.history.push('/admin/manage_showtime')
     } else {
       this.setState({ message: this.props.showtime.errorMsg })
     }
   };
 
-  render() {
+  render () {
     return (
       <>
       <Form onSubmit={this.submitData}>
@@ -133,9 +133,9 @@ class CreateShowtime extends Component {
                   </div>
                 </Col>
                 {this.state.selectTime && this.state.selectTime.map((item, index) => {
-                  return(
+                  return (
                     <Col md={3} xs={3} key={String(index)}>
-                      <p>{moment(item, "HH:mm:ss").format("hh:mmA")}</p>
+                      <p>{moment(item, 'HH:mm:ss').format('hh:mmA')}</p>
                     </Col>
                   )
                 })}
@@ -151,12 +151,12 @@ class CreateShowtime extends Component {
   }
 }
 
-const mapStateToProps = state =>({
-  auth : state.auth,
+const mapStateToProps = state => ({
+  auth: state.auth,
   showtime: state.showtime,
   movie: state.movie
 })
 
-const mapDispatchToProps = {cinemaLocation, createShowtime}
+const mapDispatchToProps = { cinemaLocation, createShowtime }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CreateShowtime))

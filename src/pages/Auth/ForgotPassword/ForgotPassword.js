@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Container, Row, Col, Form, Alert } from 'react-bootstrap'
 import Button from '../../../components/Button/Button'
 import FormInputText from '../../../components/Form/FormInputText/FormInputText'
-import FormInputPassword from "../../../components/Form/FormInputPassword/FormInputPassword"
+import FormInputPassword from '../../../components/Form/FormInputPassword/FormInputPassword'
 import http from '../../../helpers/http'
 
 import logo from '../../../assets/images/logo-tickitz.png'
@@ -16,31 +16,31 @@ class ForgotPassword extends Component {
     message: ''
   }
   forgotPassword = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     const { email } = this.state
     const data = new URLSearchParams()
     data.append('email', email)
     try {
       const response = await http().post('auth/forgotPassword', data)
       this.setState({ message: response.data.message })
-    } catch(err) {
+    } catch (err) {
       this.setState({ message: err.response.data.message })
     }
   };
   resetPassword = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     const { password } = this.state
     const data = new URLSearchParams()
     data.append('password', password)
     try {
       await http().patch(`auth/resetPassword/${this.props.match.params.token}`, data)
       this.props.history.push('/sign-in')
-    } catch(err) {
+    } catch (err) {
       this.setState({ message: err.response.data.message })
     }
   };
   changeText = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value })
   };
   render () {
     return (
@@ -82,7 +82,8 @@ class ForgotPassword extends Component {
               <p>we&apos;ll send a link to your email shortly</p>
             </div>
             {this.state.message !== '' && <Alert variant="warning">{this.state.message}</Alert>}
-            {this.props.match.params.token ? <Form onSubmit={this.resetPassword}>
+            {this.props.match.params.token
+              ? <Form onSubmit={this.resetPassword}>
               <FormInputPassword
                 name="password"
                 onChange={(event) => this.changeText(event)}
@@ -92,7 +93,8 @@ class ForgotPassword extends Component {
               <Button className="btn-primary w-100 py-3 mb-4" type="submit">
                 Reset Password
               </Button>
-            </Form> : <Form onSubmit={this.forgotPassword}>
+            </Form>
+              : <Form onSubmit={this.forgotPassword}>
               <FormInputText
                 name="email"
                 type="email"

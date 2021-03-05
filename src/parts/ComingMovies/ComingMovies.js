@@ -1,34 +1,34 @@
-import React, { Component } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import Button from "../../components/Button/Button";
-import CardMoviesUpcoming from "../../components/CardMoviesUpcoming/CardMoviesUpcoming";
+import React, { Component } from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import Button from '../../components/Button/Button'
+import CardMoviesUpcoming from '../../components/CardMoviesUpcoming/CardMoviesUpcoming'
 import http from '../../helpers/http'
 import moment from 'moment'
 
-import "./ComingMovies.scss";
+import './ComingMovies.scss'
 
 class ComingMovies extends Component {
   state = {
     month: [
-      "September",
-      "October",
-      "November",
-      "December",
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
+      'September',
+      'October',
+      'November',
+      'December',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June'
     ],
     movieUpComing: [],
-    movieComing:[],
+    movieComing: [],
     message: ''
   };
 
-  async componentDidMount(){
-    const response = await http().get('movies/movieMonth')
+  async componentDidMount () {
+    const response = await http().get('movies/upComing')
     this.setState({
       movieUpComing: response.data.results
     })
@@ -36,17 +36,17 @@ class ComingMovies extends Component {
 
   searhMovie = (month) => {
     const movieMonth = this.state.movieUpComing.filter(
-      (value) =>  moment(value.releaseDate).format('DD MMMM YYYY').indexOf(month) !== -1
+      (value) => moment(value.releaseDate).format('DD MMMM YYYY').indexOf(month) !== -1
     )
     if (movieMonth.length > 0) {
       this.setState({
         movieComing: movieMonth,
         message: ''
-      });
+      })
     } else {
       this.setState({
         message: `UpComing Movies ${month} Not Found`
-      });
+      })
     }
   };
 
@@ -54,10 +54,10 @@ class ComingMovies extends Component {
     this.setState({
       movieComing: [],
       message: ''
-    });
+    })
   };
 
-  render() {
+  render () {
     return (
       <div className="upcoming-movies">
         <Container>
@@ -87,20 +87,24 @@ class ComingMovies extends Component {
                 >
                   {value}
                 </Button>
-              );
+              )
             })}
           </div>
           <div className="movies-upcoming">
-            {this.state.message !== '' ? <p>{this.state.message}</p> : this.state.movieComing.length > 0 ? this.state.movieComing.map((value, index) => {
-              return <CardMoviesUpcoming data={value} key={String(index)} />;
-            }) : this.state.movieUpComing.map((value, index) => {
-              return <CardMoviesUpcoming data={value} key={String(index)} />;
-            })}
+            {this.state.message !== ''
+              ? <p>{this.state.message}</p>
+              : this.state.movieComing.length > 0
+                ? this.state.movieComing.map((value, index) => {
+                  return <CardMoviesUpcoming data={value} key={String(index)} />
+                })
+                : this.state.movieUpComing.map((value, index) => {
+                  return <CardMoviesUpcoming data={value} key={String(index)} />
+                })}
           </div>
         </Container>
       </div>
-    );
+    )
   }
 }
 
-export default ComingMovies;
+export default ComingMovies

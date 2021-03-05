@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 
-import "./Seat.scss";
+import './Seat.scss'
 
 export default class Seat extends Component {
   state = {
     alfabet: ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
     seatNumber: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']
   };
-  render() {
+  render () {
     return (
       <table>
         <tbody>
@@ -18,9 +18,11 @@ export default class Seat extends Component {
                 {this.state.seatNumber.map((value, indexA) => {
                   return (
                     <React.Fragment key={indexA}>
-                    {(`${item}${value}` === 'F11') ? (
+                    {(`${item}${value}` === 'F11')
+                      ? (
                       <>
-                      {this.props.soldSeat.some((sold) => sold.name === 'F11, F12') ? (
+                      {this.props.soldSeat.some((sold) => sold.name === 'F11, F12')
+                        ? (
                         <td colSpan='2' className="check">
                         <input
                           type="checkbox"
@@ -30,7 +32,8 @@ export default class Seat extends Component {
                           disabled
                         />
                       </td>
-                      ) : (
+                          )
+                        : (
                         <td colSpan='2' className="check">
                         <input
                           type="checkbox"
@@ -39,11 +42,15 @@ export default class Seat extends Component {
                           className='seats-love'
                         />
                       </td>
-                      )}
+                          )}
                       </>
-                    ) : (`${item}${value}` === 'F12') ? null : (
+                        )
+                      : (`${item}${value}` === 'F12')
+                          ? null
+                          : (
                       <>
-                      {this.props.soldSeat.some((sold) => sold.name === `${item}${value}`) ? (
+                      {this.props.soldSeat.some((sold) => sold.name === `${item}${value}`)
+                        ? (
                         <td className="check">
                         <input
                           type="checkbox"
@@ -52,7 +59,8 @@ export default class Seat extends Component {
                           disabled
                         />
                       </td>
-                      ) : (
+                          )
+                        : (
                         <td className="check">
                           <input
                             type="checkbox"
@@ -60,9 +68,9 @@ export default class Seat extends Component {
                             name="seat"
                           />
                         </td>
-                      )}
+                          )}
                       </>
-                    )}
+                            )}
                     {`${item}${value}` === `${item}7` ? <td className="seatGap"></td> : null}
                     </React.Fragment>
                   )
@@ -90,6 +98,6 @@ export default class Seat extends Component {
           </tr>
         </tbody>
       </table>
-    );
+    )
   }
 }

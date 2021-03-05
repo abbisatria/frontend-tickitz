@@ -9,7 +9,7 @@ export const listCinema = (page) => {
         payload: response.data.results,
         pageInfo: response.data.pageInfo
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_CINEMA',
@@ -27,7 +27,7 @@ export const detailCinema = (id) => {
         type: 'DETAIL_CINEMA',
         payload: response.data.results
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_GENRE',
@@ -45,7 +45,7 @@ export const listLocation = () => {
         type: 'LIST_LOCATION',
         payload: response.data.results
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_CINEMA',
@@ -69,7 +69,7 @@ export const createCinema = (token, name, location, file, price, address) => {
         type: 'CREATE_CINEMA',
         payload: response.data.success
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_CINEMA',
@@ -83,19 +83,19 @@ export const editCinema = (token, id, name, location, file, price, address) => {
   return async dispatch => {
     try {
       const data = new FormData()
-      if(name !== '') {
+      if (name !== '') {
         data.append('name', name)
       }
-      if(location !== '') {
+      if (location !== '') {
         data.append('location', location)
       }
-      if(price !== '') {
+      if (price !== '') {
         data.append('price', price)
       }
-      if(address !== '') {
+      if (address !== '') {
         data.append('address', address)
       }
-      if(file !== null) {
+      if (file !== null) {
         data.append('image', file)
       }
       const response = await http(token).patch(`cinemas/${id}`, data)
@@ -103,7 +103,7 @@ export const editCinema = (token, id, name, location, file, price, address) => {
         type: 'EDIT_CINEMA',
         payload: response.data.success
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_CINEMA',
@@ -119,9 +119,9 @@ export const deleteCinema = (token, id) => {
       const response = await http(token).delete(`cinemas/${id}`)
       dispatch({
         type: 'DELETE_CINEMA',
-        payload: response.data.success,
+        payload: response.data.success
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_CINEMA',

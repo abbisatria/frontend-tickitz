@@ -7,11 +7,11 @@ class PrivateRouteProfile extends Component {
     const Component = this.props.privateComponent
     return (
       <Route {...this.props} render={(props) => {
-          if (this.props.auth.token) {
-            return <Component {...props} />
-          } else {
-            return <Redirect to={{ pathname: '/sign-in', state: { from: props.location } }} />
-          }
+        if (this.props.auth.token) {
+          return <Component {...props} />
+        } else {
+          return <Redirect to={{ pathname: '/sign-in', state: { from: props.location } }} />
+        }
       }}></Route>
     )
   }

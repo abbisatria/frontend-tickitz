@@ -1,37 +1,37 @@
-import React, { Component } from "react";
-import Moment from "react-moment";
-import { Container, Row, Col } from "react-bootstrap";
-import { Link, withRouter } from "react-router-dom";
-import Button from "../../components/Button/Button";
+import React, { Component } from 'react'
+import Moment from 'react-moment'
+import { Container, Row, Col } from 'react-bootstrap'
+import { Link, withRouter } from 'react-router-dom'
+import Button from '../../components/Button/Button'
 
-import Seat from "../../components/Seat/Seat";
-import {connect} from 'react-redux'
-import {seatChecked} from '../../redux/actions/order'
+import Seat from '../../components/Seat/Seat'
+import { connect } from 'react-redux'
+import { seatChecked } from '../../redux/actions/order'
 
-import "./OrderMovie.scss";
+import './OrderMovie.scss'
 
 class OrderMovie extends Component {
   state = {
     seat: []
   };
   selectSeat = (id) => {
-    const { seat } = this.state;
-    let newArray = [];
+    const { seat } = this.state
+    let newArray = []
     if (seat.indexOf(id) === -1) {
-      seat.push(id);
-      newArray = seat;
+      seat.push(id)
+      newArray = seat
     } else {
-      newArray = seat.filter((item) => item !== id);
+      newArray = seat.filter((item) => item !== id)
     }
     this.setState({
-      seat: newArray,
-    });
+      seat: newArray
+    })
   };
   checkOut = () => {
     this.props.seatChecked(this.state.seat)
-    this.props.history.push('/payment');
+    this.props.history.push('/payment')
   };
-  render() {
+  render () {
     return (
       <div className="order-movie">
         <Container>
@@ -51,7 +51,7 @@ class OrderMovie extends Component {
                 <div className="card-seat">
                   <h5>Screen</h5>
                   <hr />
-                  <Seat data={this.selectSeat}  soldSeat={this.props.seat}/>
+                  <Seat data={this.selectSeat} soldSeat={this.props.seat}/>
                   <div className="seating-key">
                     <h4>Seating key</h4>
                     <Row>
@@ -97,7 +97,7 @@ class OrderMovie extends Component {
                 <div className="d-md-none d-sm-block">
                   <div className="card-choosed d-flex justify-content-between align-items-center">
                     <h6>Choosed</h6>
-                    <h5>{this.state.seat.join(", ")}</h5>
+                    <h5>{this.state.seat.join(', ')}</h5>
                   </div>
                 </div>
                 <Row className="my-4">
@@ -156,7 +156,7 @@ class OrderMovie extends Component {
                     <div className="d-flex justify-content-between">
                       <h4>Total Payment</h4>
                       <h3>
-                        ${(this.state.seat.includes('F11, F12')) ?  (this.state.seat.length + 1) * this.props.showtime.price : this.state.seat.length * this.props.showtime.price}
+                        ${(this.state.seat.includes('F11, F12')) ? (this.state.seat.length + 1) * this.props.showtime.price : this.state.seat.length * this.props.showtime.price}
                       </h3>
                     </div>
                   </div>
@@ -166,13 +166,13 @@ class OrderMovie extends Component {
           </Row>
         </Container>
       </div>
-    );
+    )
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   order: state.order
 })
-const mapDispatchToProps = {seatChecked}
+const mapDispatchToProps = { seatChecked }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(OrderMovie));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(OrderMovie))

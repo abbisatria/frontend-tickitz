@@ -49,7 +49,7 @@ export const checkOut = (movieId, cinemaId, showtimesId, seat, token) => {
         type: 'CHECKOUT',
         payload: response.data.results
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_CHECKOUT',
@@ -71,7 +71,7 @@ export const detailTicket = (token, id) => {
         type: 'DETAIL_TICKET',
         payload: response.data.results
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_CHECKOUT',

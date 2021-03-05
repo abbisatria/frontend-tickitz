@@ -1,45 +1,45 @@
-import React, { Component } from "react";
-import { Container, Row, Col, Form, Alert, Spinner } from "react-bootstrap";
-import Button from "../../../components/Button/Button";
-import { Link } from "react-router-dom";
-import FormInputText from "../../../components/Form/FormInputText/FormInputText";
-import FormInputPassword from "../../../components/Form/FormInputPassword/FormInputPassword";
+import React, { Component } from 'react'
+import { Container, Row, Col, Form, Alert, Spinner } from 'react-bootstrap'
+import Button from '../../../components/Button/Button'
+import { Link } from 'react-router-dom'
+import FormInputText from '../../../components/Form/FormInputText/FormInputText'
+import FormInputPassword from '../../../components/Form/FormInputPassword/FormInputPassword'
 import http from '../../../helpers/http'
 
-import logo from "../../../assets/images/logo-tickitz.png";
-import icGoogle from "../../../assets/icon/ic-google.png";
-import icFacebook from "../../../assets/icon/ic-facebook.png";
+import logo from '../../../assets/images/logo-tickitz.png'
+import icGoogle from '../../../assets/icon/ic-google.png'
+import icFacebook from '../../../assets/icon/ic-facebook.png'
 
-import "../auth.scss";
+import '../auth.scss'
 
 class SignUp extends Component {
   state = {
-    email: "",
-    password: "",
-    message: "",
+    email: '',
+    password: '',
+    message: '',
     isLoading: false
   };
 
   submitData = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     const { email, password } = this.state
     const data = new URLSearchParams()
     data.append('email', email)
     data.append('password', password)
-    this.setState({isLoading: true})
+    this.setState({ isLoading: true })
     try {
       const response = await http().post('auth/register', data)
       this.setState({ message: response.data.message, isLoading: false })
-    } catch(err) {
+    } catch (err) {
       this.setState({ message: err.response.data.message, isLoading: false })
     }
   };
 
   changeText = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value })
   };
 
-  render() {
+  render () {
     return (
       <Container fluid>
         <Row>
@@ -101,9 +101,11 @@ class SignUp extends Component {
                   required
                 />
               </Form.Group>
-              {this.state.isLoading === false ? <Button className="btn-primary w-100 py-3 mb-4" type="submit">
+              {this.state.isLoading === false
+                ? <Button className="btn-primary w-100 py-3 mb-4" type="submit">
                 Join for free now
-              </Button> : <div className="text-center"><Spinner animation="border" /></div>}
+              </Button>
+                : <div className="text-center"><Spinner animation="border" /></div>}
             </Form>
             <div className="text-center link mb-4">
               Do you already have an account?
@@ -131,8 +133,8 @@ class SignUp extends Component {
           </Col>
         </Row>
       </Container>
-    );
+    )
   }
 }
 
-export default SignUp;
+export default SignUp

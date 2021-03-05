@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Row, Col, Form, Alert } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import FormInputText from '../../Form/FormInputText/FormInputText'
-import {connect} from 'react-redux'
-import {createGenre} from '../../../redux/actions/genre'
+import { connect } from 'react-redux'
+import { createGenre } from '../../../redux/actions/genre'
 import Button from '../../Button/Button'
 
 class CreateGenre extends Component {
@@ -13,20 +13,20 @@ class CreateGenre extends Component {
   }
 
   changeText = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value })
   };
 
   submitData = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     const { name } = this.state
     await this.props.createGenre(this.props.auth.token, name)
-    if(this.props.genre.success === true) {
+    if (this.props.genre.success === true) {
       this.props.history.push('/admin/manage_genre')
     } else {
       this.setState({ message: this.props.genre.errorMsg })
     }
   };
-  render() {
+  render () {
     return (
       <Form onSubmit={this.submitData}>
         <h1>Create Genre</h1>
@@ -49,11 +49,11 @@ class CreateGenre extends Component {
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   auth: state.auth,
   genre: state.genre
 })
 
-const mapDispatchToProps = {createGenre}
+const mapDispatchToProps = { createGenre }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CreateGenre))

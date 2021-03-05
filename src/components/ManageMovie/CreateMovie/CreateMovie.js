@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Row, Col, Form } from 'react-bootstrap'
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import FormInputText from '../../Form/FormInputText/FormInputText'
 import Button from '../../Button/Button'
 import Select from 'react-select'
-import {connect} from 'react-redux'
-import {createMovie} from '../../../redux/actions/movie'
+import { connect } from 'react-redux'
+import { createMovie } from '../../../redux/actions/movie'
 
 import uploadHere from '../../../assets/images/upload_here.jpeg'
 
@@ -24,7 +24,7 @@ class CreateMovie extends Component {
   }
 
   options = this.props.genre.results.map(item => {
-    return {label: item.name, value: item.id}
+    return { label: item.name, value: item.id }
   })
 
   onChangeInput = (value) => {
@@ -34,22 +34,22 @@ class CreateMovie extends Component {
   }
 
   changeText = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value })
   };
 
   submitData = async (event) => {
-    event.preventDefault();
-    const { name, genre, file, releaseDate, duration, directed, casts, description, category  } = this.state
+    event.preventDefault()
+    const { name, genre, file, releaseDate, duration, directed, casts, description, category } = this.state
     const mapGenre = genre.map(item => item.value)
     await this.props.createMovie(this.props.auth.token, name, mapGenre, file, releaseDate, category, duration, directed, casts, description)
-    if(this.props.movie.success === true) {
+    if (this.props.movie.success === true) {
       this.props.history.push('/admin/manage_movie')
     } else {
       this.setState({ message: this.props.movie.errorMsg })
     }
   };
 
-  render() {
+  render () {
     return (
       <>
       <Form onSubmit={this.submitData}>
@@ -58,7 +58,7 @@ class CreateMovie extends Component {
           <Col md={4}>
             <div className="card-movies d-flex align-items-center justify-content-center">
               <label className="upload-file">
-                <input type="file" onChange={(e)=>this.setState({file: e.target.files[0], imgPreview: URL.createObjectURL(e.target.files[0])})} />
+                <input type="file" onChange={(e) => this.setState({ file: e.target.files[0], imgPreview: URL.createObjectURL(e.target.files[0]) })} />
                 <div className="image-file">
                   <img src={this.state.imgPreview !== null ? this.state.imgPreview : uploadHere} alt="movie" />
                 </div>
@@ -143,12 +143,12 @@ class CreateMovie extends Component {
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   auth: state.auth,
   genre: state.genre,
   movie: state.movie
 })
 
-const mapDispatchToProps = {createMovie}
+const mapDispatchToProps = { createMovie }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CreateMovie))

@@ -9,7 +9,7 @@ export const listMovie = (page, sort, order) => {
         payload: response.data.results,
         pageInfo: response.data.pageInfo
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_MOVIE',
@@ -27,7 +27,7 @@ export const listAllMovie = () => {
         type: 'LIST_ALL_MOVIE',
         payload: response.data.results
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_MOVIE',
@@ -45,7 +45,7 @@ export const detailMovie = (id) => {
         type: 'DETAIL_MOVIE',
         payload: response.data.results
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_MOVIE',
@@ -63,7 +63,7 @@ export const detailMovieGenre = (id) => {
         type: 'DETAIL_MOVIE_GENRE',
         payload: response.data.results
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_MOVIE',
@@ -78,7 +78,7 @@ export const createMovie = (token, name, genre, file, releaseDate, category, dur
     try {
       const data = new FormData()
       data.append('name', name)
-      if(file !== null) {
+      if (file !== null) {
         data.append('image', file)
       }
       data.append('releaseDate', releaseDate)
@@ -93,7 +93,7 @@ export const createMovie = (token, name, genre, file, releaseDate, category, dur
         type: 'CREATE_MOVIE',
         payload: response.data.success
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_MOVIE',
@@ -107,28 +107,28 @@ export const editMovie = (token, id, name, genre, file, releaseDate, category, d
   return async dispatch => {
     try {
       const data = new FormData()
-      if(name !== '') {
+      if (name !== '') {
         data.append('name', name)
       }
-      if(file !== null) {
+      if (file !== null) {
         data.append('image', file)
       }
-      if(releaseDate !== '') {
+      if (releaseDate !== '') {
         data.append('releaseDate', releaseDate)
       }
-      if(category !== '') {
+      if (category !== '') {
         data.append('category', category)
       }
-      if(directed !== '') {
+      if (directed !== '') {
         data.append('directed', directed)
       }
-      if(duration !== '') {
+      if (duration !== '') {
         data.append('duration', duration)
       }
-      if(casts !== '') {
+      if (casts !== '') {
         data.append('casts', casts)
       }
-      if(description !== '') {
+      if (description !== '') {
         data.append('description', description)
       }
       genre.map(item => data.append('idGenre', item))
@@ -137,7 +137,7 @@ export const editMovie = (token, id, name, genre, file, releaseDate, category, d
         type: 'EDIT_MOVIE',
         payload: response.data.success
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_MOVIE',
@@ -153,9 +153,9 @@ export const deleteMovie = (token, id) => {
       const response = await http(token).delete(`movies/${id}`)
       dispatch({
         type: 'DELETE_MOVIE',
-        payload: response.data.success,
+        payload: response.data.success
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_MOVIE',

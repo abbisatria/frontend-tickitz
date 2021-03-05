@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Row, Col, Form } from 'react-bootstrap'
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import FormInputText from '../../Form/FormInputText/FormInputText'
 import Button from '../../Button/Button'
 import Select from 'react-select'
-import {connect} from 'react-redux'
-import {editMovie} from '../../../redux/actions/movie'
+import { connect } from 'react-redux'
+import { editMovie } from '../../../redux/actions/movie'
 
 import uploadHere from '../../../assets/images/upload_here.jpeg'
 
@@ -24,11 +24,11 @@ class EditMovie extends Component {
   }
 
   options = this.props.genre.results.map(item => {
-    return {label: item.name, value: item.id}
+    return { label: item.name, value: item.id }
   })
 
   value = this.props.movie.detailsGenre.map(item => {
-    return {label: item.genre, value: item.id}
+    return { label: item.genre, value: item.id }
   })
 
   onChangeInput = (value) => {
@@ -38,16 +38,16 @@ class EditMovie extends Component {
   }
 
   changeText = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value })
   };
 
   submitData = async (event) => {
-    event.preventDefault();
-    const { name, genre, file, releaseDate, duration, directed, casts, description, category  } = this.state
-    if(genre !== null) {
+    event.preventDefault()
+    const { name, genre, file, releaseDate, duration, directed, casts, description, category } = this.state
+    if (genre !== null) {
       const mapGenre = genre.map(item => item.value)
       await this.props.editMovie(this.props.auth.token, this.props.movie.details.id, name, mapGenre, file, releaseDate, category, duration, directed, casts, description)
-      if(this.props.movie.success === true) {
+      if (this.props.movie.success === true) {
         this.props.history.push('/admin/manage_movie')
       } else {
         this.setState({ message: this.props.movie.errorMsg })
@@ -55,7 +55,7 @@ class EditMovie extends Component {
     } else {
       const mapGenre = this.value.map(item => item.value)
       await this.props.editMovie(this.props.auth.token, this.props.movie.details.id, name, mapGenre, file, releaseDate, category, duration, directed, casts, description)
-      if(this.props.movie.success === true) {
+      if (this.props.movie.success === true) {
         this.props.history.push('/admin/manage_movie')
       } else {
         this.setState({ message: this.props.movie.errorMsg })
@@ -63,7 +63,7 @@ class EditMovie extends Component {
     }
   };
 
-  render() {
+  render () {
     return (
       <>
       <Form onSubmit={this.submitData}>
@@ -72,7 +72,7 @@ class EditMovie extends Component {
           <Col md={4}>
             <div className="card-movies d-flex align-items-center justify-content-center">
               <label className="upload-file">
-                <input type="file" onChange={(e)=>this.setState({file: e.target.files[0], imgPreview: URL.createObjectURL(e.target.files[0])})} />
+                <input type="file" onChange={(e) => this.setState({ file: e.target.files[0], imgPreview: URL.createObjectURL(e.target.files[0]) })} />
                 <div className="image-file">
                   <img src={this.state.imgPreview !== null ? this.state.imgPreview : this.props.movie.details.image ? `http://localhost:5000/uploads/movies/${this.props.movie.details.image}` : uploadHere} alt="movie" />
                 </div>
@@ -162,12 +162,12 @@ class EditMovie extends Component {
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   auth: state.auth,
   genre: state.genre,
   movie: state.movie
 })
 
-const mapDispatchToProps = {editMovie}
+const mapDispatchToProps = { editMovie }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EditMovie))

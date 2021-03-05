@@ -1,24 +1,24 @@
-import React, { Component } from "react";
-import Moment from "react-moment";
-import { Container, Row, Col } from "react-bootstrap";
-import { Link, withRouter } from "react-router-dom";
-import FormInputText from "../../components/Form/FormInputText/FormInputText";
-import Button from "../../components/Button/Button";
-import FormInputNumber from "../../components/Form/FormInputNumber/FormInputNumber";
+import React, { Component } from 'react'
+import Moment from 'react-moment'
+import { Container, Row, Col } from 'react-bootstrap'
+import { Link, withRouter } from 'react-router-dom'
+import FormInputText from '../../components/Form/FormInputText/FormInputText'
+import Button from '../../components/Button/Button'
+import FormInputNumber from '../../components/Form/FormInputNumber/FormInputNumber'
 // import http from '../../helpers/http'
-import {connect} from 'react-redux'
-import {checkOut} from '../../redux/actions/order'
+import { connect } from 'react-redux'
+import { checkOut } from '../../redux/actions/order'
 
-import "./PaymentInfo.scss";
+import './PaymentInfo.scss'
 
-import google from "../../assets/icon/ic_google_pay.png";
-import visa from "../../assets/icon/ic_visa.png";
-import gopay from "../../assets/icon/ic_gopay.png";
-import paypal from "../../assets/icon/ic_paypal.png";
-import dana from "../../assets/icon/ic_dana.png";
-import bca from "../../assets/icon/ic_bca.png";
-import bri from "../../assets/icon/ic_bri.png";
-import ovo from "../../assets/icon/ic_ovo.png";
+import google from '../../assets/icon/ic_google_pay.png'
+import visa from '../../assets/icon/ic_visa.png'
+import gopay from '../../assets/icon/ic_gopay.png'
+import paypal from '../../assets/icon/ic_paypal.png'
+import dana from '../../assets/icon/ic_dana.png'
+import bca from '../../assets/icon/ic_bca.png'
+import bri from '../../assets/icon/ic_bri.png'
+import ovo from '../../assets/icon/ic_ovo.png'
 
 class PaymentInfo extends Component {
   payOrder = async (movieId, cinemaId, showtimesId, seat, token) => {
@@ -38,7 +38,7 @@ class PaymentInfo extends Component {
     //   console.log(err.response.data.message)
     // }
   };
-  render() {
+  render () {
     return (
       <div className="payment">
         <Container>
@@ -56,7 +56,7 @@ class PaymentInfo extends Component {
                         <h6>
                           <Moment format="dddd, D MMMM YYYY">
                           {this.props.showtime.showtimeDate}
-                          </Moment>{" "}
+                          </Moment>{' '}
                           at {this.props.showtime.showtime}
                         </h6>
                       </Col>
@@ -244,13 +244,13 @@ class PaymentInfo extends Component {
           </Row>
         </Container>
       </div>
-    );
+    )
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   order: state.order
 })
-const mapDispatchToProps = {checkOut}
+const mapDispatchToProps = { checkOut }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PaymentInfo));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PaymentInfo))

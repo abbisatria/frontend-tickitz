@@ -6,9 +6,9 @@ import FormInputNumber from '../../components/Form/FormInputNumber/FormInputNumb
 import FormInputPassword from '../../components/Form/FormInputPassword/FormInputPassword'
 import Button from '../../components/Button/Button'
 import http from '../../helpers/http'
-import {connect} from 'react-redux'
-import {updateProfile} from '../../redux/actions/auth'
-import {detailTicket} from '../../redux/actions/order'
+import { connect } from 'react-redux'
+import { updateProfile } from '../../redux/actions/auth'
+import { detailTicket } from '../../redux/actions/order'
 
 import star from '../../assets/icon/eva_star-fill.png'
 import avatar from '../../assets/icon/default-avatar.png'
@@ -28,10 +28,10 @@ class ProfileInfo extends Component {
     imgPreview: null
   }
   changeText = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value })
   };
   submitData = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     const { firstname, lastname, email, phoneNumber, password, confirmPassword, file } = this.state
     if (password !== confirmPassword) {
       this.setState({
@@ -39,22 +39,22 @@ class ProfileInfo extends Component {
       })
     } else {
       const data = new FormData()
-      if(firstname !== '') {
+      if (firstname !== '') {
         data.append('firstname', firstname)
-      } 
-      if(lastname !== '') {
+      }
+      if (lastname !== '') {
         data.append('lastname', lastname)
-      } 
-      if(phoneNumber !== '') {
+      }
+      if (phoneNumber !== '') {
         data.append('phoneNumber', phoneNumber)
-      } 
-      if(email !== '') {
+      }
+      if (email !== '') {
         data.append('email', email)
-      } 
-      if(password !== '') {
+      }
+      if (password !== '') {
         data.append('password', password)
       }
-      if(file !== null) {
+      if (file !== null) {
         data.append('image', file)
       }
       try {
@@ -67,7 +67,7 @@ class ProfileInfo extends Component {
           // console.log(response.data.results)
           this.props.updateProfile(response.data.results)
         })
-      } catch(err) {
+      } catch (err) {
         console.log(err)
         this.setState({ message: err.response.data.message })
       }
@@ -91,7 +91,7 @@ class ProfileInfo extends Component {
                 {Object.keys(this.props.user).length > 0 && (
                   <div className="profile-info">
                      <label className="upload-profile">
-                        <input onChange={(e)=>this.setState({file: e.target.files[0], imgPreview: URL.createObjectURL(e.target.files[0])})} type="file" />
+                        <input onChange={(e) => this.setState({ file: e.target.files[0], imgPreview: URL.createObjectURL(e.target.files[0]) })} type="file" />
                         <div className="image-profile">
                           <img src={this.state.imgPreview !== null ? this.state.imgPreview : this.props.user.image ? `http://localhost:5000/uploads/users/${this.props.user.image}` : avatar} alt="profile" />
                         </div>
@@ -170,8 +170,8 @@ class ProfileInfo extends Component {
                             </FormInputText>
                           </Col>
                           <Col md={6} xs={12}>
-                            <FormInputNumber 
-                            name="phoneNumber" 
+                            <FormInputNumber
+                            name="phoneNumber"
                             onChange={(event) => this.changeText(event)}
                             defaultValue={this.props.user.phoneNumber}
                             >
@@ -183,17 +183,17 @@ class ProfileInfo extends Component {
                         <hr />
                         <Row>
                           <Col md={6} xs={12} className="my-1">
-                            <FormInputPassword 
-                            name="password" 
+                            <FormInputPassword
+                            name="password"
                             onChange={(event) => this.changeText(event)}
                             placeholder="Write your password">
                               New Password
                             </FormInputPassword>
                           </Col>
                           <Col md={6} xs={12} className="my-1">
-                            <FormInputPassword 
+                            <FormInputPassword
                             name="confirmPassword"
-                            onChange={(event) => this.changeText(event)} 
+                            onChange={(event) => this.changeText(event)}
                             placeholder="Confirm your password">
                               Confirm Password
                             </FormInputPassword>
@@ -224,7 +224,7 @@ class ProfileInfo extends Component {
                             Ticket in active
                           </Link>
                           <button onClick={() =>
-                              this.ticketDetail(item.id)
+                            this.ticketDetail(item.id)
                             }>
                             Show Details
                           </button>
@@ -243,9 +243,9 @@ class ProfileInfo extends Component {
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   auth: state.auth
 })
-const mapDispatchToProps = {updateProfile, detailTicket}
+const mapDispatchToProps = { updateProfile, detailTicket }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProfileInfo))

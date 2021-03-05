@@ -1,22 +1,22 @@
-import React, { Component } from "react";
-import Header from "../../parts/Header/Header";
-import Footer from "../../parts/Footer/Footer";
-import MovieDetails from "../../parts/MovieDetails/MovieDetails";
-import ShowtimesTickets from "../../parts/ShowtimesTickets/ShowtimesTickets";
+import React, { Component } from 'react'
+import Header from '../../parts/Header/Header'
+import Footer from '../../parts/Footer/Footer'
+import MovieDetails from '../../parts/MovieDetails/MovieDetails'
+import ShowtimesTickets from '../../parts/ShowtimesTickets/ShowtimesTickets'
 import http from '../../helpers/http'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 class Details extends Component {
   state = {
     details: {}
   };
-  async componentDidMount(){
+  async componentDidMount () {
     const response = await http().get(`movies/${this.props.match.params.id}`)
     this.setState({
       details: response.data.results
     })
   }
-  render() {
+  render () {
     return (
       <>
         <Header user={this.props.auth.user} />
@@ -24,12 +24,12 @@ class Details extends Component {
         <ShowtimesTickets movieId={this.props.match.params.id} />
         <Footer />
       </>
-    );
+    )
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   auth: state.auth
 })
 
-export default connect(mapStateToProps)(Details);
+export default connect(mapStateToProps)(Details)

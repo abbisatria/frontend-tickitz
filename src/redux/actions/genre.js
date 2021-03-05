@@ -9,7 +9,7 @@ export const listGenre = (page) => {
         payload: response.data.results,
         pageInfo: response.data.pageInfo
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_GENRE',
@@ -27,7 +27,7 @@ export const listAllGenre = () => {
         type: 'LIST_ALL_GENRE',
         payload: response.data.results
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_GENRE',
@@ -45,7 +45,7 @@ export const detailGenre = (id) => {
         type: 'DETAIL_GENRE',
         payload: response.data.results
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_GENRE',
@@ -65,7 +65,7 @@ export const createGenre = (token, name) => {
         type: 'CREATE_GENRE',
         payload: response.data.success
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_GENRE',
@@ -85,7 +85,7 @@ export const editGenre = (token, id, name) => {
         type: 'EDIT_GENRE',
         payload: response.data.success
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_GENRE',
@@ -101,9 +101,9 @@ export const deleteGenre = (token, id) => {
       const response = await http(token).delete(`genre/${id}`)
       dispatch({
         type: 'DELETE_GENRE',
-        payload: response.data.success,
+        payload: response.data.success
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_GENRE',

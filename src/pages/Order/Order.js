@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import Header from "../../parts/Header/Header";
-import Footer from "../../parts/Footer/Footer";
+import React, { Component } from 'react'
+import Header from '../../parts/Header/Header'
+import Footer from '../../parts/Footer/Footer'
 
-import OrderMovie from "../../parts/OrderMovie/OrderMovie";
-import {connect} from 'react-redux'
+import OrderMovie from '../../parts/OrderMovie/OrderMovie'
+import { connect } from 'react-redux'
 
 class Order extends Component {
-  render() {
+  render () {
     return (
       <>
         <Header user={this.props.auth.user} />
@@ -16,13 +16,13 @@ class Order extends Component {
         />
         <Footer />
       </>
-    );
+    )
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   auth: state.auth,
   order: state.order
 })
 
-export default connect(mapStateToProps)(Order);
+export default connect(mapStateToProps)(Order)

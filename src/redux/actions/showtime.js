@@ -13,7 +13,7 @@ export const createShowtime = (token, idMovie, showtimeDate, idCinema, showtime)
         type: 'CREATE_SHOWTIME',
         payload: response.data.success
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_SHOWTIME',
@@ -33,7 +33,7 @@ export const cinemaLocation = (location) => {
         type: 'LIST_CINEMA_LOCATION',
         payload: response.data.results
       })
-    } catch(err) {
+    } catch (err) {
       const { message } = err.response.data
       dispatch({
         type: 'SET_MESSAGE_SHOWTIME',

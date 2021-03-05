@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Moment from 'react-moment'
-import moment from "moment"
+import moment from 'moment'
 import { Container, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ReactToPrint from 'react-to-print'
@@ -10,7 +10,7 @@ import logo from '../../assets/images/logo-tickitz.png'
 
 import './ProofOfPayment.scss'
 
-const {REACT_APP_URL: URL} = process.env
+const { REACT_APP_URL: URL } = process.env
 
 class ProofOfPayment extends Component {
   render () {
@@ -58,7 +58,7 @@ class ProofOfPayment extends Component {
                       </Col>
                       <Col md={4} xs={5} className="mt-3 order-4 order-lg-3">
                         <p>Time</p>
-                        <h6>{moment(this.props.ticket.showtime, "HH:mm:ss").format("hh:mm A")}</h6>
+                        <h6>{moment(this.props.ticket.showtime, 'HH:mm:ss').format('hh:mm A')}</h6>
                       </Col>
                       <Col md={4} xs={5} className="mt-lg-3 order-2 order-lg-4">
                         <p>Category</p>
@@ -103,9 +103,9 @@ class ProofOfPayment extends Component {
             <div className="download-or-print mt-5">
             <ReactToPrint
               trigger={() => {
-                return  <button className="link-download-print">
+                return <button className="link-download-print">
                           <i className="fa fa-download"></i>Download
-                        </button>;
+                        </button>
               }}
               content={() => this.componentRef}
             />

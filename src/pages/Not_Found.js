@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 
 import './NotFound.scss'
 
-export default class Not_Found extends Component {
-  render() {
+export default class NotFound extends Component {
+  render () {
     return (
       <div className="page-not-found">
         <h1 className="status">404</h1>

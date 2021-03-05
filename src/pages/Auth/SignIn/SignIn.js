@@ -1,44 +1,44 @@
-import React, { Component } from "react";
-import { Container, Row, Col, Form, Alert, Spinner } from "react-bootstrap";
-import Button from "../../../components/Button/Button";
-import { Link } from "react-router-dom";
-import FormInputText from "../../../components/Form/FormInputText/FormInputText";
-import FormInputPassword from "../../../components/Form/FormInputPassword/FormInputPassword";
+import React, { Component } from 'react'
+import { Container, Row, Col, Form, Alert, Spinner } from 'react-bootstrap'
+import Button from '../../../components/Button/Button'
+import { Link } from 'react-router-dom'
+import FormInputText from '../../../components/Form/FormInputText/FormInputText'
+import FormInputPassword from '../../../components/Form/FormInputPassword/FormInputPassword'
 
-import {connect} from 'react-redux'
-import {login} from '../../../redux/actions/auth'
+import { connect } from 'react-redux'
+import { login } from '../../../redux/actions/auth'
 
-import logo from "../../../assets/images/logo-tickitz.png";
-import icGoogle from "../../../assets/icon/ic-google.png";
-import icFacebook from "../../../assets/icon/ic-facebook.png";
+import logo from '../../../assets/images/logo-tickitz.png'
+import icGoogle from '../../../assets/icon/ic-google.png'
+import icFacebook from '../../../assets/icon/ic-facebook.png'
 
-import "../auth.scss";
+import '../auth.scss'
 
 class SignIn extends Component {
   state = {
-    email: "",
-    password: "",
+    email: '',
+    password: '',
     isLoading: false
   };
 
   submitData = async (event) => {
-    event.preventDefault();
-    this.setState({isLoading: true})
-    const {email, password} = this.state
+    event.preventDefault()
+    this.setState({ isLoading: true })
+    const { email, password } = this.state
     await this.props.login(email, password)
-    this.setState({isLoading: false})
+    this.setState({ isLoading: false })
   };
 
-  componentDidUpdate() {
-    if(this.props.auth.token) {
-      if(this.props.auth.user.role === 1) {
-        if(this.props.location.state === undefined) {
+  componentDidUpdate () {
+    if (this.props.auth.token) {
+      if (this.props.auth.user.role === 1) {
+        if (this.props.location.state === undefined) {
           this.props.history.push('/admin')
         } else {
           this.props.history.push((this.props.location.state.from && this.props.location.state.from.pathname))
         }
       } else {
-        if(this.props.location.state === undefined || this.props.location.state.from.state === undefined) {
+        if (this.props.location.state === undefined || this.props.location.state.from.state === undefined) {
           this.props.history.push('/')
         } else {
           this.props.history.push((this.props.location.state.from && this.props.location.state.from.pathname))
@@ -48,10 +48,10 @@ class SignIn extends Component {
   }
 
   changeText = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value })
   };
 
-  render() {
+  render () {
     return (
       <Container fluid>
         <Row>
@@ -86,9 +86,11 @@ class SignIn extends Component {
                 Password
               </FormInputPassword>
 
-              {this.state.isLoading === false ? <Button className="btn-primary w-100 py-3 mb-4" type="submit">
+              {this.state.isLoading === false
+                ? <Button className="btn-primary w-100 py-3 mb-4" type="submit">
                 Sign In
-              </Button> : <div className="text-center"><Spinner animation="border" /></div>}
+              </Button>
+                : <div className="text-center"><Spinner animation="border" /></div>}
             </Form>
             <div className="text-center link mb-4">
               Forgot your password?
@@ -116,13 +118,13 @@ class SignIn extends Component {
           </Col>
         </Row>
       </Container>
-    );
+    )
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   auth: state.auth
 })
-const mapDispatchToProps = {login}
+const mapDispatchToProps = { login }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn)

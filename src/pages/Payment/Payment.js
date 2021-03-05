@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import Header from "../../parts/Header/Header";
-import Footer from "../../parts/Footer/Footer";
+import React, { Component } from 'react'
+import Header from '../../parts/Header/Header'
+import Footer from '../../parts/Footer/Footer'
 
-import PaymentInfo from "../../parts/PaymentInfo/PaymentInfo";
-import {connect} from 'react-redux'
+import PaymentInfo from '../../parts/PaymentInfo/PaymentInfo'
+import { connect } from 'react-redux'
 
 class Payment extends Component {
-  render() {
+  render () {
     return (
       <>
         <Header user={this.props.auth.user} />
@@ -18,13 +18,13 @@ class Payment extends Component {
         />
         <Footer />
       </>
-    );
+    )
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   auth: state.auth,
   order: state.order
 })
 
-export default connect(mapStateToProps)(Payment);
+export default connect(mapStateToProps)(Payment)

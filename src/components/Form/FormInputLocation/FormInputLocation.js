@@ -1,25 +1,24 @@
 import React, { Component } from 'react'
 import { Form } from 'react-bootstrap'
 import location from '../../../assets/icon/ic_location.png'
-import {connect} from 'react-redux'
-import {listLocation} from '../../../redux/actions/cinema'
+import { connect } from 'react-redux'
+import { listLocation } from '../../../redux/actions/cinema'
 
 import './FormInputLocation.scss'
 
 class FormInputLocation extends Component {
-
-  async componentDidMount() {
+  async componentDidMount () {
     await this.props.listLocation()
   }
 
-  render() {
+  render () {
     return (
       <Form.Group>
         <div className="form-outline-location">
           <img src={location} alt="icon-location" />
           <Form.Control as="select" custom className="form-select" name="location" onChange={(event) => this.props.data(event)}>
             <option>Location....</option>
-            {this.props.cinema.location !== null && 
+            {this.props.cinema.location !== null &&
               this.props.cinema.location.map((item, index) => {
                 return (
                   <React.Fragment key={String(index)}>
@@ -35,10 +34,10 @@ class FormInputLocation extends Component {
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   cinema: state.cinema
 })
 
-const mapDispatchToProps = {listLocation}
+const mapDispatchToProps = { listLocation }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormInputLocation)

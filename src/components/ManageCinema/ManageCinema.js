@@ -2,10 +2,8 @@ import React, { Component } from 'react'
 import { Table, Alert, Modal, Spinner } from 'react-bootstrap'
 import { Link, withRouter } from 'react-router-dom'
 import Button from '../Button/Button'
-import {connect} from 'react-redux'
-import {listCinema} from '../../redux/actions/cinema'
-import {detailCinema} from '../../redux/actions/cinema'
-import {deleteCinema} from '../../redux/actions/cinema'
+import { connect } from 'react-redux'
+import { listCinema, detailCinema, deleteCinema } from '../../redux/actions/cinema'
 
 class ManageCinema extends Component {
   state = {
@@ -15,14 +13,14 @@ class ManageCinema extends Component {
     isLoading: true
   };
 
-  async componentDidMount(){
+  async componentDidMount () {
     await this.props.listCinema()
-    this.setState({isLoading: false})
+    this.setState({ isLoading: false })
   }
-  
+
   prev = async () => {
-    if(this.state.page > 1) {
-      this.setState({isLoading: true})
+    if (this.state.page > 1) {
+      this.setState({ isLoading: true })
       await this.props.listCinema(this.state.page - 1)
       this.setState({
         isLoading: false,
@@ -36,8 +34,8 @@ class ManageCinema extends Component {
   }
 
   next = async () => {
-    if(this.state.page !== this.props.cinema.pageInfo.totalPage) {
-      this.setState({isLoading: true})
+    if (this.state.page !== this.props.cinema.pageInfo.totalPage) {
+      this.setState({ isLoading: true })
       await this.props.listCinema(this.state.page + 1)
       this.setState({
         isLoading: false,
@@ -52,7 +50,7 @@ class ManageCinema extends Component {
 
   delete = async (token, id) => {
     await this.props.deleteCinema(token, id)
-    if(this.props.cinema.success === true) {
+    if (this.props.cinema.success === true) {
       await this.props.listCinema()
       this.setState({ message: 'Delete Success', show: false })
     } else {
@@ -65,11 +63,11 @@ class ManageCinema extends Component {
     this.props.history.push('/admin/manage_cinema/edit')
   }
 
-  handleClose = () => this.setState({show: false})
+  handleClose = () => this.setState({ show: false })
 
-  handleShow = () => this.setState({show: true})
+  handleShow = () => this.setState({ show: true })
 
-  render() {
+  render () {
     return (
       <>
         <div className="d-flex justify-content-between mb-3">
@@ -89,8 +87,9 @@ class ManageCinema extends Component {
             </tr>
           </thead>
           <tbody>
-          {(this.props.cinema.results !== null && this.state.isLoading !== true) ? this.props.cinema.results.map(value => {
-            return (
+          {(this.props.cinema.results !== null && this.state.isLoading !== true)
+            ? this.props.cinema.results.map(value => {
+              return (
               <tr key={String(value.id)}>
                 <td>{value.id}</td>
                 <td>{value.name}</td>
@@ -108,10 +107,10 @@ class ManageCinema extends Component {
                         No
                       </Button>
                       <Button className="btn btn-primary" onClick={() =>
-                          this.delete(
-                            this.props.auth.token, 
-                            value.id
-                          )
+                        this.delete(
+                          this.props.auth.token,
+                          value.id
+                        )
                         } >
                         Yes
                       </Button>
@@ -119,8 +118,9 @@ class ManageCinema extends Component {
                   </Modal>
                 </td>
               </tr>
-            )
-          }) : <tr><td colSpan={4} className="text-center"><Spinner animation="border" /></td></tr>}
+              )
+            })
+            : <tr><td colSpan={4} className="text-center"><Spinner animation="border" /></td></tr>}
           </tbody>
         </Table>
         <div className="d-flex justify-content-center">
@@ -132,11 +132,11 @@ class ManageCinema extends Component {
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   auth: state.auth,
   cinema: state.cinema
 })
 
-const mapDispatchToProps = {listCinema, detailCinema, deleteCinema}
+const mapDispatchToProps = { listCinema, detailCinema, deleteCinema }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ManageCinema))

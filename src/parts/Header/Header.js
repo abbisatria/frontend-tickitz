@@ -1,34 +1,34 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 import {
   Navbar,
   Nav,
   NavDropdown,
   Form,
   Button,
-  Container,
-} from "react-bootstrap";
-import { Link, NavLink, withRouter } from "react-router-dom";
-import {logout} from '../../redux/actions/auth'
-import {clearOrder} from '../../redux/actions/order'
-import {connect} from 'react-redux'
+  Container
+} from 'react-bootstrap'
+import { Link, NavLink, withRouter } from 'react-router-dom'
+import { logout } from '../../redux/actions/auth'
+import { clearOrder } from '../../redux/actions/order'
+import { connect } from 'react-redux'
 
-import "./Header.scss";
+import './Header.scss'
 
-import logo from "../../assets/images/tickitz-logo.png";
+import logo from '../../assets/images/tickitz-logo.png'
 import avatar from '../../assets/icon/default-avatar.png'
 
 class Header extends Component {
   signOut = (logout) => {
     logout()
     this.props.clearOrder()
-    this.props.history.push(`/sign-in`);
+    this.props.history.push('/sign-in')
   };
 
   profilePage = () => {
-    this.props.history.push(`/profile`);
+    this.props.history.push('/profile')
   };
 
-  render() {
+  render () {
     return (
       <Container>
         <div className="d-none d-md-block">
@@ -69,7 +69,8 @@ class Header extends Component {
                     <i className="fa fa-search"></i>
                   </Button>
                 </Form>
-                {this.props.user ? (
+                {this.props.user
+                  ? (
                   <NavDropdown
                     id="basic-nav-dropdown"
                     className="nav-link ml-4"
@@ -90,7 +91,7 @@ class Header extends Component {
                       <Button
                         variant="link"
                         className="px-0"
-                        onClick={() => 
+                        onClick={() =>
                           this.signOut(
                             this.props.logout
                           )
@@ -100,11 +101,12 @@ class Header extends Component {
                       </Button>
                     </NavDropdown.Item>
                   </NavDropdown>
-                ) : (
+                    )
+                  : (
                   <Link to="/sign-up" className="sign-up-button py-2 px-4 ml-4">
                     Sign Up
                   </Link>
-                )}
+                    )}
               </Nav>
             </Navbar.Collapse>
           </Navbar>
@@ -155,15 +157,15 @@ class Header extends Component {
           </Navbar>
         </div>
       </Container>
-    );
+    )
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   auth: state.auth,
   order: state.order
 })
 
-const mapDispatchToProps = {logout, clearOrder}
+const mapDispatchToProps = { logout, clearOrder }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header))

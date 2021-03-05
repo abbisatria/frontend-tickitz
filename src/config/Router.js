@@ -18,7 +18,7 @@ import ScrollToTop from '../ScrollToTop'
 import PrivateRoute from './PrivateRoute'
 import PrivateRouteProfile from './PrivateRouteProfile'
 import PrivateRouteAdmin from './PrivateRouteAdmin'
-import Not_Found from '../pages/Not_Found'
+import NotFound from '../pages/Not_Found'
 
 class Router extends Component {
   render () {
@@ -40,7 +40,7 @@ class Router extends Component {
             <PrivateRoute path='/order' privateComponent={Order} />
             <PrivateRoute path='/payment' privateComponent={Payment} />
             <PrivateRouteProfile path='/ticket/:id' privateComponent={Ticket} />
-            <Route component={Not_Found} />
+            <Route component={NotFound} />
           </Switch>
         </BrowserRouter>
         </PersistGate>

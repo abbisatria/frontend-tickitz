@@ -1,26 +1,26 @@
-import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
-import Button from "../Button/Button";
-import { Row, Col } from "react-bootstrap";
+import React, { Component } from 'react'
+import { Link, withRouter } from 'react-router-dom'
+import Button from '../Button/Button'
+import { Row, Col } from 'react-bootstrap'
 
-import {connect} from 'react-redux'
-import {order} from '../../redux/actions/order'
+import { connect } from 'react-redux'
+import { order } from '../../redux/actions/order'
 
-import "./CardShowTimes.scss";
+import './CardShowTimes.scss'
 
 class CardShowTimes extends Component {
   state = {
-    time: "",
+    time: ''
   };
 
   changeTime = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value })
   };
   bookNow = async (showtimesId) => {
     await this.props.order(showtimesId)
-    this.props.history.push(`/order`);
+    this.props.history.push('/order')
   };
-  render() {
+  render () {
     return (
       <Col md={4} key={String(this.props.data.id)}>
         <div className="card-showtimes">
@@ -51,7 +51,7 @@ class CardShowTimes extends Component {
                       />
                       <span>{show.name}</span>
                     </label>
-                  );
+                  )
                 })}
               </Row>
             </div>
@@ -67,7 +67,7 @@ class CardShowTimes extends Component {
                   )
                 }
                 className="btn-primary book-now px-4 py-2"
-                disabled={this.state.time === '' ? true : false}
+                disabled={this.state.time === ''}
               >
                 Book Now
               </Button>
@@ -78,13 +78,13 @@ class CardShowTimes extends Component {
           </div>
         </div>
       </Col>
-    );
+    )
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   order: state.order
 })
-const mapDispatchToProps = {order}
+const mapDispatchToProps = { order }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CardShowTimes));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CardShowTimes))

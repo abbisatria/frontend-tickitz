@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import { Table, Alert, Modal, Spinner } from 'react-bootstrap'
 import Button from '../Button/Button'
-import {connect} from 'react-redux'
-import {listMovie} from '../../redux/actions/movie'
-import {detailMovie} from '../../redux/actions/movie'
-import {detailMovieGenre} from '../../redux/actions/movie'
-import {listAllGenre} from '../../redux/actions/genre'
-import {deleteMovie} from '../../redux/actions/movie'
+import { connect } from 'react-redux'
+import { listMovie, detailMovie, detailMovieGenre, deleteMovie } from '../../redux/actions/movie'
+
+import { listAllGenre } from '../../redux/actions/genre'
+
 import Moment from 'react-moment'
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 class ManageMovie extends Component {
   state = {
@@ -21,25 +20,25 @@ class ManageMovie extends Component {
     sort: ''
   };
 
-  async componentDidMount(){
+  async componentDidMount () {
     await this.props.listMovie()
-    this.setState({isLoading: false})
+    this.setState({ isLoading: false })
   }
 
   order = async (value) => {
-    this.setState({isLoading: true})
-    if(this.state.icSort === 'down') {
-      this.setState({icSort: 'up', isLoading: false, order: value, sort: 'DESC'})
+    this.setState({ isLoading: true })
+    if (this.state.icSort === 'down') {
+      this.setState({ icSort: 'up', isLoading: false, order: value, sort: 'DESC' })
       await this.props.listMovie(this.state.page, value, 'DESC')
     } else {
-      this.setState({icSort: 'down', isLoading: false, order: value, sort: 'ASC'})
+      this.setState({ icSort: 'down', isLoading: false, order: value, sort: 'ASC' })
       await this.props.listMovie(this.state.page, value, 'ASC')
     }
   }
-  
+
   prev = async () => {
-    if(this.state.page > 1) {
-      this.setState({isLoading: true})
+    if (this.state.page > 1) {
+      this.setState({ isLoading: true })
       await this.props.listMovie(this.state.page - 1, this.state.order, this.state.sort)
       this.setState({
         isLoading: false,
@@ -54,7 +53,7 @@ class ManageMovie extends Component {
 
   delete = async (token, id) => {
     await this.props.deleteMovie(token, id)
-    if(this.props.movie.success === true) {
+    if (this.props.movie.success === true) {
       await this.props.listMovie()
       this.setState({ message: 'Delete Success', show: false })
     } else {
@@ -63,8 +62,8 @@ class ManageMovie extends Component {
   }
 
   next = async () => {
-    if(this.state.page !== this.props.movie.pageInfo.totalPage) {
-      this.setState({isLoading: true})
+    if (this.state.page !== this.props.movie.pageInfo.totalPage) {
+      this.setState({ isLoading: true })
       await this.props.listMovie(this.state.page + 1, this.state.order, this.state.sort)
       this.setState({
         isLoading: false,
@@ -89,11 +88,11 @@ class ManageMovie extends Component {
     this.props.history.push('/admin/manage_movie/edit')
   }
 
-  handleClose = () => this.setState({show: false})
+  handleClose = () => this.setState({ show: false })
 
-  handleShow = () => this.setState({show: true})
+  handleShow = () => this.setState({ show: true })
 
-  render() {
+  render () {
     return (
       <>
         <div className="d-flex justify-content-between mb-3">
@@ -107,14 +106,15 @@ class ManageMovie extends Component {
           <thead>
             <tr>
               <th>No</th>
-              <th>Name <i className={`fa fa-sort-${this.state.icSort}`} onClick={() => {this.order('name')}} /></th>
-              <th>Release Date <i className={`fa fa-sort-${this.state.icSort}`} onClick={() => {this.order('releaseDate')}} /></th>
+              <th>Name <i className={`fa fa-sort-${this.state.icSort}`} onClick={() => { this.order('name') }} /></th>
+              <th>Release Date <i className={`fa fa-sort-${this.state.icSort}`} onClick={() => { this.order('releaseDate') }} /></th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-          {(this.props.movie.results !== null && this.state.isLoading !== true) ? this.props.movie.results.map(value => {
-            return (
+          {(this.props.movie.results !== null && this.state.isLoading !== true)
+            ? this.props.movie.results.map(value => {
+              return (
               <tr key={String(value.id)}>
                 <td>{value.id}</td>
                 <td>{value.name}</td>
@@ -137,7 +137,7 @@ class ManageMovie extends Component {
                     </Button>
                     <Button className="btn btn-primary" onClick={() =>
                       this.delete(
-                        this.props.auth.token, 
+                        this.props.auth.token,
                         value.id
                       )
                     } >
@@ -147,8 +147,9 @@ class ManageMovie extends Component {
                 </Modal>
                 </td>
               </tr>
-            )
-          }) : <tr><td colSpan={4} className="text-center"><Spinner animation="border" /></td></tr>}
+              )
+            })
+            : <tr><td colSpan={4} className="text-center"><Spinner animation="border" /></td></tr>}
           </tbody>
         </Table>
         <div className="d-flex justify-content-between">
@@ -163,12 +164,12 @@ class ManageMovie extends Component {
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   auth: state.auth,
   movie: state.movie,
   genre: state.genre
 })
 
-const mapDispatchToProps = {listMovie, detailMovie, detailMovieGenre, deleteMovie, listAllGenre}
+const mapDispatchToProps = { listMovie, detailMovie, detailMovieGenre, deleteMovie, listAllGenre }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ManageMovie))

@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Row, Col, Form, Alert } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import FormInputText from '../../Form/FormInputText/FormInputText'
-import {connect} from 'react-redux'
-import {editGenre} from '../../../redux/actions/genre'
+import { connect } from 'react-redux'
+import { editGenre } from '../../../redux/actions/genre'
 import Button from '../../Button/Button'
 
 class EditGenre extends Component {
@@ -13,29 +13,29 @@ class EditGenre extends Component {
   }
 
   changeText = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value })
   };
 
   submitData = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     const { name } = this.state
-    if(name !== '') {
+    if (name !== '') {
       await this.props.editGenre(this.props.auth.token, this.props.genre.details.id, name)
-      if(this.props.genre.success === true) {
+      if (this.props.genre.success === true) {
         this.props.history.push('/admin/manage_genre')
       } else {
         this.setState({ message: this.props.genre.errorMsg })
       }
     } else {
       await this.props.editGenre(this.props.auth.token, this.props.genre.details.id, this.props.genre.details.name)
-      if(this.props.genre.success === true) {
+      if (this.props.genre.success === true) {
         this.props.history.push('/admin/manage_genre')
       } else {
         this.setState({ message: this.props.genre.errorMsg })
       }
     }
   };
-  render() {
+  render () {
     return (
       <Form onSubmit={this.submitData}>
         <h1>Create Genre</h1>
@@ -59,11 +59,11 @@ class EditGenre extends Component {
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   auth: state.auth,
   genre: state.genre
 })
 
-const mapDispatchToProps = {editGenre}
+const mapDispatchToProps = { editGenre }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EditGenre))

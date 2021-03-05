@@ -2,15 +2,15 @@ import React, { Component } from 'react'
 import { Table } from 'react-bootstrap'
 import { Link, withRouter } from 'react-router-dom'
 import Button from '../Button/Button'
-import {connect} from 'react-redux'
-import {listAllMovie} from '../../redux/actions/movie'
+import { connect } from 'react-redux'
+import { listAllMovie } from '../../redux/actions/movie'
 
 class ManageShowtime extends Component {
   linkCreateShowtime = async () => {
     await this.props.listAllMovie()
     this.props.history.push('/admin/manage_showtime/create')
   }
-  render() {
+  render () {
     return (
       <>
         <div className="d-flex justify-content-between mb-3">
@@ -45,10 +45,10 @@ class ManageShowtime extends Component {
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   movie: state.movie
 })
 
-const mapDispatchToProps = {listAllMovie}
+const mapDispatchToProps = { listAllMovie }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ManageShowtime))

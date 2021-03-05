@@ -1,22 +1,22 @@
-import React, { Component } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import CardNowShowing from "../../components/CardNowShowing/CardNowShowing";
+import React, { Component } from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import CardNowShowing from '../../components/CardNowShowing/CardNowShowing'
 import http from '../../helpers/http'
 
-import "./NowShowing.scss";
+import './NowShowing.scss'
 
 class NowShowing extends Component {
   state = {
-    nowShowingList: [],
+    nowShowingList: []
   };
-  async componentDidMount(){
+  async componentDidMount () {
     const response = await http().get('movies/movieNowShowing')
     this.setState({
       nowShowingList: response.data.results
     })
   }
-  render() {
+  render () {
     return (
       <div className="now-showing">
         <Container>
@@ -34,13 +34,13 @@ class NowShowing extends Component {
         <Container>
           <div className="movies">
             {this.state.nowShowingList.map((value, index) => {
-              return <CardNowShowing data={value} key={String(index)} />;
+              return <CardNowShowing data={value} key={String(index)} />
             })}
           </div>
         </Container>
       </div>
-    );
+    )
   }
 }
 
-export default NowShowing;
+export default NowShowing

@@ -2,10 +2,8 @@ import React, { Component } from 'react'
 import { Table, Alert, Modal, Spinner } from 'react-bootstrap'
 import { Link, withRouter } from 'react-router-dom'
 import Button from '../Button/Button'
-import {connect} from 'react-redux'
-import {listGenre} from '../../redux/actions/genre'
-import {detailGenre} from '../../redux/actions/genre'
-import {deleteGenre} from '../../redux/actions/genre'
+import { connect } from 'react-redux'
+import { listGenre, detailGenre, deleteGenre } from '../../redux/actions/genre'
 
 class ManageGenre extends Component {
   state = {
@@ -15,14 +13,14 @@ class ManageGenre extends Component {
     isLoading: true
   };
 
-  async componentDidMount(){
+  async componentDidMount () {
     await this.props.listGenre()
-    this.setState({isLoading: false})
+    this.setState({ isLoading: false })
   }
-  
+
   prev = async () => {
-    if(this.state.page > 1) {
-      this.setState({isLoading: true})
+    if (this.state.page > 1) {
+      this.setState({ isLoading: true })
       await this.props.listGenre(this.state.page - 1)
       this.setState({
         isLoading: false,
@@ -36,8 +34,8 @@ class ManageGenre extends Component {
   }
 
   next = async () => {
-    if(this.state.page !== this.props.genre.pageInfo.totalPage) {
-      this.setState({isLoading: true})
+    if (this.state.page !== this.props.genre.pageInfo.totalPage) {
+      this.setState({ isLoading: true })
       await this.props.listGenre(this.state.page + 1)
       this.setState({
         isLoading: false,
@@ -52,7 +50,7 @@ class ManageGenre extends Component {
 
   delete = async (token, id) => {
     await this.props.deleteGenre(token, id)
-    if(this.props.genre.success === true) {
+    if (this.props.genre.success === true) {
       await this.props.listGenre()
       this.setState({ message: 'Delete Success', show: false })
     } else {
@@ -65,11 +63,11 @@ class ManageGenre extends Component {
     this.props.history.push('/admin/manage_genre/edit')
   }
 
-  handleClose = () => this.setState({show: false})
+  handleClose = () => this.setState({ show: false })
 
-  handleShow = () => this.setState({show: true})
+  handleShow = () => this.setState({ show: true })
 
-  render() {
+  render () {
     return (
       <>
         <div className="d-flex justify-content-between mb-3">
@@ -88,8 +86,9 @@ class ManageGenre extends Component {
             </tr>
           </thead>
           <tbody>
-          {(this.props.genre.results !== null && this.state.isLoading !== true) ? this.props.genre.results.map(value => {
-            return (
+          {(this.props.genre.results !== null && this.state.isLoading !== true)
+            ? this.props.genre.results.map(value => {
+              return (
               <tr key={String(value.id)}>
                 <td>{value.id}</td>
                 <td>{value.name}</td>
@@ -106,10 +105,10 @@ class ManageGenre extends Component {
                           No
                         </Button>
                         <Button className="btn btn-primary" onClick={() =>
-                            this.delete(
-                              this.props.auth.token, 
-                              value.id
-                            )
+                          this.delete(
+                            this.props.auth.token,
+                            value.id
+                          )
                           } >
                           Yes
                         </Button>
@@ -117,8 +116,9 @@ class ManageGenre extends Component {
                     </Modal>
                 </td>
               </tr>
-            )
-          }) : <tr><td colSpan={4} className="text-center"><Spinner animation="border" /></td></tr>}
+              )
+            })
+            : <tr><td colSpan={4} className="text-center"><Spinner animation="border" /></td></tr>}
           </tbody>
         </Table>
         <div className="d-flex justify-content-center">
@@ -130,11 +130,11 @@ class ManageGenre extends Component {
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   auth: state.auth,
   genre: state.genre
 })
 
-const mapDispatchToProps = {listGenre, detailGenre, deleteGenre}
+const mapDispatchToProps = { listGenre, detailGenre, deleteGenre }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ManageGenre))

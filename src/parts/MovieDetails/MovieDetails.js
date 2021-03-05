@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import Moment from "react-moment";
+import React, { Component } from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
+import Moment from 'react-moment'
 
-import "./MovieDetails.scss";
+import './MovieDetails.scss'
 
 class MovieDetails extends Component {
-  render() {
+  render () {
     return (
       <>
       {Object.keys(this.props.data).length > 0 && (
@@ -26,7 +26,7 @@ class MovieDetails extends Component {
                 <Row>
                   <Col xs={6} md={4}>
                     <h6>Release date</h6>
-                    <h3> 
+                    <h3>
                       <Moment format="MMMM D, YYYY">
                         {this.props.data.releaseDate}
                       </Moment>
@@ -57,8 +57,8 @@ class MovieDetails extends Component {
       </div>
       )}
       </>
-    );
+    )
   }
 }
 
-export default MovieDetails;
+export default MovieDetails
