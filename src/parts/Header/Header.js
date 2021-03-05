@@ -17,6 +17,8 @@ import './Header.scss'
 import logo from '../../assets/images/tickitz-logo.png'
 import avatar from '../../assets/icon/default-avatar.png'
 
+const { REACT_APP_API_URL: URL } = process.env
+
 class Header extends Component {
   signOut = (logout) => {
     logout()
@@ -74,7 +76,7 @@ class Header extends Component {
                   <NavDropdown
                     id="basic-nav-dropdown"
                     className="nav-link ml-4"
-                    title={<img src={this.props.user.image ? `http://localhost:5000/uploads/users/${this.props.user.image}` : avatar} alt="profile" className="photo-profile" />}
+                    title={<img src={this.props.user.image && this.props.user.image !== 'null' ? `${URL}uploads/users/${this.props.user.image}` : avatar} alt="profile" className="photo-profile" />}
                   >
                     <NavDropdown.Item>
                       <Button

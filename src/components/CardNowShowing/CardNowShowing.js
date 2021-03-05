@@ -4,11 +4,13 @@ import Button from '../Button/Button'
 
 import './CardNowShowing.scss'
 
+const { REACT_APP_API_URL: URL } = process.env
+
 export default class CardNowShowing extends Component {
   render () {
     return (
       <div className="card-movies-now-showing">
-        <img src={`http://localhost:5000/uploads/movies/${this.props.data.image}`} alt={this.props.data.name} />
+        <img src={`${URL}uploads/movies/${this.props.data.image}`} alt={this.props.data.name} />
         <div className="title-movies">
           <h1>{this.props.data.name}</h1>
           <p>{this.props.data.genre}</p>

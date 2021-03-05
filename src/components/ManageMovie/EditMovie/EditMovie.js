@@ -9,6 +9,8 @@ import { editMovie } from '../../../redux/actions/movie'
 
 import uploadHere from '../../../assets/images/upload_here.jpeg'
 
+const { REACT_APP_API_URL: URL } = process.env
+
 class EditMovie extends Component {
   state = {
     genre: null,
@@ -74,7 +76,7 @@ class EditMovie extends Component {
               <label className="upload-file">
                 <input type="file" onChange={(e) => this.setState({ file: e.target.files[0], imgPreview: URL.createObjectURL(e.target.files[0]) })} />
                 <div className="image-file">
-                  <img src={this.state.imgPreview !== null ? this.state.imgPreview : this.props.movie.details.image ? `http://localhost:5000/uploads/movies/${this.props.movie.details.image}` : uploadHere} alt="movie" />
+                  <img src={this.state.imgPreview !== null ? this.state.imgPreview : this.props.movie.details.image ? `${URL}uploads/movies/${this.props.movie.details.image}` : uploadHere} alt="movie" />
                 </div>
               </label>
             </div>

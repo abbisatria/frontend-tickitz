@@ -15,6 +15,8 @@ import avatar from '../../assets/icon/default-avatar.png'
 
 import './ProfileInfo.scss'
 
+const { REACT_APP_API_URL: URL } = process.env
+
 class ProfileInfo extends Component {
   state = {
     firstname: '',
@@ -93,7 +95,7 @@ class ProfileInfo extends Component {
                      <label className="upload-profile">
                         <input onChange={(e) => this.setState({ file: e.target.files[0], imgPreview: URL.createObjectURL(e.target.files[0]) })} type="file" />
                         <div className="image-profile">
-                          <img src={this.state.imgPreview !== null ? this.state.imgPreview : this.props.user.image ? `http://localhost:5000/uploads/users/${this.props.user.image}` : avatar} alt="profile" />
+                          <img src={this.state.imgPreview !== null ? this.state.imgPreview : this.props.user.image && this.props.user.image !== 'null' ? `${URL}uploads/users/${this.props.user.image}` : avatar} alt="profile" />
                         </div>
                       </label>
                     <h3>{this.props.user.firstname} {this.props.user.lastname}</h3>
@@ -215,7 +217,7 @@ class ProfileInfo extends Component {
                             <h6>{item.movie}</h6>
                           </Col>
                           <Col md={4} xs={12} className="order-1 order-lg-2">
-                            <img src={`http://localhost:5000/uploads/cinemas/${item.image}`} alt={item.cinema} />
+                            <img src={`${URL}uploads/cinemas/${item.image}`} alt={item.cinema} />
                           </Col>
                         </Row>
                         <hr />

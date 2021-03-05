@@ -12,6 +12,8 @@ import FormInputText from '../../Form/FormInputText/FormInputText'
 import Select from 'react-select'
 import moment from 'moment'
 
+const { REACT_APP_API_URL: URL } = process.env
+
 class CreateShowtime extends Component {
   state = {
     time: '',
@@ -112,7 +114,7 @@ class CreateShowtime extends Component {
                         <label>
                           <input type="checkbox" name="cinema" onClick={() => this.selectedCinema(item.id)} />
                           <div className="cinema">
-                            <img src={`http://localhost:5000/uploads/cinemas/${item.image}`} alt={item.name} />
+                            <img src={`${URL}uploads/cinemas/${item.image}`} alt={item.name} />
                           </div>
                         </label>
                       </Col>

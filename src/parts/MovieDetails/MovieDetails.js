@@ -4,6 +4,8 @@ import Moment from 'react-moment'
 
 import './MovieDetails.scss'
 
+const { REACT_APP_API_URL: URL } = process.env
+
 class MovieDetails extends Component {
   render () {
     return (
@@ -14,7 +16,7 @@ class MovieDetails extends Component {
           <Row>
             <Col md={4}>
               <div className="card-movies d-flex align-items-center justify-content-center">
-                <img src={`http://localhost:5000/uploads/movies/${this.props.data.image}`} alt={this.props.data.name} />
+                <img src={`${URL}uploads/movies/${this.props.data.image}`} alt={this.props.data.name} />
               </div>
             </Col>
             <Col md={8}>

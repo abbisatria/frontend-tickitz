@@ -8,6 +8,8 @@ import { order } from '../../redux/actions/order'
 
 import './CardShowTimes.scss'
 
+const { REACT_APP_API_URL: URL } = process.env
+
 class CardShowTimes extends Component {
   state = {
     time: ''
@@ -29,7 +31,7 @@ class CardShowTimes extends Component {
               md={5}
               className="d-flex align-items-center justify-content-center"
             >
-              <img src={`http://localhost:5000/uploads/cinemas/${this.props.data.image}`} alt={this.props.data.name} />
+              <img src={`${URL}uploads/cinemas/${this.props.data.image}`} alt={this.props.data.name} />
             </Col>
             <Col md={7} className="pt-2 pt-md-0">
               <h3>{this.props.data.name}</h3>
