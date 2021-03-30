@@ -14,7 +14,6 @@ export default function FormInputText (props) {
         placeholder={placeholder}
         onChange={onChange}
         defaultValue={defaultValue}
-        required
       />
     </Form.Group>
   )

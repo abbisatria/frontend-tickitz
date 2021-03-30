@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
-import { Table, Alert, Modal, Spinner } from 'react-bootstrap'
+import { Table, Alert, Modal, Spinner, Form } from 'react-bootstrap'
 import { Link, withRouter } from 'react-router-dom'
 import Button from '../Button/Button'
 import { connect } from 'react-redux'
 import { listCinema, detailCinema, deleteCinema } from '../../redux/actions/cinema'
+
+import qs from 'querystring'
 
 class ManageCinema extends Component {
   state = {
     page: 1,
     message: '',
     show: false,
-    isLoading: true
+    isLoading: true,
+    search: ''
   };
 
   async componentDidMount () {
@@ -18,10 +21,38 @@ class ManageCinema extends Component {
     this.setState({ isLoading: false })
   }
 
+  search = async (event) => {
+    const { search } = this.props.location
+    const query = qs.parse(search.replace('?', ''))
+    this.setState({ [event.target.name]: event.target.value, isLoading: true })
+    await this.props.listCinema(event.target.value)
+    if (event.target.value) {
+      query.search = event.target.value
+    } else {
+      delete query.search
+    }
+    await this.props.history.push({
+      search: qs.stringify(query)
+    })
+    if (this.props.cinema.results.length > 0) {
+      this.setState({
+        message: '',
+        isLoading: false,
+        page: 1
+      })
+    } else {
+      this.setState({
+        message: 'Cinema Not Found',
+        isLoading: false,
+        page: 1
+      })
+    }
+  };
+
   prev = async () => {
     if (this.state.page > 1) {
       this.setState({ isLoading: true })
-      await this.props.listCinema(this.state.page - 1)
+      await this.props.listCinema(this.state.search, this.state.page - 1)
       this.setState({
         isLoading: false,
         page: this.state.page - 1
@@ -36,7 +67,7 @@ class ManageCinema extends Component {
   next = async () => {
     if (this.state.page !== this.props.cinema.pageInfo.totalPage) {
       this.setState({ isLoading: true })
-      await this.props.listCinema(this.state.page + 1)
+      await this.props.listCinema(this.state.search, this.state.page + 1)
       this.setState({
         isLoading: false,
         page: this.state.page + 1
@@ -70,8 +101,11 @@ class ManageCinema extends Component {
   render () {
     return (
       <>
-        <div className="d-flex justify-content-between mb-3">
-          <h1>Cinema List</h1>
+        <h1>Cinema List</h1>
+        <div className="d-flex justify-content-between align-items-center my-3">
+          <Form.Group>
+            <Form.Control type="text" placeholder="Search Cinema..." name="search" onChange={(event) => this.search(event)} />
+          </Form.Group>
           <Link to="/admin/manage_cinema/create" className="btn btn-primary">
             Create Cinema
           </Link>

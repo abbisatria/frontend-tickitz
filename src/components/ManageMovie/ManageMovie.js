@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Table, Alert, Modal, Spinner } from 'react-bootstrap'
+import { Table, Alert, Modal, Spinner, Form } from 'react-bootstrap'
 import Button from '../Button/Button'
 import { connect } from 'react-redux'
 import { listMovie, detailMovie, detailMovieGenre, deleteMovie } from '../../redux/actions/movie'
 
 import { listAllGenre } from '../../redux/actions/genre'
+import qs from 'querystring'
 
 import Moment from 'react-moment'
 import { withRouter } from 'react-router-dom'
@@ -17,7 +18,8 @@ class ManageMovie extends Component {
     isLoading: true,
     icSort: 'up',
     order: '',
-    sort: ''
+    sort: '',
+    search: ''
   };
 
   async componentDidMount () {
@@ -25,21 +27,50 @@ class ManageMovie extends Component {
     this.setState({ isLoading: false })
   }
 
+  search = async (event) => {
+    const { search } = this.props.location
+    const query = qs.parse(search.replace('?', ''))
+    this.setState({ [event.target.name]: event.target.value, isLoading: true })
+    await this.props.listMovie(event.target.value)
+    if (event.target.value) {
+      query.search = event.target.value
+    } else {
+      delete query.search
+    }
+    await this.props.history.push({
+      search: qs.stringify(query)
+    })
+    if (this.props.movie.results.length > 0) {
+      this.setState({
+        message: '',
+        isLoading: false,
+        page: 1
+      })
+    } else {
+      this.setState({
+        message: 'Movie Not Found',
+        isLoading: false,
+        page: 1
+      })
+    }
+  };
+
   order = async (value) => {
     this.setState({ isLoading: true })
     if (this.state.icSort === 'down') {
       this.setState({ icSort: 'up', isLoading: false, order: value, sort: 'DESC' })
-      await this.props.listMovie(this.state.page, value, 'DESC')
+      await this.props.listMovie(this.state.search, this.state.page, value, 'DESC')
     } else {
       this.setState({ icSort: 'down', isLoading: false, order: value, sort: 'ASC' })
-      await this.props.listMovie(this.state.page, value, 'ASC')
+      await this.props.listMovie(this.state.search, this.state.page, value, 'ASC')
     }
   }
 
   prev = async () => {
     if (this.state.page > 1) {
       this.setState({ isLoading: true })
-      await this.props.listMovie(this.state.page - 1, this.state.order, this.state.sort)
+      const { search, page, order, sort } = this.state
+      await this.props.listMovie(search, page - 1, order, sort)
       this.setState({
         isLoading: false,
         page: this.state.page - 1
@@ -64,7 +95,8 @@ class ManageMovie extends Component {
   next = async () => {
     if (this.state.page !== this.props.movie.pageInfo.totalPage) {
       this.setState({ isLoading: true })
-      await this.props.listMovie(this.state.page + 1, this.state.order, this.state.sort)
+      const { search, page, order, sort } = this.state
+      await this.props.listMovie(search, page + 1, order, sort)
       this.setState({
         isLoading: false,
         page: this.state.page + 1
@@ -95,8 +127,11 @@ class ManageMovie extends Component {
   render () {
     return (
       <>
-        <div className="d-flex justify-content-between mb-3">
-          <h1>Movie List</h1>
+        <h1>Movie List</h1>
+        <div className="d-flex justify-content-between align-items-center my-3">
+          <Form.Group>
+            <Form.Control type="text" placeholder="Search Movie..." name="search" onChange={(event) => this.search(event)} />
+          </Form.Group>
           <Button onClick={this.linkCreateMovie} className="btn btn-primary">
             Create Movie
           </Button>

@@ -19,6 +19,7 @@ import PrivateRoute from './PrivateRoute'
 import PrivateRouteProfile from './PrivateRouteProfile'
 import PrivateRouteAdmin from './PrivateRouteAdmin'
 import NotFound from '../pages/Not_Found'
+import ViewAllNow from '../pages/ViewAllNow/ViewAllNow'
 
 class Router extends Component {
   render () {
@@ -35,6 +36,7 @@ class Router extends Component {
             <Route path="/forgot-password/:token" component={ForgotPassword} />
             <Route path="/forgot-password" exact component={ForgotPassword} />
             <Route path="/details/:id" component={Details} />
+            <Route path="/now-showing" component={ViewAllNow} />
             <PrivateRouteAdmin path="/admin" privateComponent={Admin} />
             <PrivateRouteProfile path="/profile" privateComponent={Profile} />
             <PrivateRoute path='/order' privateComponent={Order} />

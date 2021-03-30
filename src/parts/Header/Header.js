@@ -89,6 +89,18 @@ class Header extends Component {
                         Profile
                       </Button>
                     </NavDropdown.Item>
+                    {this.props.auth.user.role === 1 && (
+                      <NavDropdown.Item>
+                        <Button
+                        variant="link"
+                        className="px-0"
+                        onClick={() => {
+                          this.props.history.push('/admin')
+                        }}>
+                          Dashboard
+                        </Button>
+                      </NavDropdown.Item>
+                    )}
                     <NavDropdown.Item>
                       <Button
                         variant="link"

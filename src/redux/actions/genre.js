@@ -1,9 +1,9 @@
 import http from '../../helpers/http'
 
-export const listGenre = (page) => {
+export const listGenre = (search, page) => {
   return async dispatch => {
     try {
-      const response = await http().get(`genre?page=${page}`)
+      const response = await http().get(`genre?search=${search || ''}&page=${page || 1}`)
       dispatch({
         type: 'LIST_GENRE',
         payload: response.data.results,

@@ -25,7 +25,7 @@ class NowShowing extends Component {
               <h2>Now Showing</h2>
             </Col>
             <Col className="d-flex justify-content-end">
-              <Link to="/" className="view-all">
+              <Link to="/now-showing" className="view-all">
                 view all
               </Link>
             </Col>
