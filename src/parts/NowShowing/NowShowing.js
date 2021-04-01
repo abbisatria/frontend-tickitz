@@ -11,7 +11,7 @@ class NowShowing extends Component {
     nowShowingList: []
   };
   async componentDidMount () {
-    const response = await http().get('movies/movieNowShowing')
+    const response = await http().get('movies/movieNowShowing?order=DESC&limit=8')
     this.setState({
       nowShowingList: response.data.results
     })

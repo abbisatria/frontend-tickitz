@@ -1,0 +1,22 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixin";
+
+.month-movies {
+  display: flex;
+  overflow-x: auto;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+
+  .outline-primary {
+    min-width: 127px;
+    min-height: 42px;
+    margin-right: 16px;
+
+    &:hover {
+      background-color: $primaryColor;
+      color: $offWhiteColor;
+    }
+  }
+}

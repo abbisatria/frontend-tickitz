@@ -7,25 +7,76 @@ import qs from 'querystring'
 import CardMoviesUpcoming from '../../components/CardMoviesUpcoming/CardMoviesUpcoming'
 import Button from '../../components/Button/Button'
 
-import './ViewAllNow.scss'
+import './ViewAllUp.scss'
 
 import { connect } from 'react-redux'
 
-class ViewAllNow extends Component {
+class ViewAllUp extends Component {
   state = {
-    nowShowingList: [],
+    upComing: [],
     search: '',
     isLoading: false,
     message: '',
     pageInfo: null,
     textLoading: 'Load More',
     order: 'ASC',
-    sort: ''
+    sort: '',
+    selectMonth: '',
+    month: [
+      {
+        id: 9,
+        month: 'September'
+      },
+      {
+        id: 10,
+        month: 'October'
+      },
+      {
+        id: 11,
+        month: 'November'
+      },
+      {
+        id: 12,
+        month: 'December'
+      },
+      {
+        id: 1,
+        month: 'January'
+      },
+      {
+        id: 2,
+        month: 'February'
+      },
+      {
+        id: 3,
+        month: 'March'
+      },
+      {
+        id: 4,
+        month: 'April'
+      },
+      {
+        id: 5,
+        month: 'May'
+      },
+      {
+        id: 6,
+        month: 'June'
+      },
+      {
+        id: 7,
+        month: 'July'
+      },
+      {
+        id: 8,
+        month: 'August'
+      }
+    ]
   }
   async componentDidMount () {
-    const response = await http().get('movies/movieNowShowing?limit=8')
+    const response = await http().get('movies/upComing?limit=8')
     this.setState({
-      nowShowingList: response.data.results,
+      upComing: response.data.results,
       pageInfo: response.data.pageInfo
     })
   }
@@ -41,10 +92,10 @@ class ViewAllNow extends Component {
     await this.props.history.push({
       search: qs.stringify(query)
     })
-    const response = await http().get(`movies/movieNowShowing?search=${event.target.value}&limit=8`)
+    const response = await http().get(`movies/upComing?search=${event.target.value}&limit=8`)
     if (response.data.results.length > 0) {
       this.setState({
-        nowShowingList: response.data.results,
+        upComing: response.data.results,
         message: '',
         isLoading: false,
         pageInfo: response.data.pageInfo
@@ -59,11 +110,11 @@ class ViewAllNow extends Component {
   next = async () => {
     this.setState({ textLoading: 'Loading...' })
     if (this.state.pageInfo.currentPage < this.state.pageInfo.totalPage) {
-      const { nowShowingList: oldNowShowingList, search, sort, order } = this.state
-      const response = await http().get(`movies/movieNowShowing?search=${search}&limit=8&page=${this.state.pageInfo.currentPage + 1}&sort=${sort || 'id'}&order=${order || 'ASC'}`)
+      const { upComing: oldUpComing, search, sort, order } = this.state
+      const response = await http().get(`movies/upComing?search=${search}&limit=8&page=${this.state.pageInfo.currentPage + 1}&sort=${sort || 'id'}&order=${order || 'ASC'}`)
       const nowShowing = response.data.results
-      const newData = [...oldNowShowingList, ...nowShowing]
-      this.setState({ nowShowingList: newData, pageInfo: response.data.pageInfo })
+      const newData = [...oldUpComing, ...nowShowing]
+      this.setState({ upComing: newData, pageInfo: response.data.pageInfo })
     }
     this.setState({ textLoading: 'Load More' })
   }
@@ -71,10 +122,11 @@ class ViewAllNow extends Component {
     if (event.target.value !== 'Sort') {
       this.setState({ [event.target.name]: event.target.value, isLoading: true })
       const { order } = this.state
-      const response = await http().get(`movies/movieNowShowing?limit=8&sort=${event.target.value}&order=${order}`)
+      const response = await http().get(`movies/upComing?limit=8&sort=${event.target.value}&order=${order}`)
       this.setState({
+        message: '',
         isLoading: false,
-        nowShowingList: response.data.results,
+        upComing: response.data.results,
         pageInfo: response.data.pageInfo
       })
     }
@@ -84,23 +136,44 @@ class ViewAllNow extends Component {
     if (sort !== '') {
       if (order === 'ASC') {
         this.setState({ isLoading: true })
-        const response = await http().get(`movies/movieNowShowing?limit=8&sort=${sort}&order=DESC&search=${search || ''}`)
+        const response = await http().get(`movies/upComing?limit=8&sort=${sort}&order=DESC&search=${search || ''}`)
         this.setState({
+          message: '',
           isLoading: false,
-          nowShowingList: response.data.results,
+          upComing: response.data.results,
           pageInfo: response.data.pageInfo,
           order: 'DESC'
         })
       } else {
         this.setState({ isLoading: true })
-        const response = await http().get(`movies/movieNowShowing?limit=8&sort=${sort}&order=ASC`)
+        const response = await http().get(`movies/upComing?limit=8&sort=${sort}&order=ASC`)
         this.setState({
+          message: '',
           isLoading: false,
-          nowShowingList: response.data.results,
+          upComing: response.data.results,
           pageInfo: response.data.pageInfo,
           order: 'ASC'
         })
       }
+    }
+  }
+  monthUpComing = async (value) => {
+    this.setState({ isLoading: true })
+    const response = await http().get(`movies/upComing?month=${value}&order=DESC&limit=8`)
+    if (response.data.results.length > 0) {
+      this.setState({
+        message: '',
+        selectMonth: value,
+        isLoading: false,
+        upComing: response.data.results
+      })
+    } else {
+      this.setState({
+        message: 'Movie Not Found',
+        selectMonth: value,
+        isLoading: false,
+        upComing: response.data.results
+      })
     }
   }
   render () {
@@ -110,7 +183,7 @@ class ViewAllNow extends Component {
           <Container>
             <Row>
               <Col className="text-title">
-                <h2>Now Showing</h2>
+                <h2>Up Coming</h2>
               </Col>
               <Col className="d-flex justify-content-end align-items-center mr-4 sort">
                 <Form.Group className="mr-3">
@@ -130,12 +203,27 @@ class ViewAllNow extends Component {
             </Row>
           </Container>
           <Container>
+            <div className="month-movies">
+              {this.state.month.map((value, index) => {
+                return (
+                  <Button
+                    className="outline-primary"
+                    key={String(index)}
+                    onClick={() => this.monthUpComing(value.id)}
+                  >
+                    {value.month}
+                  </Button>
+                )
+              })}
+            </div>
+          </Container>
+          <Container>
             <Row>
               {this.state.isLoading
                 ? <Col><div className="text-center"><Spinner animation="border" /></div></Col>
                 : this.state.message !== ''
                   ? <Col><div className="text-center"><p>{this.state.message}</p></div></Col>
-                  : this.state.nowShowingList.map((value, index) => {
+                  : this.state.upComing.map((value, index) => {
                     return (
                   <Col md={3} key={String(index)} className="mb-3">
                     <CardMoviesUpcoming data={value} />
@@ -159,4 +247,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth
 })
 
-export default connect(mapStateToProps)(ViewAllNow)
+export default connect(mapStateToProps)(ViewAllUp)

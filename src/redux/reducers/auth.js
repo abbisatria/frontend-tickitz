@@ -1,7 +1,8 @@
 const initialState = {
   token: null,
   errorMsg: '',
-  user: null
+  user: null,
+  message: ''
 }
 
 const authReducer = (state = initialState, action) => {
@@ -27,10 +28,14 @@ const authReducer = (state = initialState, action) => {
         errorMsg: ''
       }
     }
-    case 'UPDATE_USER': {
+    case 'UPDATE_PROFILE': {
       return {
         ...state,
-        user: action.payload
+        user: {
+          ...state.user,
+          ...action.payload
+        },
+        message: action.message
       }
     }
     default: {

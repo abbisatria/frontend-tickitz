@@ -4,7 +4,7 @@ import { Form } from 'react-bootstrap'
 import './FormInputText.scss'
 
 export default function FormInputText (props) {
-  const { children, name, type, placeholder, onChange, defaultValue } = props
+  const { children, name, type, placeholder, onChange, defaultValue, onBlur, error } = props
   return (
     <Form.Group>
       <Form.Label>{children}</Form.Label>
@@ -14,7 +14,9 @@ export default function FormInputText (props) {
         placeholder={placeholder}
         onChange={onChange}
         defaultValue={defaultValue}
+        onBlur={onBlur}
       />
+      {error && error}
     </Form.Group>
   )
 }

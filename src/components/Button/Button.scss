@@ -11,6 +11,13 @@
   }
 }
 
+.btn-disabled {
+  background-color: gray;
+  color: $offWhiteColor;
+  border-radius: 5px;
+  border: none;
+}
+
 .outline-primary {
   border: 1px solid $primaryColor;
   background-color: $offWhiteColor;

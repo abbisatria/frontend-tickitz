@@ -22,7 +22,7 @@ class FormInputPassword extends Component {
           type={isPasswordShown ? 'text' : 'password'}
           placeholder={this.props.placeholder}
           onChange={this.props.onChange}
-          required
+          defaultValue={this.props.defaultValue}
         />
         <i
           className={`fa ${

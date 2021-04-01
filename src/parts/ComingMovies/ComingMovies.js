@@ -1,61 +1,95 @@
 import React, { Component } from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Spinner } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Button from '../../components/Button/Button'
 import CardMoviesUpcoming from '../../components/CardMoviesUpcoming/CardMoviesUpcoming'
 import http from '../../helpers/http'
-import moment from 'moment'
 
 import './ComingMovies.scss'
 
 class ComingMovies extends Component {
   state = {
     month: [
-      'September',
-      'October',
-      'November',
-      'December',
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June'
+      {
+        id: 9,
+        month: 'September'
+      },
+      {
+        id: 10,
+        month: 'October'
+      },
+      {
+        id: 11,
+        month: 'November'
+      },
+      {
+        id: 12,
+        month: 'December'
+      },
+      {
+        id: 1,
+        month: 'January'
+      },
+      {
+        id: 2,
+        month: 'February'
+      },
+      {
+        id: 3,
+        month: 'March'
+      },
+      {
+        id: 4,
+        month: 'April'
+      },
+      {
+        id: 5,
+        month: 'May'
+      },
+      {
+        id: 6,
+        month: 'June'
+      },
+      {
+        id: 7,
+        month: 'July'
+      },
+      {
+        id: 8,
+        month: 'August'
+      }
     ],
     movieUpComing: [],
-    movieComing: [],
-    message: ''
-  };
+    message: '',
+    loading: false
+  }
 
   async componentDidMount () {
-    const response = await http().get('movies/upComing')
+    const response = await http().get('movies/upComing?order=DESC&limit=8')
     this.setState({
       movieUpComing: response.data.results
     })
   }
 
-  searhMovie = (month) => {
-    const movieMonth = this.state.movieUpComing.filter(
-      (value) => moment(value.releaseDate).format('DD MMMM YYYY').indexOf(month) !== -1
-    )
-    if (movieMonth.length > 0) {
+  monthUpComing = async (value) => {
+    this.setState({ loading: true })
+    const response = await http().get(`movies/upComing?month=${value}&order=DESC&limit=8`)
+    if (response.data.results.length > 0) {
       this.setState({
-        movieComing: movieMonth,
-        message: ''
+        message: '',
+        selectMonth: value,
+        loading: false,
+        movieUpComing: response.data.results
       })
     } else {
       this.setState({
-        message: `UpComing Movies ${month} Not Found`
+        message: 'Movie Not Found',
+        selectMonth: value,
+        loading: false,
+        movieUpComing: response.data.results
       })
     }
-  };
-
-  viewAllMovie = () => {
-    this.setState({
-      movieComing: [],
-      message: ''
-    })
-  };
+  }
 
   render () {
     return (
@@ -67,9 +101,8 @@ class ComingMovies extends Component {
             </Col>
             <Col className="d-flex justify-content-end">
               <Link
-                to=""
+                to="/up-coming"
                 className="view-all"
-                onClick={() => this.viewAllMovie()}
               >
                 view all
               </Link>
@@ -83,23 +116,20 @@ class ComingMovies extends Component {
                 <Button
                   className="outline-primary"
                   key={String(index)}
-                  onClick={() => this.searhMovie(value)}
+                  onClick={() => this.monthUpComing(value.id)}
                 >
-                  {value}
+                  {value.month}
                 </Button>
               )
             })}
           </div>
+          {this.state.loading ? <div className="d-flex justify-content-center align-items-center"><Spinner animation="border" /></div> : this.state.message !== '' ? <div className="d-flex justify-content-center align-items-center"><p>{this.state.message}</p></div> : null}
           <div className="movies-upcoming">
-            {this.state.message !== ''
-              ? <p>{this.state.message}</p>
-              : this.state.movieComing.length > 0
-                ? this.state.movieComing.map((value, index) => {
-                  return <CardMoviesUpcoming data={value} key={String(index)} />
-                })
-                : this.state.movieUpComing.map((value, index) => {
-                  return <CardMoviesUpcoming data={value} key={String(index)} />
-                })}
+            {this.state.movieUpComing.length > 0
+              ? this.state.movieUpComing.map((value, index) => {
+                return <CardMoviesUpcoming data={value} key={String(index)} />
+              })
+              : null}
           </div>
         </Container>
       </div>
