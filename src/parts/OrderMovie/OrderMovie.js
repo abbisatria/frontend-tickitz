@@ -10,6 +10,8 @@ import { seatChecked } from '../../redux/actions/order'
 
 import './OrderMovie.scss'
 
+const { REACT_APP_API_URL: URL } = process.env
+
 class OrderMovie extends Component {
   state = {
     seat: []
@@ -124,7 +126,7 @@ class OrderMovie extends Component {
                 <h2>Order Info</h2>
                 <div className="card-order-info">
                   <div className="cinema">
-                    <img src={`http://localhost:5000/uploads/cinemas/${this.props.showtime.image}`} alt="" />
+                    <img src={`${URL}uploads/cinemas/${this.props.showtime.image}`} alt="" />
                     <h2>{this.props.showtime.cinema}</h2>
                   </div>
                   <div className="detail-order">

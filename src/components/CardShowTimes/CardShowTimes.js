@@ -68,7 +68,7 @@ class CardShowTimes extends Component {
                     this.state.time
                   )
                 }
-                className="btn-primary book-now px-4 py-2"
+                className={this.state.time === '' ? 'btn-disabled book-now px-4 py-2' : 'btn-primary book-now px-4 py-2'}
                 disabled={this.state.time === ''}
               >
                 Book Now

@@ -18,7 +18,8 @@ class SignIn extends Component {
   state = {
     email: '',
     password: '',
-    isLoading: false
+    isLoading: false,
+    message: ''
   };
 
   submitData = async (event) => {
@@ -26,6 +27,9 @@ class SignIn extends Component {
     this.setState({ isLoading: true })
     const { email, password } = this.state
     await this.props.login(email, password)
+    if (this.props.auth.errorMsg !== '') {
+      this.setState({ message: this.props.auth.errorMsg })
+    }
     this.setState({ isLoading: false })
   };
 
@@ -68,7 +72,7 @@ class SignIn extends Component {
                 Sign in with your data that you entered during your registration
               </p>
             </div>
-            {this.props.auth.errorMsg !== '' && <Alert variant="danger">{this.props.auth.errorMsg}</Alert>}
+            {this.state.message !== '' && <Alert variant="danger">{this.state.message}</Alert>}
             <Form onSubmit={this.submitData}>
               <FormInputText
                 name="email"

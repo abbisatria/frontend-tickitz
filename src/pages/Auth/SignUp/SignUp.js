@@ -17,7 +17,8 @@ class SignUp extends Component {
     email: '',
     password: '',
     message: '',
-    isLoading: false
+    isLoading: false,
+    alert: ''
   };
 
   submitData = async (event) => {
@@ -29,9 +30,9 @@ class SignUp extends Component {
     this.setState({ isLoading: true })
     try {
       const response = await http().post('auth/register', data)
-      this.setState({ message: response.data.message, isLoading: false })
+      this.setState({ message: response.data.message, isLoading: false, alert: 'success' })
     } catch (err) {
-      this.setState({ message: err.response.data.message, isLoading: false })
+      this.setState({ message: err.response.data.message, isLoading: false, alert: 'danger' })
     }
   };
 
@@ -76,7 +77,7 @@ class SignUp extends Component {
             <div className="authentication-form-title">
               <h1>Fill your additional details</h1>
             </div>
-            {this.state.message !== '' && <Alert variant="warning">{this.state.message}</Alert>}
+            {this.state.message !== '' && <Alert variant={this.state.alert}>{this.state.message}</Alert>}
             <Form onSubmit={this.submitData}>
               <FormInputText
                 name="email"
