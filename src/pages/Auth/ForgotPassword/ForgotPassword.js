@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Form, Alert } from 'react-bootstrap'
+import { Container, Row, Col, Form, Alert, Spinner } from 'react-bootstrap'
 import Button from '../../../components/Button/Button'
 import FormInputText from '../../../components/Form/FormInputText/FormInputText'
 import FormInputPassword from '../../../components/Form/FormInputPassword/FormInputPassword'
@@ -13,30 +13,36 @@ class ForgotPassword extends Component {
   state = {
     email: '',
     password: '',
-    message: ''
+    message: '',
+    loading: false,
+    alert: '',
+    show: false
   }
   forgotPassword = async (event) => {
+    this.setState({ loading: true })
     event.preventDefault()
     const { email } = this.state
     const data = new URLSearchParams()
     data.append('email', email)
     try {
       const response = await http().post('auth/forgotPassword', data)
-      this.setState({ message: response.data.message })
+      this.setState({ message: response.data.message, loading: false, alert: 'success', show: true })
     } catch (err) {
-      this.setState({ message: err.response.data.message })
+      this.setState({ message: err.response.data.message, loading: false, alert: 'danger', show: true })
     }
   };
   resetPassword = async (event) => {
+    this.setState({ loading: true })
     event.preventDefault()
     const { password } = this.state
     const data = new URLSearchParams()
     data.append('password', password)
     try {
+      this.setState({ loading: false })
       await http().patch(`auth/resetPassword/${this.props.match.params.token}`, data)
       this.props.history.push('/sign-in')
     } catch (err) {
-      this.setState({ message: err.response.data.message })
+      this.setState({ message: err.response.data.message, alert: 'danger', show: true })
     }
   };
   changeText = (event) => {
@@ -78,21 +84,36 @@ class ForgotPassword extends Component {
           </Col>
           <Col md={5} className="authentication-form">
             <div className="authentication-form-title">
-              <h1>Fill your complete email</h1>
-              <p>we&apos;ll send a link to your email shortly</p>
+              {this.props.match.params.token
+                ? (
+                <>
+                  <h1>Reset Password</h1>
+                  <p>please reset your password</p>
+                </>
+                  )
+                : (
+                <>
+                  <h1>Fill your complete email</h1>
+                  <p>we&apos;ll send a link to your email shortly</p>
+                </>
+                  )}
             </div>
-            {this.state.message !== '' && <Alert variant="warning">{this.state.message}</Alert>}
+            {this.state.message !== '' && this.state.show && <Alert variant={this.state.alert} onClose={() => this.setState({ show: false })} dismissible>{this.state.message}</Alert>}
             {this.props.match.params.token
               ? <Form onSubmit={this.resetPassword}>
               <FormInputPassword
                 name="password"
                 onChange={(event) => this.changeText(event)}
                 placeholder="Write your password"
-              />
+              >
+                New Password
+              </FormInputPassword>
 
-              <Button className="btn-primary w-100 py-3 mb-4" type="submit">
+              {this.state.loading
+                ? <div className="text-center"><Spinner animation="border" /></div>
+                : (<Button className={`${this.state.password !== '' ? 'btn-primary' : 'btn-disabled'} w-100 py-3 mb-4`} type="submit" disabled={this.state.password === ''}>
                 Reset Password
-              </Button>
+              </Button>)}
             </Form>
               : <Form onSubmit={this.forgotPassword}>
               <FormInputText
@@ -104,9 +125,11 @@ class ForgotPassword extends Component {
                 Email
               </FormInputText>
 
-              <Button className="btn-primary w-100 py-3 mb-4" type="submit">
+              {this.state.loading
+                ? <div className="text-center"><Spinner animation="border" /></div>
+                : (<Button className={`${this.state.email !== '' ? 'btn-primary' : 'btn-disabled'} w-100 py-3 mb-4`} type="submit" disabled={this.state.email === ''}>
                 Activate now
-              </Button>
+              </Button>)}
             </Form>}
           </Col>
         </Row>

@@ -18,7 +18,8 @@ class SignUp extends Component {
     password: '',
     message: '',
     isLoading: false,
-    alert: ''
+    alert: '',
+    show: false
   };
 
   submitData = async (event) => {
@@ -29,10 +30,10 @@ class SignUp extends Component {
     data.append('password', password)
     this.setState({ isLoading: true })
     try {
-      const response = await http().post('auth/register', data)
-      this.setState({ message: response.data.message, isLoading: false, alert: 'success' })
+      const response = await http().post('auth/register?web=web', data)
+      this.setState({ message: response.data.message, isLoading: false, alert: 'success', show: true })
     } catch (err) {
-      this.setState({ message: err.response.data.message, isLoading: false, alert: 'danger' })
+      this.setState({ message: err.response.data.message, isLoading: false, alert: 'danger', show: true })
     }
   };
 
@@ -77,7 +78,7 @@ class SignUp extends Component {
             <div className="authentication-form-title">
               <h1>Fill your additional details</h1>
             </div>
-            {this.state.message !== '' && <Alert variant={this.state.alert}>{this.state.message}</Alert>}
+            {this.state.message !== '' && this.state.show && <Alert variant={this.state.alert} onClose={() => this.setState({ show: false })} dismissible>{this.state.message}</Alert>}
             <Form onSubmit={this.submitData}>
               <FormInputText
                 name="email"
@@ -103,7 +104,7 @@ class SignUp extends Component {
                 />
               </Form.Group>
               {this.state.isLoading === false
-                ? <Button className="btn-primary w-100 py-3 mb-4" type="submit">
+                ? <Button className={`${(this.state.email !== '' && this.state.password !== '') ? 'btn-primary' : 'btn-disabled'} w-100 py-3 mb-4`} type="submit" disabled={this.state.email === '' && this.state.password === ''}>
                 Join for free now
               </Button>
                 : <div className="text-center"><Spinner animation="border" /></div>}

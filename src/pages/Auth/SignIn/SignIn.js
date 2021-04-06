@@ -19,7 +19,8 @@ class SignIn extends Component {
     email: '',
     password: '',
     isLoading: false,
-    message: ''
+    message: '',
+    show: false
   };
 
   submitData = async (event) => {
@@ -28,7 +29,7 @@ class SignIn extends Component {
     const { email, password } = this.state
     await this.props.login(email, password)
     if (this.props.auth.errorMsg !== '') {
-      this.setState({ message: this.props.auth.errorMsg })
+      this.setState({ message: this.props.auth.errorMsg, show: true })
     }
     this.setState({ isLoading: false })
   };
@@ -72,7 +73,7 @@ class SignIn extends Component {
                 Sign in with your data that you entered during your registration
               </p>
             </div>
-            {this.state.message !== '' && <Alert variant="danger">{this.state.message}</Alert>}
+            {this.state.message !== '' && this.state.show && <Alert variant="danger" onClose={() => this.setState({ show: false })} dismissible>{this.state.message}</Alert>}
             <Form onSubmit={this.submitData}>
               <FormInputText
                 name="email"
@@ -91,7 +92,7 @@ class SignIn extends Component {
               </FormInputPassword>
 
               {this.state.isLoading === false
-                ? <Button className="btn-primary w-100 py-3 mb-4" type="submit">
+                ? <Button className={`${(this.state.email !== '' && this.state.password !== '') ? 'btn-primary' : 'btn-disabled'} w-100 py-3 mb-4`} type="submit" disabled={this.state.email === '' && this.state.password === ''}>
                 Sign In
               </Button>
                 : <div className="text-center"><Spinner animation="border" /></div>}

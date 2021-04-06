@@ -37,33 +37,12 @@ class ShowtimesTickets extends Component {
         } catch (err) {
           this.setState({
             showtimesTickets: '',
-            message: err.response.data.message
+            message: 'Showtimes not found'
           })
         }
       }
     })
   };
-  // async componentDidUpdate(prevProps, prevState){
-  //   const { idMovie, date, location } = this.state
-  //   // console.log(`${prevState.date}, ${prevState.location} || ${date}, ${location}`)
-  //   if((prevState.date && prevState.location) !== (date && location)) {
-  //     const data = new URLSearchParams()
-  //     data.append('idMovie', idMovie)
-  //     data.append('date', date)
-  //     data.append('search', location)
-  //     try {
-  //       const response = await http().post('showtimes/searchLocation', data)
-  //       this.setState({
-  //         showtimesTickets: response.data.results
-  //       })
-  //     } catch(err) {
-  //       this.setState({
-  //         showtimesTickets: ''
-  //       })
-  //       console.log(err.response.data.message)
-  //     }
-  //   }
-  // }
   render () {
     return (
       <div className="showtimes-tickets">
@@ -81,16 +60,18 @@ class ShowtimesTickets extends Component {
               ? <Col className="d-flex justify-content-center align-items-center">{this.state.message}</Col>
               : this.state.loading
                 ? <Col className="d-flex justify-content-center align-items-center"><img src={load} alt="loading" /></Col>
-                : this.state.showtimesTickets.map((value, index) => {
-                  return (
+                : this.state.showtimesTickets.length > 0
+                  ? this.state.showtimesTickets.map((value, index) => {
+                    return (
                 <CardShowTimes
                   data={value}
                   date={this.state.date}
                   movieId={this.state.idMovie}
                   key={String(index)}
                 />
-                  )
-                })}
+                    )
+                  })
+                  : <Col className="d-flex justify-content-center align-items-center">Please select a date and location</Col>}
           </Row>
           <h5>
             <Link to="/" className="view-more">

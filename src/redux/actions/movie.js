@@ -1,9 +1,19 @@
 import http from '../../helpers/http'
+import qs from 'querystring'
 
-export const listMovie = (search, page, sort, order) => {
+export const listMovie = (cond) => {
   return async dispatch => {
     try {
-      const response = await http().get(`movies?search=${search || ''}&page=${page || 1}&sort=${sort || 'id'}&order=${order || 'ASC'}`)
+      const query = cond
+        ? qs.stringify({
+          ...cond
+        })
+        : {}
+      dispatch({
+        type: 'SET_MESSAGE_MOVIE',
+        payload: ''
+      })
+      const response = await http().get(`movies?${cond ? query : ''}`)
       dispatch({
         type: 'LIST_MOVIE',
         payload: response.data.results,
@@ -22,6 +32,10 @@ export const listMovie = (search, page, sort, order) => {
 export const listAllMovie = () => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_MOVIE',
+        payload: ''
+      })
       const response = await http().get('movies/listAllMovie')
       dispatch({
         type: 'LIST_ALL_MOVIE',
@@ -40,6 +54,10 @@ export const listAllMovie = () => {
 export const detailMovie = (id) => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_MOVIE',
+        payload: ''
+      })
       const response = await http().get(`movies/${id}`)
       dispatch({
         type: 'DETAIL_MOVIE',
@@ -58,6 +76,10 @@ export const detailMovie = (id) => {
 export const detailMovieGenre = (id) => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_MOVIE',
+        payload: ''
+      })
       const response = await http().get(`movies/detailGenre/${id}`)
       dispatch({
         type: 'DETAIL_MOVIE_GENRE',
@@ -76,6 +98,10 @@ export const detailMovieGenre = (id) => {
 export const createMovie = (token, name, genre, file, releaseDate, category, duration, directed, casts, description) => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_MOVIE',
+        payload: ''
+      })
       const data = new FormData()
       data.append('name', name)
       if (file !== null) {
@@ -91,7 +117,7 @@ export const createMovie = (token, name, genre, file, releaseDate, category, dur
       const response = await http(token).post('movies', data)
       dispatch({
         type: 'CREATE_MOVIE',
-        payload: response.data.success
+        payload: response.data.message
       })
     } catch (err) {
       const { message } = err.response.data
@@ -106,6 +132,10 @@ export const createMovie = (token, name, genre, file, releaseDate, category, dur
 export const editMovie = (token, id, name, genre, file, releaseDate, category, duration, directed, casts, description) => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_MOVIE',
+        payload: ''
+      })
       const data = new FormData()
       if (name !== '') {
         data.append('name', name)
@@ -135,7 +165,7 @@ export const editMovie = (token, id, name, genre, file, releaseDate, category, d
       const response = await http(token).patch(`movies/${id}`, data)
       dispatch({
         type: 'EDIT_MOVIE',
-        payload: response.data.success
+        payload: response.data.message
       })
     } catch (err) {
       const { message } = err.response.data
@@ -150,6 +180,10 @@ export const editMovie = (token, id, name, genre, file, releaseDate, category, d
 export const deleteMovie = (token, id) => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_MOVIE',
+        payload: ''
+      })
       const response = await http(token).delete(`movies/${id}`)
       dispatch({
         type: 'DELETE_MOVIE',

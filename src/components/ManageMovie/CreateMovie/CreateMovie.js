@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Form } from 'react-bootstrap'
+import { Row, Col, Form, Alert } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import FormInputText from '../../Form/FormInputText/FormInputText'
 import Button from '../../Button/Button'
@@ -20,7 +20,9 @@ class CreateMovie extends Component {
     casts: '',
     description: '',
     category: '',
-    imgPreview: null
+    imgPreview: null,
+    message: '',
+    show: false
   }
 
   options = this.props.genre.results.map(item => {
@@ -42,10 +44,10 @@ class CreateMovie extends Component {
     const { name, genre, file, releaseDate, duration, directed, casts, description, category } = this.state
     const mapGenre = genre.map(item => item.value)
     await this.props.createMovie(this.props.auth.token, name, mapGenre, file, releaseDate, category, duration, directed, casts, description)
-    if (this.props.movie.success === true) {
+    if (this.props.movie.message !== '') {
       this.props.history.push('/admin/manage_movie')
     } else {
-      this.setState({ message: this.props.movie.errorMsg })
+      this.setState({ message: this.props.movie.errorMsg, show: true })
     }
   };
 
@@ -54,6 +56,7 @@ class CreateMovie extends Component {
       <>
       <Form onSubmit={this.submitData}>
         <h1>Create Movie</h1>
+        {this.state.message !== '' && this.state.show && <Alert variant="danger" onClose={() => this.setState({ show: false })} dismissible>{this.state.message}</Alert>}
         <Row>
           <Col md={4}>
             <div className="card-movies d-flex align-items-center justify-content-center">
@@ -118,9 +121,9 @@ class CreateMovie extends Component {
               type="text"
               name="category"
               onChange={(event) => this.changeText(event)}
-              placeholder="Write your Category"
+              placeholder="Category"
             >
-              Casts
+              Category
             </FormInputText>
           </Col>
           <Col md={12}>

@@ -1,9 +1,19 @@
 import http from '../../helpers/http'
+import qs from 'querystring'
 
-export const listCinema = (search, page) => {
+export const listCinema = (cond) => {
   return async dispatch => {
     try {
-      const response = await http().get(`cinemas?search=${search || ''}&page=${page || 1}`)
+      const query = cond
+        ? qs.stringify({
+          ...cond
+        })
+        : {}
+      dispatch({
+        type: 'SET_MESSAGE_CINEMA',
+        payload: ''
+      })
+      const response = await http().get(`cinemas?${cond ? query : ''}`)
       dispatch({
         type: 'LIST_CINEMA',
         payload: response.data.results,
@@ -22,6 +32,10 @@ export const listCinema = (search, page) => {
 export const detailCinema = (id) => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_CINEMA',
+        payload: ''
+      })
       const response = await http().get(`cinemas/${id}`)
       dispatch({
         type: 'DETAIL_CINEMA',
@@ -30,7 +44,7 @@ export const detailCinema = (id) => {
     } catch (err) {
       const { message } = err.response.data
       dispatch({
-        type: 'SET_MESSAGE_GENRE',
+        type: 'SET_MESSAGE_CINEMA',
         payload: message
       })
     }
@@ -40,6 +54,10 @@ export const detailCinema = (id) => {
 export const listLocation = () => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_CINEMA',
+        payload: ''
+      })
       const response = await http().get('cinemas/location')
       dispatch({
         type: 'LIST_LOCATION',
@@ -58,6 +76,10 @@ export const listLocation = () => {
 export const createCinema = (token, name, location, file, price, address) => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_CINEMA',
+        payload: ''
+      })
       const data = new FormData()
       data.append('name', name)
       data.append('location', location)
@@ -82,6 +104,10 @@ export const createCinema = (token, name, location, file, price, address) => {
 export const editCinema = (token, id, name, location, file, price, address) => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_CINEMA',
+        payload: ''
+      })
       const data = new FormData()
       if (name !== '') {
         data.append('name', name)
@@ -116,6 +142,10 @@ export const editCinema = (token, id, name, location, file, price, address) => {
 export const deleteCinema = (token, id) => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_CINEMA',
+        payload: ''
+      })
       const response = await http(token).delete(`cinemas/${id}`)
       dispatch({
         type: 'DELETE_CINEMA',

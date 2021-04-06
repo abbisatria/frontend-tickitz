@@ -3,7 +3,7 @@ const initialState = {
   details: {},
   detailsGenre: null,
   pageInfo: null,
-  success: null,
+  message: '',
   errorMsg: ''
 }
 
@@ -37,13 +37,13 @@ const movieReducer = (state = initialState, action) => {
     case 'CREATE_MOVIE': {
       return {
         ...state,
-        success: action.payload
+        message: action.payload
       }
     }
     case 'EDIT_MOVIE': {
       return {
         ...state,
-        success: action.payload
+        message: action.payload
       }
     }
     case 'DELETE_MOVIE': {

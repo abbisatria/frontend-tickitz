@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Table, Alert, Modal, Spinner, Form } from 'react-bootstrap'
 import Button from '../Button/Button'
 import { connect } from 'react-redux'
-import { listMovie, detailMovie, detailMovieGenre, deleteMovie } from '../../redux/actions/movie'
+import { listMovie, detailMovie, detailMovieGenre, deleteMovie, listAllMovie } from '../../redux/actions/movie'
 
 import { listAllGenre } from '../../redux/actions/genre'
 import qs from 'querystring'
@@ -16,22 +16,21 @@ class ManageMovie extends Component {
     message: '',
     show: false,
     isLoading: true,
-    icSort: 'up',
-    order: '',
-    sort: '',
-    search: ''
+    icSort: 'up'
   };
 
   async componentDidMount () {
-    await this.props.listMovie()
+    const { search } = this.props.location
+    const query = qs.parse(search.replace('?', ''))
+    await this.props.listMovie(query)
     this.setState({ isLoading: false })
   }
 
   search = async (event) => {
     const { search } = this.props.location
     const query = qs.parse(search.replace('?', ''))
-    this.setState({ [event.target.name]: event.target.value, isLoading: true })
-    await this.props.listMovie(event.target.value)
+    this.setState({ isLoading: true })
+    delete query.page
     if (event.target.value) {
       query.search = event.target.value
     } else {
@@ -40,6 +39,7 @@ class ManageMovie extends Component {
     await this.props.history.push({
       search: qs.stringify(query)
     })
+    await this.props.listMovie(query)
     if (this.props.movie.results.length > 0) {
       this.setState({
         message: '',
@@ -56,21 +56,37 @@ class ManageMovie extends Component {
   };
 
   order = async (value) => {
+    const { search } = this.props.location
+    const query = qs.parse(search.replace('?', ''))
+    delete query.page
     this.setState({ isLoading: true })
     if (this.state.icSort === 'down') {
-      this.setState({ icSort: 'up', isLoading: false, order: value, sort: 'DESC' })
-      await this.props.listMovie(this.state.search, this.state.page, value, 'DESC')
+      this.setState({ icSort: 'up' })
+      query.sort = value
+      query.order = 'DESC'
     } else {
-      this.setState({ icSort: 'down', isLoading: false, order: value, sort: 'ASC' })
-      await this.props.listMovie(this.state.search, this.state.page, value, 'ASC')
+      this.setState({ icSort: 'down' })
+      query.sort = value
+      query.order = 'ASC'
     }
+    await this.props.history.push({
+      search: qs.stringify(query)
+    })
+    await this.props.listMovie(query)
+    this.setState({ isLoading: false })
   }
 
   prev = async () => {
+    const { search } = this.props.location
+    const query = qs.parse(search.replace('?', ''))
+    delete query.page
     if (this.state.page > 1) {
+      query.page = this.props.movie.pageInfo.currentPage - 1
+      await this.props.history.push({
+        search: qs.stringify(query)
+      })
       this.setState({ isLoading: true })
-      const { search, page, order, sort } = this.state
-      await this.props.listMovie(search, page - 1, order, sort)
+      await this.props.listMovie(query)
       this.setState({
         isLoading: false,
         page: this.state.page - 1
@@ -93,10 +109,16 @@ class ManageMovie extends Component {
   }
 
   next = async () => {
+    const { search } = this.props.location
+    const query = qs.parse(search.replace('?', ''))
+    delete query.page
     if (this.state.page !== this.props.movie.pageInfo.totalPage) {
+      query.page = this.props.movie.pageInfo.currentPage + 1
+      await this.props.history.push({
+        search: qs.stringify(query)
+      })
       this.setState({ isLoading: true })
-      const { search, page, order, sort } = this.state
-      await this.props.listMovie(search, page + 1, order, sort)
+      await this.props.listMovie(query)
       this.setState({
         isLoading: false,
         page: this.state.page + 1
@@ -120,6 +142,11 @@ class ManageMovie extends Component {
     this.props.history.push('/admin/manage_movie/edit')
   }
 
+  linkCreateShowtime = async () => {
+    await this.props.listAllMovie()
+    this.props.history.push('/admin/manage_showtime/create')
+  }
+
   handleClose = () => this.setState({ show: false })
 
   handleShow = () => this.setState({ show: true })
@@ -132,9 +159,14 @@ class ManageMovie extends Component {
           <Form.Group>
             <Form.Control type="text" placeholder="Search Movie..." name="search" onChange={(event) => this.search(event)} />
           </Form.Group>
-          <Button onClick={this.linkCreateMovie} className="btn btn-primary">
-            Create Movie
-          </Button>
+          <div>
+            <Button onClick={this.linkCreateMovie} className="btn btn-primary mr-3">
+              Create Movie
+            </Button>
+            <Button onClick={this.linkCreateShowtime} className="btn btn-primary">
+              Create Showtime
+            </Button>
+          </div>
         </div>
         {this.state.message !== '' && <Alert variant="warning">{this.state.message}</Alert>}
         <Table striped bordered hover responsive>
@@ -187,12 +219,9 @@ class ManageMovie extends Component {
             : <tr><td colSpan={4} className="text-center"><Spinner animation="border" /></td></tr>}
           </tbody>
         </Table>
-        <div className="d-flex justify-content-between">
-          <p>showing 1 to 5 of 10 rows</p>
-          <div>
-            <Button className="btn outline-primary mr-3" onClick={this.prev}>Prev Link</Button>
-            <Button className="btn outline-primary" onClick={this.next}>Next Link</Button>
-          </div>
+        <div className="d-flex justify-content-center">
+          <Button className="btn outline-primary mr-3" onClick={this.prev}>Prev Link</Button>
+          <Button className="btn outline-primary" onClick={this.next}>Next Link</Button>
         </div>
       </>
     )
@@ -205,6 +234,6 @@ const mapStateToProps = state => ({
   genre: state.genre
 })
 
-const mapDispatchToProps = { listMovie, detailMovie, detailMovieGenre, deleteMovie, listAllGenre }
+const mapDispatchToProps = { listMovie, detailMovie, detailMovieGenre, deleteMovie, listAllGenre, listAllMovie }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ManageMovie))

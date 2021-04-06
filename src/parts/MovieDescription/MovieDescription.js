@@ -10,7 +10,6 @@ import {
 import ManageMovie from '../../components/ManageMovie/ManageMovie'
 import ManageCinema from '../../components/ManageCinema/ManageCinema'
 import ManageGenre from '../../components/ManageGenre/ManageGenre'
-import ManageShowtime from '../../components/ManageShowtime/ManageShowtime'
 import CreateMovie from '../../components/ManageMovie/CreateMovie/CreateMovie'
 import EditMovie from '../../components/ManageMovie/EditMovie/EditMovie'
 import CreateCinema from '../../components/ManageCinema/CreateCinema/CreateCinema'
@@ -40,9 +39,6 @@ export default class MovieDescription extends Component {
                   </Nav.Item>
                   <Nav.Item className="d-flex flex-row align-items-center">
                     <i className="fa fa-database" aria-hidden="true"/><Link className="nav-link" to="/admin/manage_cinema">Manage Cinema</Link>
-                  </Nav.Item>
-                  <Nav.Item className="d-flex flex-row align-items-center">
-                    <i className="fa fa-database" aria-hidden="true"/><Link className="nav-link" to="/admin/manage_showtime">Manage Showtime</Link>
                   </Nav.Item>
                 </Nav>
               </Col>
@@ -78,9 +74,6 @@ export default class MovieDescription extends Component {
                   </Route>
                   <Route path="/admin/manage_genre/edit">
                     <EditGenre/>
-                  </Route>
-                  <Route path="/admin/manage_showtime" exact>
-                    <ManageShowtime/>
                   </Route>
                   <Route path="/admin/manage_showtime/create">
                     <CreateShowtime/>

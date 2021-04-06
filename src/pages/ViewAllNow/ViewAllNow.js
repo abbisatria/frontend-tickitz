@@ -14,7 +14,7 @@ import { connect } from 'react-redux'
 class ViewAllNow extends Component {
   state = {
     nowShowingList: [],
-    search: '',
+    searchMovie: '',
     isLoading: false,
     message: '',
     pageInfo: null,
@@ -23,7 +23,14 @@ class ViewAllNow extends Component {
     sort: ''
   }
   async componentDidMount () {
-    const response = await http().get('movies/movieNowShowing?limit=8')
+    const { search } = this.props.location
+    const cond = qs.parse(search.replace('?', ''))
+    const query = cond
+      ? qs.stringify({
+        ...cond
+      })
+      : {}
+    const response = await http().get(`movies/movieNowShowing?${cond ? `${query}&limit=8` : 'limit=8'}`)
     this.setState({
       nowShowingList: response.data.results,
       pageInfo: response.data.pageInfo
@@ -33,6 +40,7 @@ class ViewAllNow extends Component {
     const { search } = this.props.location
     const query = qs.parse(search.replace('?', ''))
     this.setState({ [event.target.name]: event.target.value, isLoading: true })
+    delete query.page
     if (event.target.value) {
       query.search = event.target.value
     } else {
@@ -59,8 +67,8 @@ class ViewAllNow extends Component {
   next = async () => {
     this.setState({ textLoading: 'Loading...' })
     if (this.state.pageInfo.currentPage < this.state.pageInfo.totalPage) {
-      const { nowShowingList: oldNowShowingList, search, sort, order } = this.state
-      const response = await http().get(`movies/movieNowShowing?search=${search}&limit=8&page=${this.state.pageInfo.currentPage + 1}&sort=${sort || 'id'}&order=${order || 'ASC'}`)
+      const { nowShowingList: oldNowShowingList, searchMovie, sort, order } = this.state
+      const response = await http().get(`movies/movieNowShowing?search=${searchMovie || ''}&limit=8&page=${this.state.pageInfo.currentPage + 1}&sort=${sort || 'id'}&order=${order || 'ASC'}`)
       const nowShowing = response.data.results
       const newData = [...oldNowShowingList, ...nowShowing]
       this.setState({ nowShowingList: newData, pageInfo: response.data.pageInfo })
@@ -69,9 +77,16 @@ class ViewAllNow extends Component {
   }
   sort = async (event) => {
     if (event.target.value !== 'Sort') {
+      const { search } = this.props.location
+      const query = qs.parse(search.replace('?', ''))
+      delete query.page
       this.setState({ [event.target.name]: event.target.value, isLoading: true })
+      query.sort = event.target.value
       const { order } = this.state
       const response = await http().get(`movies/movieNowShowing?limit=8&sort=${event.target.value}&order=${order}`)
+      await this.props.history.push({
+        search: qs.stringify(query)
+      })
       this.setState({
         isLoading: false,
         nowShowingList: response.data.results,
@@ -80,11 +95,16 @@ class ViewAllNow extends Component {
     }
   }
   sortBy = async () => {
-    const { sort, order, search } = this.state
+    const { sort, order, searchMovie } = this.state
     if (sort !== '') {
+      const { search } = this.props.location
+      const query = qs.parse(search.replace('?', ''))
+      delete query.page
       if (order === 'ASC') {
         this.setState({ isLoading: true })
-        const response = await http().get(`movies/movieNowShowing?limit=8&sort=${sort}&order=DESC&search=${search || ''}`)
+        query.sort = sort
+        query.order = 'DESC'
+        const response = await http().get(`movies/movieNowShowing?limit=8&sort=${sort}&order=DESC&search=${searchMovie || ''}`)
         this.setState({
           isLoading: false,
           nowShowingList: response.data.results,
@@ -93,7 +113,9 @@ class ViewAllNow extends Component {
         })
       } else {
         this.setState({ isLoading: true })
-        const response = await http().get(`movies/movieNowShowing?limit=8&sort=${sort}&order=ASC`)
+        query.sort = sort
+        query.order = 'ASC'
+        const response = await http().get(`movies/movieNowShowing?limit=8&sort=${sort}&order=ASC&search=${searchMovie || ''}`)
         this.setState({
           isLoading: false,
           nowShowingList: response.data.results,
@@ -101,6 +123,9 @@ class ViewAllNow extends Component {
           order: 'ASC'
         })
       }
+      await this.props.history.push({
+        search: qs.stringify(query)
+      })
     }
   }
   render () {
@@ -114,7 +139,7 @@ class ViewAllNow extends Component {
               </Col>
               <Col className="d-flex justify-content-end align-items-center mr-4 sort">
                 <Form.Group className="mr-3">
-                  <Form.Control type="text" placeholder="Search Movie..." name="search" onChange={(event) => this.search(event)} />
+                  <Form.Control type="text" placeholder="Search Movie..." name="searchMovie" onChange={(event) => this.search(event)} />
                 </Form.Group>
                 <Form.Group className="mr-3">
                   <Form.Control as="select" custom name="sort" onChange={(event) => this.sort(event)}>
@@ -145,7 +170,7 @@ class ViewAllNow extends Component {
             </Row>
             <Row>
               <Col className="d-flex justify-content-center mt-4">
-                <Button className="btn-primary px-4 py-2" onClick={this.next}>{this.state.textLoading}</Button>
+                {this.state.pageInfo && (<Button className={`${this.state.pageInfo.nextLink !== null ? 'btn-primary' : 'btn-disabled'} px-4 py-2`} onClick={this.next}>{this.state.textLoading}</Button>)}
               </Col>
             </Row>
           </Container>

@@ -14,7 +14,7 @@ import { connect } from 'react-redux'
 class ViewAllUp extends Component {
   state = {
     upComing: [],
-    search: '',
+    searchMovie: '',
     isLoading: false,
     message: '',
     pageInfo: null,
@@ -74,7 +74,14 @@ class ViewAllUp extends Component {
     ]
   }
   async componentDidMount () {
-    const response = await http().get('movies/upComing?limit=8')
+    const { search } = this.props.location
+    const cond = qs.parse(search.replace('?', ''))
+    const query = cond
+      ? qs.stringify({
+        ...cond
+      })
+      : {}
+    const response = await http().get(`movies/upComing?${cond ? `${query}&limit=8` : 'limit=8'}`)
     this.setState({
       upComing: response.data.results,
       pageInfo: response.data.pageInfo
@@ -84,6 +91,7 @@ class ViewAllUp extends Component {
     const { search } = this.props.location
     const query = qs.parse(search.replace('?', ''))
     this.setState({ [event.target.name]: event.target.value, isLoading: true })
+    delete query.month
     if (event.target.value) {
       query.search = event.target.value
     } else {
@@ -110,8 +118,8 @@ class ViewAllUp extends Component {
   next = async () => {
     this.setState({ textLoading: 'Loading...' })
     if (this.state.pageInfo.currentPage < this.state.pageInfo.totalPage) {
-      const { upComing: oldUpComing, search, sort, order } = this.state
-      const response = await http().get(`movies/upComing?search=${search}&limit=8&page=${this.state.pageInfo.currentPage + 1}&sort=${sort || 'id'}&order=${order || 'ASC'}`)
+      const { upComing: oldUpComing, searchMovie, sort, order } = this.state
+      const response = await http().get(`movies/upComing?search=${searchMovie || ''}&limit=8&page=${this.state.pageInfo.currentPage + 1}&sort=${sort || 'id'}&order=${order || 'ASC'}`)
       const nowShowing = response.data.results
       const newData = [...oldUpComing, ...nowShowing]
       this.setState({ upComing: newData, pageInfo: response.data.pageInfo })
@@ -120,9 +128,16 @@ class ViewAllUp extends Component {
   }
   sort = async (event) => {
     if (event.target.value !== 'Sort') {
+      const { search } = this.props.location
+      const query = qs.parse(search.replace('?', ''))
+      delete query.month
       this.setState({ [event.target.name]: event.target.value, isLoading: true })
+      query.sort = event.target.value
       const { order } = this.state
       const response = await http().get(`movies/upComing?limit=8&sort=${event.target.value}&order=${order}`)
+      await this.props.history.push({
+        search: qs.stringify(query)
+      })
       this.setState({
         message: '',
         isLoading: false,
@@ -132,11 +147,16 @@ class ViewAllUp extends Component {
     }
   }
   sortBy = async () => {
-    const { sort, order, search } = this.state
+    const { sort, order, searchMovie } = this.state
     if (sort !== '') {
+      const { search } = this.props.location
+      const query = qs.parse(search.replace('?', ''))
+      delete query.month
       if (order === 'ASC') {
         this.setState({ isLoading: true })
-        const response = await http().get(`movies/upComing?limit=8&sort=${sort}&order=DESC&search=${search || ''}`)
+        query.sort = sort
+        query.order = 'DESC'
+        const response = await http().get(`movies/upComing?limit=8&sort=${sort}&order=DESC&search=${searchMovie || ''}`)
         this.setState({
           message: '',
           isLoading: false,
@@ -146,7 +166,9 @@ class ViewAllUp extends Component {
         })
       } else {
         this.setState({ isLoading: true })
-        const response = await http().get(`movies/upComing?limit=8&sort=${sort}&order=ASC`)
+        query.sort = sort
+        query.order = 'ASC'
+        const response = await http().get(`movies/upComing?limit=8&sort=${sort}&order=ASC&search=${searchMovie || ''}`)
         this.setState({
           message: '',
           isLoading: false,
@@ -155,10 +177,16 @@ class ViewAllUp extends Component {
           order: 'ASC'
         })
       }
+      await this.props.history.push({
+        search: qs.stringify(query)
+      })
     }
   }
   monthUpComing = async (value) => {
     this.setState({ isLoading: true })
+    const { search } = this.props.location
+    const query = qs.parse(search.replace('?', ''))
+    delete query.month
     const response = await http().get(`movies/upComing?month=${value}&order=DESC&limit=8`)
     if (response.data.results.length > 0) {
       this.setState({
@@ -175,6 +203,10 @@ class ViewAllUp extends Component {
         upComing: response.data.results
       })
     }
+    query.month = value
+    await this.props.history.push({
+      search: qs.stringify(query)
+    })
   }
   render () {
     return (
@@ -233,7 +265,7 @@ class ViewAllUp extends Component {
             </Row>
             <Row>
               <Col className="d-flex justify-content-center mt-4">
-                <Button className="btn-primary px-4 py-2" onClick={this.next}>{this.state.textLoading}</Button>
+                {this.state.pageInfo && (<Button className={`${this.state.pageInfo.nextLink !== null ? 'btn-primary' : 'btn-disabled'} px-4 py-2`} onClick={this.next}>{this.state.textLoading}</Button>)}
               </Col>
             </Row>
           </Container>

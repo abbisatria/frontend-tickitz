@@ -140,7 +140,7 @@ class EditMovie extends Component {
               defaultValue={this.props.movie.details.category}
               placeholder="Write your Category"
             >
-              Casts
+              Category
             </FormInputText>
           </Col>
           <Col md={12}>

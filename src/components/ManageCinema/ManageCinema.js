@@ -13,19 +13,22 @@ class ManageCinema extends Component {
     message: '',
     show: false,
     isLoading: true,
-    search: ''
+    search: '',
+    icSort: 'up'
   };
 
   async componentDidMount () {
-    await this.props.listCinema()
+    const { search } = this.props.location
+    const query = qs.parse(search.replace('?', ''))
+    await this.props.listCinema(query)
     this.setState({ isLoading: false })
   }
 
   search = async (event) => {
     const { search } = this.props.location
     const query = qs.parse(search.replace('?', ''))
-    this.setState({ [event.target.name]: event.target.value, isLoading: true })
-    await this.props.listCinema(event.target.value)
+    this.setState({ isLoading: true })
+    delete query.page
     if (event.target.value) {
       query.search = event.target.value
     } else {
@@ -34,6 +37,7 @@ class ManageCinema extends Component {
     await this.props.history.push({
       search: qs.stringify(query)
     })
+    await this.props.listCinema(query)
     if (this.props.cinema.results.length > 0) {
       this.setState({
         message: '',
@@ -50,9 +54,16 @@ class ManageCinema extends Component {
   };
 
   prev = async () => {
+    const { search } = this.props.location
+    const query = qs.parse(search.replace('?', ''))
+    delete query.page
     if (this.state.page > 1) {
+      query.page = this.props.cinema.pageInfo.currentPage - 1
+      await this.props.history.push({
+        search: qs.stringify(query)
+      })
       this.setState({ isLoading: true })
-      await this.props.listCinema(this.state.search, this.state.page - 1)
+      await this.props.listCinema(query)
       this.setState({
         isLoading: false,
         page: this.state.page - 1
@@ -65,9 +76,16 @@ class ManageCinema extends Component {
   }
 
   next = async () => {
+    const { search } = this.props.location
+    const query = qs.parse(search.replace('?', ''))
+    delete query.page
     if (this.state.page !== this.props.cinema.pageInfo.totalPage) {
+      query.page = this.props.cinema.pageInfo.currentPage + 1
+      await this.props.history.push({
+        search: qs.stringify(query)
+      })
       this.setState({ isLoading: true })
-      await this.props.listCinema(this.state.search, this.state.page + 1)
+      await this.props.listCinema(query)
       this.setState({
         isLoading: false,
         page: this.state.page + 1
@@ -77,6 +95,27 @@ class ManageCinema extends Component {
         page: this.state.page
       })
     }
+  }
+
+  order = async (value) => {
+    const { search } = this.props.location
+    const query = qs.parse(search.replace('?', ''))
+    delete query.page
+    this.setState({ isLoading: true })
+    if (this.state.icSort === 'down') {
+      this.setState({ icSort: 'up' })
+      query.sort = value
+      query.order = 'DESC'
+    } else {
+      this.setState({ icSort: 'down' })
+      query.sort = value
+      query.order = 'ASC'
+    }
+    await this.props.history.push({
+      search: qs.stringify(query)
+    })
+    await this.props.listCinema(query)
+    this.setState({ isLoading: false })
   }
 
   delete = async (token, id) => {
@@ -115,7 +154,7 @@ class ManageCinema extends Component {
           <thead>
             <tr>
               <th>No</th>
-              <th>Name</th>
+              <th>Name <i className={`fa fa-sort-${this.state.icSort}`} onClick={() => { this.order('name') }} /></th>
               <th>Location</th>
               <th>Action</th>
             </tr>

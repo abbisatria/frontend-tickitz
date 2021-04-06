@@ -8,15 +8,9 @@ import http from '../../helpers/http'
 
 class Profile extends Component {
   state = {
-    // details: {},
     order: []
   }
   async componentDidMount () {
-    // try {
-    //   const response = await http(this.props.auth.token).get(`users/${this.props.match.params.user_id}`)
-    //   this.setState({
-    //     details: response.data.results
-    //   })
     try {
       const order = await http(this.props.auth.token).get(`transaction/orderHistory/${this.props.auth.user.id}`)
       this.setState({
@@ -25,19 +19,11 @@ class Profile extends Component {
     } catch (err) {
       console.log(err.response.data.message)
     }
-    // } catch(err) {
-    //   console.log(err.response.data.message)
-    // }
   }
   render () {
     return (
       <>
         <Header user={this.props.auth.user} />
-        {/* <ProfileInfo details={this.state.details} order={this.state.order} token={this.props.auth.token} update={(details) => {
-          this.setState({
-            details
-          })
-        }} /> */}
         <ProfileInfo user={this.props.auth.user} order={this.state.order} token={this.props.auth.token} />
         <Footer />
       </>

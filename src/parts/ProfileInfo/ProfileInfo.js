@@ -5,7 +5,6 @@ import FormInputText from '../../components/Form/FormInputText/FormInputText'
 import FormInputNumber from '../../components/Form/FormInputNumber/FormInputNumber'
 import FormInputPassword from '../../components/Form/FormInputPassword/FormInputPassword'
 import Button from '../../components/Button/Button'
-// import http from '../../helpers/http'
 import { connect } from 'react-redux'
 import { updateProfile } from '../../redux/actions/auth'
 import { detailTicket } from '../../redux/actions/order'
@@ -28,7 +27,7 @@ const validationSchema = Yup.object().shape({
     .required('*First name is required'),
   lastName: Yup.string()
     .max(50, '*Last name must be less than 50 characters')
-    .notRequired().default(' '),
+    .notRequired(),
   email: Yup.string()
     .email('*Must be a valid email address')
     .max(50, '*Email must be less than 100 characters')
@@ -68,7 +67,7 @@ class ProfileInfo extends Component {
     const { firstName, lastName, email, phoneNumber } = values
     await this.props.updateProfile(token, id, {
       firstname: firstName,
-      lastname: lastName,
+      lastname: lastName || ' ',
       email: email,
       phoneNumber: phoneNumber
     })
@@ -119,7 +118,7 @@ class ProfileInfo extends Component {
                      <label className="upload-profile">
                         <input onChange={(e) => this.updatePhoto(e)} type="file" />
                         <div className="image-profile">
-                          <img src={this.props.user.image !== 'null' ? `${URL}uploads/users/${this.props.user.image}` : avatar} alt="profile" />
+                          <img src={this.props.user.image && this.props.user.image !== 'null' ? `${URL}uploads/users/${this.props.user.image}` : avatar} alt="profile" />
                         </div>
                       </label>
                     {this.state.loadingPhoto && <Spinner animation="border" />}

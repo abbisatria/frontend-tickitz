@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Form, Alert } from 'react-bootstrap'
+import { Row, Col, Form, Alert, Spinner } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import FormInputText from '../../Form/FormInputText/FormInputText'
 import { connect } from 'react-redux'
@@ -9,7 +9,8 @@ import Button from '../../Button/Button'
 class CreateGenre extends Component {
   state = {
     name: '',
-    message: ''
+    message: '',
+    loading: false
   }
 
   changeText = (event) => {
@@ -17,20 +18,22 @@ class CreateGenre extends Component {
   };
 
   submitData = async (event) => {
+    this.setState({ loading: true })
     event.preventDefault()
     const { name } = this.state
     await this.props.createGenre(this.props.auth.token, name)
     if (this.props.genre.success === true) {
+      this.setState({ loading: false })
       this.props.history.push('/admin/manage_genre')
     } else {
-      this.setState({ message: this.props.genre.errorMsg })
+      this.setState({ message: this.props.genre.errorMsg, loading: false })
     }
   };
   render () {
     return (
       <Form onSubmit={this.submitData}>
         <h1>Create Genre</h1>
-        {this.state.message !== '' && <Alert variant="warning">{this.state.message}</Alert>}
+        {this.state.message !== '' && <Alert variant="danger">{this.state.message}</Alert>}
         <Row className="mt-4">
           <Col md={12}>
             <FormInputText
@@ -43,7 +46,7 @@ class CreateGenre extends Component {
             </FormInputText>
           </Col>
         </Row>
-        <Button className="btn btn-primary" type="submit">Save</Button>
+        {this.state.loading ? <Spinner animation="border" /> : <Button className="btn btn-primary" type="submit">Save</Button>}
       </Form>
     )
   }

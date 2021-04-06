@@ -1,9 +1,19 @@
 import http from '../../helpers/http'
+import qs from 'querystring'
 
-export const listGenre = (search, page) => {
+export const listGenre = (cond) => {
   return async dispatch => {
     try {
-      const response = await http().get(`genre?search=${search || ''}&page=${page || 1}`)
+      dispatch({
+        type: 'SET_MESSAGE_GENRE',
+        payload: ''
+      })
+      const query = cond
+        ? qs.stringify({
+          ...cond
+        })
+        : {}
+      const response = await http().get(`genre?${cond ? query : ''}`)
       dispatch({
         type: 'LIST_GENRE',
         payload: response.data.results,
@@ -22,6 +32,10 @@ export const listGenre = (search, page) => {
 export const listAllGenre = () => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_GENRE',
+        payload: ''
+      })
       const response = await http().get('genre/listAllGenre')
       dispatch({
         type: 'LIST_ALL_GENRE',
@@ -40,6 +54,10 @@ export const listAllGenre = () => {
 export const detailGenre = (id) => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_GENRE',
+        payload: ''
+      })
       const response = await http().get(`genre/${id}`)
       dispatch({
         type: 'DETAIL_GENRE',
@@ -58,6 +76,10 @@ export const detailGenre = (id) => {
 export const createGenre = (token, name) => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_GENRE',
+        payload: ''
+      })
       const data = new URLSearchParams()
       data.append('name', name)
       const response = await http(token).post('genre', data)
@@ -78,6 +100,10 @@ export const createGenre = (token, name) => {
 export const editGenre = (token, id, name) => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_GENRE',
+        payload: ''
+      })
       const data = new URLSearchParams()
       data.append('name', name)
       const response = await http(token).patch(`genre/${id}`, data)
@@ -98,6 +124,10 @@ export const editGenre = (token, id, name) => {
 export const deleteGenre = (token, id) => {
   return async dispatch => {
     try {
+      dispatch({
+        type: 'SET_MESSAGE_GENRE',
+        payload: ''
+      })
       const response = await http(token).delete(`genre/${id}`)
       dispatch({
         type: 'DELETE_GENRE',
