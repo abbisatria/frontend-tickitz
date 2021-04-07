@@ -99,6 +99,12 @@ class ManageMovie extends Component {
   }
 
   delete = async (token, id) => {
+    const { search } = this.props.location
+    const query = qs.parse(search.replace('?', ''))
+    delete query.page
+    delete query.sort
+    delete query.order
+    delete query.search
     await this.props.deleteMovie(token, id)
     if (this.props.movie.success === true) {
       await this.props.listMovie()
@@ -106,6 +112,9 @@ class ManageMovie extends Component {
     } else {
       this.setState({ message: this.props.movie.errorMsg })
     }
+    await this.props.history.push({
+      search: qs.stringify(query)
+    })
   }
 
   next = async () => {

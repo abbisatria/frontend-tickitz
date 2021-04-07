@@ -3,6 +3,7 @@ const initialState = {
   details: {},
   detailsGenre: null,
   pageInfo: null,
+  success: null,
   message: '',
   errorMsg: ''
 }

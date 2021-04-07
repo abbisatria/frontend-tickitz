@@ -1,60 +1,79 @@
 import React, { Component } from 'react'
-import { Row, Col, Form, Alert } from 'react-bootstrap'
+import { Row, Col, Form, Alert, Spinner } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import FormInputText from '../../Form/FormInputText/FormInputText'
 import { connect } from 'react-redux'
 import { editGenre } from '../../../redux/actions/genre'
 import Button from '../../Button/Button'
+import { Formik } from 'formik'
+import * as Yup from 'yup'
+
+const validationSchema = Yup.object().shape({
+  genreName: Yup.string()
+    .min(2, '*Genre name must have at least 2 characters')
+    .max(50, '*Genre name must be less than 50 characters')
+    .required('*Genre name is required')
+})
 
 class EditGenre extends Component {
   state = {
-    name: '',
-    message: ''
+    message: '',
+    loading: false
   }
 
-  changeText = (event) => {
-    this.setState({ [event.target.name]: event.target.value })
-  };
-
-  submitData = async (event) => {
-    event.preventDefault()
-    const { name } = this.state
-    if (name !== '') {
-      await this.props.editGenre(this.props.auth.token, this.props.genre.details.id, name)
-      if (this.props.genre.success === true) {
-        this.props.history.push('/admin/manage_genre')
-      } else {
-        this.setState({ message: this.props.genre.errorMsg })
-      }
+  submitData = async (values) => {
+    this.setState({ loading: true })
+    const { genreName } = values
+    await this.props.editGenre(this.props.auth.token, this.props.genre.details.id, genreName)
+    if (this.props.genre.errorMsg === '') {
+      this.setState({ loading: false })
+      this.props.history.push('/admin/manage_genre')
     } else {
-      await this.props.editGenre(this.props.auth.token, this.props.genre.details.id, this.props.genre.details.name)
-      if (this.props.genre.success === true) {
-        this.props.history.push('/admin/manage_genre')
-      } else {
-        this.setState({ message: this.props.genre.errorMsg })
-      }
+      this.setState({ message: this.props.genre.errorMsg, loading: false })
     }
   };
+
   render () {
     return (
-      <Form onSubmit={this.submitData}>
-        <h1>Create Genre</h1>
-        {this.state.message !== '' && <Alert variant="warning">{this.state.message}</Alert>}
-        <Row className="mt-4">
-          <Col md={12}>
-            <FormInputText
-              name="name"
-              type="text"
-              onChange={(event) => this.changeText(event)}
-              defaultValue={this.props.genre.details.name}
-              placeholder="Write your name genre"
-            >
-              Name Genre
-            </FormInputText>
-          </Col>
-        </Row>
-        <Button className="btn btn-primary" type="submit">Save</Button>
-      </Form>
+      <Formik
+        initialValues={{
+          genreName: this.props.genre.details.name
+        }}
+        validationSchema={validationSchema}
+        onSubmit={(values) => this.submitData(values)}>
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isValid
+          }) => (
+            <Form onSubmit={handleSubmit}>
+              <h1>Create Genre</h1>
+              {this.state.message !== '' && <Alert variant="danger">{this.state.message}</Alert>}
+              <Row className="mt-4">
+                <Col md={12}>
+                  <FormInputText
+                    name="genreName"
+                    type="text"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="Write your name genre"
+                    defaultValue={values.genreName}
+                    error={touched.genreName && errors.genreName
+                      ? (<div className="error-message" style={{ color: 'red' }}>{errors.genreName}</div>)
+                      : null}
+                  >
+                    Name Genre
+                  </FormInputText>
+                </Col>
+              </Row>
+              {this.state.loading ? <Spinner animation="border" /> : <Button className={!isValid ? 'btn-disabled' : 'btn-primary'} type="submit" disabled={!isValid}>Save</Button>}
+            </Form>
+          )}
+      </Formik>
     )
   }
 }

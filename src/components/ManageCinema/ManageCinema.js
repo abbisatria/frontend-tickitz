@@ -119,6 +119,12 @@ class ManageCinema extends Component {
   }
 
   delete = async (token, id) => {
+    const { search } = this.props.location
+    const query = qs.parse(search.replace('?', ''))
+    delete query.page
+    delete query.sort
+    delete query.order
+    delete query.search
     await this.props.deleteCinema(token, id)
     if (this.props.cinema.success === true) {
       await this.props.listCinema()
@@ -126,6 +132,9 @@ class ManageCinema extends Component {
     } else {
       this.setState({ message: this.props.cinema.errorMsg })
     }
+    await this.props.history.push({
+      search: qs.stringify(query)
+    })
   }
 
   linkEditCinema = async (id) => {

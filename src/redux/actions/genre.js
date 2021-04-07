@@ -85,7 +85,7 @@ export const createGenre = (token, name) => {
       const response = await http(token).post('genre', data)
       dispatch({
         type: 'CREATE_GENRE',
-        payload: response.data.success
+        payload: response.data.message
       })
     } catch (err) {
       const { message } = err.response.data
@@ -109,7 +109,7 @@ export const editGenre = (token, id, name) => {
       const response = await http(token).patch(`genre/${id}`, data)
       dispatch({
         type: 'EDIT_GENRE',
-        payload: response.data.success
+        payload: response.data.message
       })
     } catch (err) {
       const { message } = err.response.data

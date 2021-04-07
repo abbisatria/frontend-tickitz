@@ -119,12 +119,21 @@ class ManageGenre extends Component {
 
   delete = async (token, id) => {
     await this.props.deleteGenre(token, id)
+    const { search } = this.props.location
+    const query = qs.parse(search.replace('?', ''))
+    delete query.page
+    delete query.sort
+    delete query.order
+    delete query.search
     if (this.props.genre.success === true) {
       await this.props.listGenre()
       this.setState({ message: 'Delete Success', show: false })
     } else {
       this.setState({ message: this.props.genre.errorMsg })
     }
+    await this.props.history.push({
+      search: qs.stringify(query)
+    })
   }
 
   linkEditGenre = async (id) => {

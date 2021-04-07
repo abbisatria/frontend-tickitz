@@ -89,7 +89,7 @@ export const createCinema = (token, name, location, file, price, address) => {
       const response = await http(token).post('cinemas', data)
       dispatch({
         type: 'CREATE_CINEMA',
-        payload: response.data.success
+        payload: response.data.message
       })
     } catch (err) {
       const { message } = err.response.data
@@ -127,7 +127,7 @@ export const editCinema = (token, id, name, location, file, price, address) => {
       const response = await http(token).patch(`cinemas/${id}`, data)
       dispatch({
         type: 'EDIT_CINEMA',
-        payload: response.data.success
+        payload: response.data.message
       })
     } catch (err) {
       const { message } = err.response.data

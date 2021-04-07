@@ -4,6 +4,7 @@ const initialState = {
   pageInfo: null,
   success: null,
   location: null,
+  message: '',
   errorMsg: ''
 }
 
@@ -31,13 +32,13 @@ const cinemaReducer = (state = initialState, action) => {
     case 'CREATE_CINEMA': {
       return {
         ...state,
-        success: action.payload
+        message: action.payload
       }
     }
     case 'EDIT_CINEMA': {
       return {
         ...state,
-        success: action.payload
+        message: action.payload
       }
     }
     case 'DELETE_CINEMA': {

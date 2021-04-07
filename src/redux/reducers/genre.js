@@ -3,6 +3,7 @@ const initialState = {
   details: {},
   pageInfo: null,
   success: null,
+  message: '',
   errorMsg: ''
 }
 
@@ -30,13 +31,13 @@ const genreReducer = (state = initialState, action) => {
     case 'CREATE_GENRE': {
       return {
         ...state,
-        success: action.payload
+        message: action.payload
       }
     }
     case 'EDIT_GENRE': {
       return {
         ...state,
-        success: action.payload
+        message: action.payload
       }
     }
     case 'DELETE_GENRE': {

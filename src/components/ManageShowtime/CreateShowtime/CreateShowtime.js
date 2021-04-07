@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Form, Alert } from 'react-bootstrap'
+import { Row, Col, Form, Alert, Spinner } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { cinemaLocation, createShowtime } from '../../../redux/actions/showtime'
 
@@ -23,7 +23,8 @@ class CreateShowtime extends Component {
     location: '',
     date: '',
     movie: null,
-    message: ''
+    message: '',
+    loading: false
   }
 
   options = this.props.movie.results.map(item => {
@@ -32,9 +33,20 @@ class CreateShowtime extends Component {
 
   selectedTime = (id) => {
     const { selectTime } = this.state
-    selectTime.push(id)
+    if (id) {
+      selectTime.push(id)
+      this.setState({
+        selectTime: selectTime
+      })
+    }
+  }
+
+  deleteTime = (id) => {
+    const { selectTime } = this.state
+    let newArray = []
+    newArray = selectTime.filter((item) => item !== id)
     this.setState({
-      selectTime: selectTime
+      selectTime: newArray
     })
   }
 
@@ -69,13 +81,18 @@ class CreateShowtime extends Component {
   };
 
   submitData = async (event) => {
+    this.setState({ loading: true })
     event.preventDefault()
     const { movie, date, selectCinema, selectTime } = this.state
-    await this.props.createShowtime(this.props.auth.token, movie.value, date, selectCinema, selectTime)
-    if (this.props.showtime.success === true) {
-      this.props.history.push('/admin/manage_showtime')
+    if (movie && date && selectTime && selectCinema) {
+      await this.props.createShowtime(this.props.auth.token, movie.value, date, selectCinema, selectTime)
+      if (this.props.showtime.success === true) {
+        this.props.history.push('/admin/manage_movie')
+      } else {
+        this.setState({ message: this.props.showtime.errorMsg, loading: false })
+      }
     } else {
-      this.setState({ message: this.props.showtime.errorMsg })
+      this.setState({ message: 'all forms are required', loading: false })
     }
   };
 
@@ -84,7 +101,7 @@ class CreateShowtime extends Component {
       <>
       <Form onSubmit={this.submitData}>
       <h1>Create Showtime</h1>
-      {(this.state.message !== '' && this.state.message !== 'Berhasil') && <Alert variant="warning">{this.state.message}</Alert>}
+      {this.state.message !== '' && this.state.message !== 'Berhasil' && <Alert variant="danger">{this.state.message}</Alert>}
         <Row>
           <Col md={6}>
             <Form.Group controlId="exampleForm.ControlTextarea1">
@@ -108,7 +125,7 @@ class CreateShowtime extends Component {
             <Row>
               <Col md={12}>
                 <Row>
-                  {(this.state.message !== '' && this.props.showtime.errorMsg === '') && this.props.showtime.results.map((item, index) => {
+                  {(this.state.message !== '' && this.state.message === 'Berhasil' && this.props.showtime.errorMsg === '') && this.props.showtime.results.map((item, index) => {
                     return (
                       <Col md={4} xs={4} key={String(index)}>
                         <label>
@@ -137,7 +154,10 @@ class CreateShowtime extends Component {
                 {this.state.selectTime && this.state.selectTime.map((item, index) => {
                   return (
                     <Col md={3} xs={3} key={String(index)}>
-                      <p>{moment(item, 'HH:mm:ss').format('hh:mmA')}</p>
+                      <div className="d-flex align-items-center">
+                        <p>{moment(item, 'HH:mm:ss').format('hh:mmA')}</p>
+                        <i className="fa fa-window-close" aria-hidden="true" onClick={() => this.deleteTime(item)}></i>
+                      </div>
                     </Col>
                   )
                 })}
@@ -146,7 +166,7 @@ class CreateShowtime extends Component {
           </Row>
           </Col>
         </Row>
-        <Button className="btn btn-primary" type="submit">Save</Button>
+        {this.state.loading ? <Spinner animation="border" /> : <Button className="btn btn-primary" type="submit">Save</Button>}
       </Form>
       </>
     )
